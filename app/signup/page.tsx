@@ -1,0 +1,441 @@
+"use client";
+
+import { useState } from "react";
+
+const CATEGORIES = [
+  "Arts & Culture", "Business & Entrepreneurship", "Comedy",
+  "Mental Health & Wellbeing", "Parenting & Family", "Politics & News",
+  "Pop Culture & Commentary", "Science & Education", "Sport & Recreation",
+  "Technology", "True Crime & Law"
+];
+
+const LOCATIONS = ["AU", "Canada", "NZ", "UK", "US", "Global"];
+
+const LISTENS_RANGES = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 200K", "200K+"];
+
+const AD_FORMATS = [
+  "Pre-roll", "Mid-roll", "Sponsored segment",
+  "Product placement", "Native episode", "Social amplification"
+];
+
+const AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55+"];
+
+const GENDER_OPTIONS = [
+  "Predominantly identify as women",
+  "Predominantly identify as men",
+  "Mixed gender",
+  "Unsure"
+];
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  fontSize: "14px",
+  color: "#00215e",
+  fontFamily: "var(--font-sans)",
+  background: "#FFFFFF",
+  border: "1px solid #EFEFED",
+  borderRadius: "6px",
+  padding: "12px 16px",
+  outline: "none",
+  boxSizing: "border-box",
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: "13px",
+  fontWeight: "600",
+  color: "#00215e",
+  fontFamily: "var(--font-sans)",
+  display: "block",
+  marginBottom: "8px",
+};
+
+const hintStyle: React.CSSProperties = {
+  fontSize: "12px",
+  color: "#6B6B6B",
+  fontFamily: "var(--font-sans)",
+  marginTop: "6px",
+};
+
+export default function PodcasterSignup() {
+  const [step, setStep] = useState(1);
+  const totalSteps = 6;
+
+  const [form, setForm] = useState({
+    name: "", email: "", password: "",
+    rssUrl: "", podcastName: "", category: "", coverArt: "",
+    listensRange: "", bestMonth: "", milestones: "",
+    audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
+    ageRange: "", gender: "",
+    adFormats: [] as string[], rates: "", lookingFor: "", previousSponsors: "",
+    instagram: "", tiktok: "", youtube: "", linkedin: "", facebook: "",
+  });
+
+  const [rssLoading, setRssLoading] = useState(false);
+  const [rssPreview, setRssPreview] = useState<{ name: string; description: string; coverArt: string } | null>(null);
+
+  const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
+
+  const toggleFormat = (format: string) => {
+    setForm((f) => ({
+      ...f,
+      adFormats: f.adFormats.includes(format)
+        ? f.adFormats.filter((x) => x !== format)
+        : [...f.adFormats, format],
+    }));
+  };
+
+  const fetchRSS = async () => {
+    if (!form.rssUrl) return;
+    setRssLoading(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    setRssPreview({
+      name: "The Shift",
+      description: "A podcast about building businesses that matter.",
+      coverArt: "#E8D5C4",
+    });
+    setForm((f) => ({
+      ...f,
+      podcastName: "The Shift",
+      coverArt: "#E8D5C4",
+    }));
+    setRssLoading(false);
+  };
+
+  const progressWidth = ((step - 1) / (totalSteps - 1)) * 100;
+
+  return (
+    <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+
+      <nav style={{ background: "#FAFAF8", borderBottom: "1px solid #EFEFED", padding: "0 48px", height: "72px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <a href="/" style={{ textDecoration: "none" }}>
+          <span style={{ fontSize: "22px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.5px" }}>
+            <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
+          </span>
+        </a>
+        <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>
+          Already have an account? <a href="/login" style={{ color: "#FF7C6F", textDecoration: "none", fontWeight: "600" }}>Log in</a>
+        </p>
+      </nav>
+
+      <div style={{ maxWidth: "560px", margin: "0 auto", padding: "60px 24px 100px" }}>
+
+        <div style={{ marginBottom: "48px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+            <span style={{ fontSize: "12px", fontWeight: "600", color: "#6B6B6B", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase" }}>
+              Step {step} of {totalSteps}
+            </span>
+            <span style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>
+              {step === 1 && "Your account"}
+              {step === 2 && "Your show"}
+              {step === 3 && "Your audience"}
+              {step === 4 && "Ad formats and rates"}
+              {step === 5 && "Socials"}
+              {step === 6 && "Review and submit"}
+            </span>
+          </div>
+          <div style={{ background: "#EFEFED", borderRadius: "100px", height: "4px", width: "100%" }}>
+            <div style={{ background: "#FF7C6F", borderRadius: "100px", height: "4px", width: progressWidth + "%", transition: "width 0.3s ease" }} />
+          </div>
+        </div>
+
+        {step === 1 && (
+          <div>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
+              Create your account
+            </h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
+              List your podcast for free and start getting discovered by brands.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div>
+                <label style={labelStyle}>Full name</label>
+                <input style={inputStyle} type="text" placeholder="Your name" value={form.name} onChange={(e) => update("name", e.target.value)} />
+              </div>
+              <div>
+                <label style={labelStyle}>Email address</label>
+                <input style={inputStyle} type="email" placeholder="you@email.com" value={form.email} onChange={(e) => update("email", e.target.value)} />
+              </div>
+              <div>
+                <label style={labelStyle}>Password</label>
+                <input style={inputStyle} type="password" placeholder="At least 8 characters" value={form.password} onChange={(e) => update("password", e.target.value)} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
+              Your show
+            </h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
+              Paste your RSS feed and we will pull your show details automatically.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div>
+                <label style={labelStyle}>RSS feed URL</label>
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <input style={{ ...inputStyle, flex: 1 }} type="url" placeholder="https://feeds.example.com/yourshow" value={form.rssUrl} onChange={(e) => update("rssUrl", e.target.value)} />
+                  <button
+                    onClick={fetchRSS}
+                    style={{ background: "#00215e", color: "#FFFFFF", border: "none", borderRadius: "6px", padding: "0 16px", fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", cursor: "pointer", whiteSpace: "nowrap" }}
+                  >
+                    {rssLoading ? "Loading..." : "Fetch"}
+                  </button>
+                </div>
+                <p style={hintStyle}>Your RSS feed URL can be found in your podcast hosting platform settings.</p>
+              </div>
+
+              {rssPreview && (
+                <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "16px", display: "flex", gap: "16px", alignItems: "center" }}>
+                  <div style={{ width: "64px", height: "64px", borderRadius: "8px", background: rssPreview.coverArt, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: "24px", opacity: 0.4 }}>🎙</span>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: "15px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "4px" }}>{rssPreview.name}</p>
+                    <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>{rssPreview.description}</p>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label style={labelStyle}>Podcast name</label>
+                <input style={inputStyle} type="text" placeholder="Auto-filled from RSS or enter manually" value={form.podcastName} onChange={(e) => update("podcastName", e.target.value)} />
+              </div>
+
+              <div>
+                <label style={labelStyle}>Category</label>
+                <select style={inputStyle} value={form.category} onChange={(e) => update("category", e.target.value)}>
+                  <option value="">Select a category</option>
+                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
+              Your audience
+            </h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
+              All figures are self-reported and will be labelled as such on your profile.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div>
+                <label style={labelStyle}>Monthly listens range</label>
+                <select style={inputStyle} value={form.listensRange} onChange={(e) => update("listensRange", e.target.value)}>
+                  <option value="">Select a range</option>
+                  {LISTENS_RANGES.map((r) => <option key={r} value={r}>{r}</option>)}
+                </select>
+                <p style={hintStyle}>Listens include downloads, streams, Spotify plays, YouTube views and live streams.</p>
+              </div>
+              <div>
+                <label style={labelStyle}>Best month <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <input style={inputStyle} type="text" placeholder="e.g. 14,200" value={form.bestMonth} onChange={(e) => update("bestMonth", e.target.value)} />
+              </div>
+              <div>
+                <label style={labelStyle}>Additional wins or milestones <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <textarea
+                  style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
+                  placeholder="e.g. Featured on a Spotify playlist, nominated for a podcast award, notable guest appearance"
+                  value={form.milestones}
+                  onChange={(e) => update("milestones", e.target.value)}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Top audience locations</label>
+                <p style={hintStyle}>Select up to 3 locations where most of your audience is based. Your show will appear in searches for each location you select.</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
+                  {[
+                    { key: "audienceLocation1", label: "Primary location" },
+                    { key: "audienceLocation2", label: "Secondary location (optional)" },
+                    { key: "audienceLocation3", label: "Third location (optional)" },
+                  ].map((loc) => (
+                    <select
+                      key={loc.key}
+                      style={inputStyle}
+                      value={form[loc.key as keyof typeof form] as string}
+                      onChange={(e) => update(loc.key, e.target.value)}
+                    >
+                      <option value="">{loc.label}</option>
+                      {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                    </select>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label style={labelStyle}>Audience age range</label>
+                <select style={inputStyle} value={form.ageRange} onChange={(e) => update("ageRange", e.target.value)}>
+                  <option value="">Select primary age range</option>
+                  {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={labelStyle}>Audience gender</label>
+                <select style={inputStyle} value={form.gender} onChange={(e) => update("gender", e.target.value)}>
+                  <option value="">Select</option>
+                  {GENDER_OPTIONS.map((g) => <option key={g} value={g}>{g}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
+              Ad formats and rates
+            </h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
+              Let brands know what you offer and what you charge.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div>
+                <label style={labelStyle}>Ad formats offered</label>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "4px" }}>
+                  {AD_FORMATS.map((format) => (
+                    <button
+                      key={format}
+                      onClick={() => toggleFormat(format)}
+                      style={{
+                        fontSize: "13px",
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: "600",
+                        padding: "8px 14px",
+                        borderRadius: "6px",
+                        border: form.adFormats.includes(format) ? "1.5px solid #FF7C6F" : "1px solid #EFEFED",
+                        background: form.adFormats.includes(format) ? "#FFF0EE" : "#FFFFFF",
+                        color: form.adFormats.includes(format) ? "#FF7C6F" : "#6B6B6B",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {format}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label style={labelStyle}>Rates <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <input style={inputStyle} type="text" placeholder="e.g. From $150 per episode" value={form.rates} onChange={(e) => update("rates", e.target.value)} />
+                <p style={hintStyle}>✦ Podcasters who include rates tend to get more relevant brand enquiries.</p>
+              </div>
+              <div>
+                <label style={labelStyle}>What are you looking for in a brand partner? <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <textarea
+                  style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
+                  placeholder="e.g. We love working with brands that align with our values around sustainability and wellness. We prefer long-term partnerships over one-off placements."
+                  value={form.lookingFor}
+                  onChange={(e) => update("lookingFor", e.target.value)}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Previous sponsors <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <input style={inputStyle} type="text" placeholder="e.g. Shopify, Canva, Audible" value={form.previousSponsors} onChange={(e) => update("previousSponsors", e.target.value)} />
+                <p style={hintStyle}>Self-reported. Separate multiple sponsors with commas.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {step === 5 && (
+          <div>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
+              Your socials
+            </h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
+              All optional. Social links are only visible to logged-in brands.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {[
+                { key: "instagram", label: "Instagram", placeholder: "@yourhandle" },
+                { key: "tiktok", label: "TikTok", placeholder: "@yourhandle" },
+                { key: "youtube", label: "YouTube", placeholder: "Channel name or URL" },
+                { key: "linkedin", label: "LinkedIn", placeholder: "Profile or page URL" },
+                { key: "facebook", label: "Facebook", placeholder: "Page URL" },
+              ].map((social) => (
+                <div key={social.key}>
+                  <label style={labelStyle}>{social.label}</label>
+                  <input
+                    style={inputStyle}
+                    type="text"
+                    placeholder={social.placeholder}
+                    value={form[social.key as keyof typeof form] as string}
+                    onChange={(e) => update(social.key, e.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {step === 6 && (
+          <div>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
+              Review and submit
+            </h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
+              Almost there. Check your details and submit your listing for review. We will be in touch within 2 to 3 business days.
+            </p>
+
+            {[
+              { label: "Name", value: form.name },
+              { label: "Email", value: form.email },
+              { label: "Podcast", value: form.podcastName },
+              { label: "Category", value: form.category },
+              { label: "Monthly listens", value: form.listensRange },
+              { label: "Primary audience location", value: form.audienceLocation1 },
+              { label: "Ad formats", value: form.adFormats.join(", ") },
+              { label: "Rates", value: form.rates || "Not provided" },
+              { label: "Previous sponsors", value: form.previousSponsors || "Not provided" },
+            ].map((item) => (
+              <div key={item.label} style={{ display: "flex", justifyContent: "space-between", padding: "14px 0", borderBottom: "1px solid #EFEFED" }}>
+                <span style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", fontWeight: "500" }}>{item.label}</span>
+                <span style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", fontWeight: "600", textAlign: "right", maxWidth: "60%" }}>{item.value || "Not provided"}</span>
+              </div>
+            ))}
+
+            <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "8px", padding: "16px", marginTop: "24px" }}>
+              <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>
+                By submitting, you confirm that all information provided is accurate to the best of your knowledge. Listener numbers are self-reported and will be labelled as such on your public profile. You will receive a confirmation email shortly after submitting, and we will let you know the outcome of your review within 2 to 3 business days.
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px", gap: "12px" }}>
+          {step > 1 && (
+            <button
+              onClick={() => setStep((s) => s - 1)}
+              style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#6B6B6B", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "13px 24px", cursor: "pointer" }}
+            >
+              Back
+            </button>
+          )}
+          <button
+            onClick={() => step < totalSteps ? setStep((s) => s + 1) : alert("Submitted! Check your email for a confirmation. We will be in touch within 2 to 3 business days.")}
+            style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px 24px", cursor: "pointer", marginLeft: "auto" }}
+          >
+            {step === totalSteps ? "Submit for review" : "Continue"}
+          </button>
+        </div>
+
+      </div>
+
+      <footer style={{ background: "#FAFAF8", borderTop: "1px solid #EFEFED", padding: "40px 48px" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+          <div>
+            <span style={{ fontSize: "18px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.5px" }}>
+              <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
+            </span>
+            <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px" }}>
+              A free resource by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
+            </p>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}

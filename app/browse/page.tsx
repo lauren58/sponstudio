@@ -118,45 +118,42 @@ export default function Browse() {
           Browse podcasts
         </h1>
         <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", maxWidth: "560px" }}>
-          Discover indie podcasts of every size and niche. Sign in with your work email to unlock listener stats, demographics and connect with shows.
+          Discover indie podcasts of every size and niche. Sign in with a company email to unlock listener stats, demographics and connect with shows.
         </p>
       </section>
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 40px" }}>
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
-            <option>All categories</option>
-            <option>Business & Entrepreneurship</option>
-            <option>True Crime & Law</option>
-            <option>Health & Fitness</option>
-            <option>Sustainability & Environment</option>
-            <option>Food & Hospitality</option>
+           <option>All categories</option>
             <option>Arts & Culture</option>
+            <option>Business & Entrepreneurship</option>
             <option>Comedy</option>
-            <option>Technology</option>
-            <option>Parenting & Family</option>
-            <option>Sport & Recreation</option>
-            <option>Society & Culture</option>
             <option>Mental Health & Wellbeing</option>
+            <option>Parenting & Family</option>
             <option>Politics & News</option>
-            <option>Education</option>
-            <option>Kids & Family</option>
+            <option>Pop Culture & Commentary</option>
+            <option>Science & Education</option>
+            <option>Sport & Recreation</option>
+            <option>Technology</option>
+            <option>True Crime & Law</option>
           </select>
           <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
             <option>All locations</option>
             <option>AU</option>
+            <option>Canada</option>
             <option>NZ</option>
-            <option>US</option>
             <option>UK</option>
+            <option>US</option>
             <option>Global</option>
           </select>
           <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
             <option>All sizes</option>
-            <option>Under 1k</option>
-            <option>1k to 10k</option>
-            <option>10k to 50k</option>
-            <option>50k to 200k</option>
-            <option>200k+</option>
+            <option>Under 1K</option>
+            <option>1K to 10K</option>
+            <option>10K to 50K</option>
+            <option>50K to 200K</option>
+            <option>200K+</option>
           </select>
           <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
             <option>All formats</option>
@@ -165,6 +162,7 @@ export default function Browse() {
             <option>Sponsored segment</option>
             <option>Product placement</option>
             <option>Native episode</option>
+            <option>Branded mini series</option>
             <option>Social amplification</option>
           </select>
         </div>
@@ -172,7 +170,7 @@ export default function Browse() {
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 32px" }}>
         <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", display: "inline-block" }}>
-          ✦ All listener numbers are self-reported by podcasters and include downloads, streams, Spotify plays and YouTube views.
+          ✦ All listener numbers are self-reported by podcasters and may include a combination of downloads, streams, Spotify plays and YouTube views.
         </p>
       </section>
 
@@ -226,7 +224,7 @@ export default function Browse() {
               <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
             </span>
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px" }}>
-              A free resource by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
+              A resource by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
             </p>
           </div>
           <div style={{ display: "flex", gap: "28px" }}>
