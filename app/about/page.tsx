@@ -25,94 +25,96 @@ export default function About() {
         <div style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "20px" }}>
           About
         </div>
-        <h1 style={{ fontSize: "clamp(32px, 5vw, 52px)", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1.5px", lineHeight: "1.08", marginBottom: "32px" }}>
-          Podcasting has changed.<br />
-          <span style={{ fontStyle: "italic", color: "#FF7C6F" }}>The industry has not caught up.</span>
+
+        <h1 style={{ fontSize: "clamp(32px, 5vw, 52px)", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1.5px", lineHeight: "1.08", marginBottom: "40px" }}>
+          Podcast advertising,<br />
+          <span style={{ fontStyle: "italic", color: "#FF7C6F" }}>democratised.</span>
         </h1>
 
         <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-          Podcasting is not what it was five years ago. The medium has evolved into something far bigger, more visual, and more social than anyone predicted. Today, podcasters are publishing on YouTube, going live on Spotify, clipping for TikTok, building audiences on Instagram, and streaming to rooms full of people in real time.
+          SponStudio is a marketplace connecting podcasters of all sizes with brands of all budgets.
         </p>
+
         <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-          And yet most of the tools, platforms, and marketplaces that claim to serve podcasters are still measuring success the old way. Download counts. RSS pulls. Numbers that were designed for an era when podcasting meant one audio file, distributed through one feed, listened to through one app.
+          Built by the team at Centennial World Podcast Network, SponStudio serves as both a platform to buy host-read podcast advertising directly from creators, and an educational tool for both sides of the industry.
         </p>
-        <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-          That model does not account for the YouTube views. The Spotify video plays. The live stream viewers. The Instagram follower who never downloads an episode but watches every video the moment it drops. These are real audiences, built by real creators, doing real work. But because the numbers do not show up in a traditional download report, they often do not count.
-        </p>
+
         <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "48px" }}>
-          The result is a system that makes it harder and harder for indie and niche podcasters to hit the thresholds required to get represented by a network, join an advertising marketplace, or attract sponsors. Not because their shows are not good. Because the goalposts were set before the game changed.
+          The podcast landscape has changed dramatically since we entered it over six years ago. The rise of video podcasting, TikTok, live-streaming and branded shows (just to name a few changes!) have made the space increasingly saturated, competitive, and even more expensive to break into. Meanwhile, industry measurement and advertising tools have yet to catch up with how people actually consume podcasts today.
         </p>
 
-        <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "48px", marginBottom: "48px" }}>
-          <div style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "20px" }}>
-            Why we built SponStudio
-          </div>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-            We built SponStudio because we believe the definition of a successful podcast needs to expand. A show with 600 deeply engaged listeners in a specific niche, a loyal YouTube community, and a highly active Instagram audience is a valuable platform for the right brand. It deserves a seat at the table.
+       <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "12px", padding: "28px 32px", marginBottom: "48px" }}>
+          <p style={{ fontSize: "22px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.5px", lineHeight: "1.3", marginBottom: "12px" }}>
+            Podcast advertising revenue grew 26.4% in 2024, reaching over $2.4 billion in the US alone.
           </p>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-            SponStudio is a free marketplace where podcasters of any size can list their show, set their own terms, and get discovered by brands. We ask podcasters to self-report their reach across all platforms, not just downloads, because we think the full picture matters. YouTube views count. Spotify streams count. Social amplification counts.
-          </p>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "48px" }}>
-            We call it listens. And we are upfront with brands that these numbers are self-reported, because we would rather build a marketplace on honesty than on inflated metrics.
+          <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>
+            Source: IAB Internet Advertising Revenue Report, Full Year 2024, compiled with PwC. <a href="https://www.iab.com" target="_blank" rel="noopener noreferrer" style={{ color: "#6B6B6B", textDecoration: "underline" }}>iab.com</a>
           </p>
         </div>
 
         <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "48px", marginBottom: "48px" }}>
-          <div style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "20px" }}>
-            For brands
+          <div style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "32px" }}>
+            How we do things differently
           </div>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-            SponStudio is not just for podcasters. It is for brands too, especially those who have never bought podcast advertising before or who have found existing options too expensive, too opaque, or too hard to navigate.
-          </p>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-            Buying directly from a podcast creator is a different experience to other ways brands typically buy media. It is more personal and more flexible. There is no algorithm deciding where your ad goes. You choose the show, you talk to the person behind it, and you build something that actually resonates with their audience. Done well, it is one of the most effective forms of advertising available.
-          </p>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "48px" }}>
-            Whether you are a startup with a small budget looking for your first podcast partner, or a growing brand ready to explore niche audiences at scale, SponStudio gives you the tools to find the right show, understand what you are buying, and connect directly. We also offer free resources to help brands who are new to direct podcast buying understand how it works and what to expect.
-          </p>
-        </div>
 
-        <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "48px", marginBottom: "48px" }}>
-          <div style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "20px" }}>
-            Who we are
-          </div>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-            SponStudio is a free resource created by <a href="https://centennialworld.com" target="_blank" rel="noopener noreferrer" style={{ color: "#00215e", textDecoration: "underline", fontWeight: "500" }}>Centennial World Podcast Network</a>, an independent podcast network based in Australia.
-          </p>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-            We produce and distribute podcasts across a range of genres and have lived the frustration of building shows that do not fit neatly into the boxes existing platforms were designed for. We know what it is like to be told your numbers are not quite there yet, even when your community is thriving.
-          </p>
-          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8" }}>
-            SponStudio is our way of building the platform we always needed. We hope it becomes the platform you needed too.
-          </p>
-        </div>
-
-        <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "48px", marginBottom: "48px" }}>
-          <div style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "20px" }}>
-            Our principles
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            {[
-              { title: "Free for podcasters, always", desc: "Listing your podcast on SponStudio will always be free. This is a resource, not a revenue play off the back of small creators." },
-              { title: "The full picture counts", desc: "We measure reach across all platforms, not just downloads. YouTube views, Spotify plays, live streams, and social amplification are all part of what makes a modern podcast." },
-              { title: "Honest by design", desc: "All listener numbers on SponStudio are self-reported by podcasters and clearly labelled as such. We believe transparency builds better partnerships than inflated metrics ever could." },
-              { title: "Curated, not just listed", desc: "Every podcast on SponStudio is reviewed by our team before going live. We are not a directory. We are a curated marketplace built on quality." },
-              { title: "Education for everyone", desc: "Buying podcast advertising directly is its own thing and we want both sides to feel confident doing it. Free resources for podcasters and brands are built into the platform." },
-            ].map((item) => (
-              <div key={item.title} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-                <span style={{ color: "#FF7C6F", fontSize: "16px", marginTop: "2px", flexShrink: 0 }}>✦</span>
-                <div>
-                  <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "6px" }}>
-                    {item.title}
-                  </h3>
-                  <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>
-                    {item.desc}
-                  </p>
-                </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+            <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+              <span style={{ color: "#FF7C6F", fontSize: "16px", marginTop: "3px", flexShrink: 0 }}>✦</span>
+              <div>
+                <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "10px" }}>
+                  We report on listens, not downloads.
+                </h3>
+                <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8" }}>
+                  Downloads is an archaic measurement that cannot encapsulate the full breadth of a show's audience in today's ecosystem. Listens is a catch-all term that may include downloads, streams, Spotify video plays and YouTube views. If someone watches your podcast on YouTube, that should count just as much as a download to their Apple Podcasts app.
+                </p>
               </div>
-            ))}
+            </div>
+
+            <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+              <span style={{ color: "#FF7C6F", fontSize: "16px", marginTop: "3px", flexShrink: 0 }}>✦</span>
+              <div>
+                <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "10px" }}>
+                  For podcasters, there are no minimum listens to join.
+                </h3>
+                <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8" }}>
+                  As indie podcasters ourselves, we know how frustrating it is to be locked out of ad platforms and programmatic networks because your show has not yet hit a certain threshold. Every show deserves to make money, and there are countless brands looking to reach the engaged, niche communities you are building.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+              <span style={{ color: "#FF7C6F", fontSize: "16px", marginTop: "3px", flexShrink: 0 }}>✦</span>
+              <div>
+                <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "10px" }}>
+                  For brands, we do the legwork.
+                </h3>
+                <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8" }}>
+                  SponStudio gives you a curated, searchable directory of podcasts across a range of niches, sizes and locations so you do not have to go hunting for them yourself. Whether you are a startup with a small budget or a larger brand building a niche media strategy, you can connect directly with podcasters, while accessing free educational resources on how to buy direct and how to measure results.
+                </p>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div style={{ background: "#00215e", borderRadius: "16px", padding: "40px 48px", marginBottom: "48px" }}>
+          <p style={{ fontSize: "20px", fontWeight: "700", color: "#FFFFFF", fontFamily: "var(--font-display)", lineHeight: "1.5", fontStyle: "italic" }}>
+            Our ethos is simple: democratise podcast advertising for both sides. For podcasters, whatever your listens, you deserve to make money. For brands, whatever your budget, you should be able to advertise on podcasts.
+          </p>
+        </div>
+
+        <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "48px", marginBottom: "48px" }}>
+          <div style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "20px" }}>
+            About Centennial World
+          </div>
+          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "20px" }}>
+            Centennial World is an award-winning independent youth podcast network based in Sydney, Australia, covering internet culture, tech and the creator economy. Founded in 2019 by Lauren Meisner, the network reaches 15 million young people around the world each month across video podcasts, TikTok and newsletter.
+          </p>
+          <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
+            SponStudio was built out of our own experience navigating the podcast advertising industry as independent creators. We wanted something better to exist for the podcasters who came after us.
+          </p>
+          <a href="https://centennialworld.com" target="_blank" rel="noopener noreferrer" style={{ fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px", borderBottom: "1px solid #00215e", paddingBottom: "2px" }}>
+            Visit Centennial World
+          </a>
         </div>
 
         <div style={{ background: "#FF7C6F", borderRadius: "16px", padding: "48px", textAlign: "center" }}>
@@ -131,6 +133,7 @@ export default function About() {
             </a>
           </div>
         </div>
+
       </section>
 
       <footer style={{ background: "#FAFAF8", borderTop: "1px solid #EFEFED", padding: "40px 48px", marginTop: "40px" }}>
@@ -140,7 +143,7 @@ export default function About() {
               <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
             </span>
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px" }}>
-              A free resource by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
+              Built by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
             </p>
           </div>
           <div style={{ display: "flex", gap: "28px" }}>

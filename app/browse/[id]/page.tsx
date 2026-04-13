@@ -289,7 +289,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             )}
 
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "20px", lineHeight: "1.6" }}>
-              ✦ All listener numbers are self-reported by podcasters and may include a combination of downloads, streams, Spotify plays and YouTube views.
+              ✦ Listener numbers are self-reported by podcasters and include may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live. and may include a combination of downloads, streams, Spotify plays and YouTube views.
             </p>
           </div>
         </div>
@@ -302,7 +302,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
               <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
             </span>
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px" }}>
-              A resource by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
+              Built by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
             </p>
           </div>
           <div style={{ display: "flex", gap: "28px" }}>
