@@ -112,7 +112,7 @@ export default function BrandSignup() {
       <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
         <Nav />
         <div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
-          <div style={{ fontSize: "48px", marginBottom: "24px" }}>✦</div>
+          <div style={{ fontSize: "48px", marginBottom: "24px", color: "#00215e" }}>✦</div>
           <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "16px" }}>
             Welcome to SponStudio!
           </h1>

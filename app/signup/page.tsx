@@ -25,6 +25,10 @@ const inputStyle: React.CSSProperties = {
   padding: "12px 16px", outline: "none", boxSizing: "border-box",
 };
 
+const errorInputStyle: React.CSSProperties = {
+  ...inputStyle, borderColor: "#FF7C6F",
+};
+
 const labelStyle: React.CSSProperties = {
   fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)",
   display: "block", marginBottom: "8px",
@@ -34,12 +38,17 @@ const hintStyle: React.CSSProperties = {
   fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px",
 };
 
+const errorStyle: React.CSSProperties = {
+  fontSize: "12px", color: "#FF7C6F", fontFamily: "var(--font-sans)", marginTop: "6px",
+};
+
 export default function PodcasterSignup() {
   const [step, setStep] = useState(1);
   const totalSteps = 6;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const [form, setForm] = useState({
     name: "", email: "", password: "",
@@ -54,7 +63,10 @@ export default function PodcasterSignup() {
   const [rssLoading, setRssLoading] = useState(false);
   const [rssPreview, setRssPreview] = useState<{ name: string; description: string; coverArt: string } | null>(null);
 
-  const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
+  const update = (field: string, value: string) => {
+    setForm((f) => ({ ...f, [field]: value }));
+    setFieldErrors((e) => ({ ...e, [field]: "" }));
+  };
 
   const isVideoFormat = form.podcastFormat === "Video and audio" || form.podcastFormat === "Video only";
 
@@ -66,6 +78,7 @@ export default function PodcasterSignup() {
         ? f.adFormats.filter((x) => x !== format)
         : [...f.adFormats, format],
     }));
+    setFieldErrors((e) => ({ ...e, adFormats: "" }));
   };
 
   const fetchRSS = async () => {
@@ -74,7 +87,46 @@ export default function PodcasterSignup() {
     await new Promise((r) => setTimeout(r, 1500));
     setRssPreview({ name: "Your Podcast", description: "Auto-filled from RSS feed.", coverArt: "#E8D5C4" });
     setForm((f) => ({ ...f, podcastName: f.podcastName || "Your Podcast", coverArt: "#E8D5C4" }));
+    setFieldErrors((e) => ({ ...e, rssUrl: "" }));
     setRssLoading(false);
+  };
+
+  const validateStep = () => {
+    const errors: Record<string, string> = {};
+
+    if (step === 1) {
+      if (!form.name.trim()) errors.name = "Name is required";
+      if (!form.email.trim()) errors.email = "Email is required";
+      if (!form.password.trim()) errors.password = "Password is required";
+      else if (form.password.length < 8) errors.password = "Password must be at least 8 characters";
+    }
+
+    if (step === 2) {
+      if (!form.rssUrl.trim()) errors.rssUrl = "RSS feed URL is required";
+      if (!form.podcastName.trim()) errors.podcastName = "Podcast name is required";
+      if (!form.category) errors.category = "Category is required";
+      if (!form.podcastFormat) errors.podcastFormat = "Podcast format is required";
+    }
+
+    if (step === 3) {
+      if (!form.listensRange) errors.listensRange = "Listens range is required";
+      if (!form.audienceLocation1) errors.audienceLocation1 = "Primary location is required";
+      if (!form.ageRange) errors.ageRange = "Age range is required";
+      if (!form.gender) errors.gender = "Audience gender is required";
+    }
+
+    if (step === 4) {
+      if (form.adFormats.length === 0) errors.adFormats = "Please select at least one ad format";
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (!validateStep()) return;
+    if (step < totalSteps) setStep((s) => s + 1);
+    else handleSubmit();
   };
 
   const handleSubmit = async () => {
@@ -84,13 +136,9 @@ export default function PodcasterSignup() {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
-        options: {
-          data: { name: form.name, role: "podcaster" }
-        }
+        options: { data: { name: form.name, role: "podcaster" } }
       });
-
       if (authError) throw authError;
-
       if (authData.user) {
         const { error: profileError } = await supabase.from("podcasters").insert({
           user_id: authData.user.id,
@@ -120,7 +168,6 @@ export default function PodcasterSignup() {
           facebook: form.facebook,
           status: "pending",
         });
-
         if (profileError) throw profileError;
         setSubmitted(true);
       }
@@ -188,15 +235,18 @@ export default function PodcasterSignup() {
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
                 <label style={labelStyle}>Full name</label>
-                <input style={inputStyle} type="text" placeholder="Your name" value={form.name} onChange={(e) => update("name", e.target.value)} />
+                <input style={fieldErrors.name ? errorInputStyle : inputStyle} type="text" placeholder="Your name" value={form.name} onChange={(e) => update("name", e.target.value)} />
+                {fieldErrors.name && <p style={errorStyle}>{fieldErrors.name}</p>}
               </div>
               <div>
                 <label style={labelStyle}>Email address</label>
-                <input style={inputStyle} type="email" placeholder="you@email.com" value={form.email} onChange={(e) => update("email", e.target.value)} />
+                <input style={fieldErrors.email ? errorInputStyle : inputStyle} type="email" placeholder="you@email.com" value={form.email} onChange={(e) => update("email", e.target.value)} />
+                {fieldErrors.email && <p style={errorStyle}>{fieldErrors.email}</p>}
               </div>
               <div>
                 <label style={labelStyle}>Password</label>
-                <input style={inputStyle} type="password" placeholder="At least 8 characters" value={form.password} onChange={(e) => update("password", e.target.value)} />
+                <input style={fieldErrors.password ? errorInputStyle : inputStyle} type="password" placeholder="At least 8 characters" value={form.password} onChange={(e) => update("password", e.target.value)} />
+                {fieldErrors.password && <p style={errorStyle}>{fieldErrors.password}</p>}
               </div>
             </div>
           </div>
@@ -210,11 +260,12 @@ export default function PodcasterSignup() {
               <div>
                 <label style={labelStyle}>RSS feed URL</label>
                 <div style={{ display: "flex", gap: "8px" }}>
-                  <input style={{ ...inputStyle, flex: 1 }} type="url" placeholder="https://feeds.example.com/yourshow" value={form.rssUrl} onChange={(e) => update("rssUrl", e.target.value)} />
+                  <input style={{ ...(fieldErrors.rssUrl ? errorInputStyle : inputStyle), flex: 1 }} type="url" placeholder="https://feeds.example.com/yourshow" value={form.rssUrl} onChange={(e) => update("rssUrl", e.target.value)} />
                   <button onClick={fetchRSS} style={{ background: "#00215e", color: "#FFFFFF", border: "none", borderRadius: "6px", padding: "0 16px", fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", cursor: "pointer", whiteSpace: "nowrap" }}>
                     {rssLoading ? "Loading..." : "Fetch"}
                   </button>
                 </div>
+                {fieldErrors.rssUrl && <p style={errorStyle}>{fieldErrors.rssUrl}</p>}
                 <p style={hintStyle}>Your RSS feed URL can be found in your podcast hosting platform settings.</p>
               </div>
               {rssPreview && (
@@ -230,24 +281,27 @@ export default function PodcasterSignup() {
               )}
               <div>
                 <label style={labelStyle}>Podcast name</label>
-                <input style={inputStyle} type="text" placeholder="Auto-filled from RSS or enter manually" value={form.podcastName} onChange={(e) => update("podcastName", e.target.value)} />
+                <input style={fieldErrors.podcastName ? errorInputStyle : inputStyle} type="text" placeholder="Auto-filled from RSS or enter manually" value={form.podcastName} onChange={(e) => update("podcastName", e.target.value)} />
+                {fieldErrors.podcastName && <p style={errorStyle}>{fieldErrors.podcastName}</p>}
               </div>
               <div>
                 <label style={labelStyle}>Category</label>
-                <select style={inputStyle} value={form.category} onChange={(e) => update("category", e.target.value)}>
+                <select style={fieldErrors.category ? errorInputStyle : inputStyle} value={form.category} onChange={(e) => update("category", e.target.value)}>
                   <option value="">Select a category</option>
                   {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
+                {fieldErrors.category && <p style={errorStyle}>{fieldErrors.category}</p>}
               </div>
               <div>
                 <label style={labelStyle}>Podcast format</label>
                 <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                   {FORMATS.map((f) => (
-                    <button key={f} onClick={() => update("podcastFormat", f)} style={{ fontSize: "13px", fontFamily: "var(--font-sans)", fontWeight: "600", padding: "10px 18px", borderRadius: "6px", border: form.podcastFormat === f ? "1.5px solid #FF7C6F" : "1px solid #EFEFED", background: form.podcastFormat === f ? "#FFF0EE" : "#FFFFFF", color: form.podcastFormat === f ? "#FF7C6F" : "#6B6B6B", cursor: "pointer" }}>
+                    <button key={f} onClick={() => update("podcastFormat", f)} style={{ fontSize: "13px", fontFamily: "var(--font-sans)", fontWeight: "600", padding: "10px 18px", borderRadius: "6px", border: form.podcastFormat === f ? "1.5px solid #FF7C6F" : fieldErrors.podcastFormat ? "1px solid #FF7C6F" : "1px solid #EFEFED", background: form.podcastFormat === f ? "#FFF0EE" : "#FFFFFF", color: form.podcastFormat === f ? "#FF7C6F" : "#6B6B6B", cursor: "pointer" }}>
                       {f}
                     </button>
                   ))}
                 </div>
+                {fieldErrors.podcastFormat && <p style={errorStyle}>{fieldErrors.podcastFormat}</p>}
                 <p style={hintStyle}>This determines which ad formats are available to you.</p>
               </div>
             </div>
@@ -261,10 +315,11 @@ export default function PodcasterSignup() {
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
                 <label style={labelStyle}>Monthly listens range</label>
-                <select style={inputStyle} value={form.listensRange} onChange={(e) => update("listensRange", e.target.value)}>
+                <select style={fieldErrors.listensRange ? errorInputStyle : inputStyle} value={form.listensRange} onChange={(e) => update("listensRange", e.target.value)}>
                   <option value="">Select a range</option>
                   {LISTENS_RANGES.map((r) => <option key={r} value={r}>{r}</option>)}
                 </select>
+                {fieldErrors.listensRange && <p style={errorStyle}>{fieldErrors.listensRange}</p>}
                 <p style={hintStyle}>Listens include downloads, streams, Spotify plays, YouTube views and live streams.</p>
               </div>
               <div>
@@ -276,34 +331,39 @@ export default function PodcasterSignup() {
                 <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} placeholder="e.g. Featured on a Spotify playlist, nominated for a podcast award, notable guest appearance" value={form.milestones} onChange={(e) => update("milestones", e.target.value)} />
               </div>
               <div>
-                <label style={labelStyle}>Top audience locations</label>
+                <label style={labelStyle}>Top 3 audience locations</label>
                 <p style={hintStyle}>Your show appears in search results for each location you select.</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
-                  {[
-                    { key: "audienceLocation1", label: "Primary location" },
-                    { key: "audienceLocation2", label: "Secondary location (optional)" },
-                    { key: "audienceLocation3", label: "Third location (optional)" },
-                  ].map((loc) => (
-                    <select key={loc.key} style={inputStyle} value={form[loc.key as keyof typeof form] as string} onChange={(e) => update(loc.key, e.target.value)}>
-                      <option value="">{loc.label}</option>
-                      {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
-                    </select>
-                  ))}
+                  <select style={fieldErrors.audienceLocation1 ? errorInputStyle : inputStyle} value={form.audienceLocation1} onChange={(e) => update("audienceLocation1", e.target.value)}>
+                    <option value="">Top location</option>
+                    {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                  {fieldErrors.audienceLocation1 && <p style={errorStyle}>{fieldErrors.audienceLocation1}</p>}
+                  <select style={inputStyle} value={form.audienceLocation2} onChange={(e) => update("audienceLocation2", e.target.value)}>
+                    <option value="">Second location (optional)</option>
+                    {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                  <select style={inputStyle} value={form.audienceLocation3} onChange={(e) => update("audienceLocation3", e.target.value)}>
+                    <option value="">Third location (optional)</option>
+                    {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                  </select>
                 </div>
               </div>
               <div>
                 <label style={labelStyle}>Audience age range</label>
-                <select style={inputStyle} value={form.ageRange} onChange={(e) => update("ageRange", e.target.value)}>
+                <select style={fieldErrors.ageRange ? errorInputStyle : inputStyle} value={form.ageRange} onChange={(e) => update("ageRange", e.target.value)}>
                   <option value="">Select primary age range</option>
                   {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
                 </select>
+                {fieldErrors.ageRange && <p style={errorStyle}>{fieldErrors.ageRange}</p>}
               </div>
               <div>
                 <label style={labelStyle}>Audience gender</label>
-                <select style={inputStyle} value={form.gender} onChange={(e) => update("gender", e.target.value)}>
+                <select style={fieldErrors.gender ? errorInputStyle : inputStyle} value={form.gender} onChange={(e) => update("gender", e.target.value)}>
                   <option value="">Select</option>
                   {GENDER_OPTIONS.map((g) => <option key={g} value={g}>{g}</option>)}
                 </select>
+                {fieldErrors.gender && <p style={errorStyle}>{fieldErrors.gender}</p>}
               </div>
             </div>
           </div>
@@ -321,12 +381,13 @@ export default function PodcasterSignup() {
                     const isLocked = format === "Product placement" && !isVideoFormat;
                     const isSelected = form.adFormats.includes(format);
                     return (
-                      <button key={format} onClick={() => toggleFormat(format)} disabled={isLocked} style={{ fontSize: "13px", fontFamily: "var(--font-sans)", fontWeight: "600", padding: "8px 14px", borderRadius: "6px", border: isSelected ? "1.5px solid #FF7C6F" : "1px solid #EFEFED", background: isLocked ? "#FAFAF8" : isSelected ? "#FFF0EE" : "#FFFFFF", color: isLocked ? "#D3D1C7" : isSelected ? "#FF7C6F" : "#6B6B6B", cursor: isLocked ? "not-allowed" : "pointer" }}>
+                      <button key={format} onClick={() => toggleFormat(format)} disabled={isLocked} style={{ fontSize: "13px", fontFamily: "var(--font-sans)", fontWeight: "600", padding: "8px 14px", borderRadius: "6px", border: isSelected ? "1.5px solid #FF7C6F" : fieldErrors.adFormats && !isLocked ? "1px solid #FF7C6F" : "1px solid #EFEFED", background: isLocked ? "#FAFAF8" : isSelected ? "#FFF0EE" : "#FFFFFF", color: isLocked ? "#D3D1C7" : isSelected ? "#FF7C6F" : "#6B6B6B", cursor: isLocked ? "not-allowed" : "pointer" }}>
                         {format} {isLocked ? "🔒" : ""}
                       </button>
                     );
                   })}
                 </div>
+                {fieldErrors.adFormats && <p style={errorStyle}>{fieldErrors.adFormats}</p>}
                 {!isVideoFormat && <p style={{ ...hintStyle, marginTop: "10px" }}>✦ Product placement is only available for video podcasts.</p>}
               </div>
               <div>
@@ -380,6 +441,8 @@ export default function PodcasterSignup() {
               { label: "Format", value: form.podcastFormat },
               { label: "Monthly listens", value: form.listensRange },
               { label: "Primary audience location", value: form.audienceLocation1 },
+              { label: "Age range", value: form.ageRange },
+              { label: "Gender", value: form.gender },
               { label: "Ad formats", value: form.adFormats.join(", ") },
               { label: "Rates", value: form.rates || "Not provided" },
             ].map((item) => (
@@ -408,7 +471,7 @@ export default function PodcasterSignup() {
             </button>
           )}
           <button
-            onClick={() => step < totalSteps ? setStep((s) => s + 1) : handleSubmit()}
+            onClick={handleNext}
             disabled={loading}
             style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: loading ? "#FFAB9F" : "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px 24px", cursor: loading ? "not-allowed" : "pointer", marginLeft: "auto" }}
           >

@@ -191,9 +191,9 @@ export default function ProfileEditor() {
               <p style={hintStyle}>Your show appears in search results for each location you select.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
                 {[
-                  { key: "audienceLocation1", label: "Primary location" },
-                  { key: "audienceLocation2", label: "Secondary location (optional)" },
-                  { key: "audienceLocation3", label: "Third location (optional)" },
+                  { key: "audienceLocation1", label: "Top location" },
+{ key: "audienceLocation2", label: "Second location (optional)" },
+{ key: "audienceLocation3", label: "Third location (optional)" },
                 ].map((loc) => (
                   <select
                     key={loc.key}
