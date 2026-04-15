@@ -1,125 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 const podcasts = [
-  {
-    id: 1,
-    name: "The Shift",
-    publisher: "Mia Sutherland",
-    category: "Business & Entrepreneurship",
-    location: "AU",
-    coverColor: "#E8D5C4",
-    adFormats: ["Mid-roll", "Native episode", "Social amplification"],
-    listensRange: "1K to 10K",
-    bestMonth: "14,200",
-    bestMonthContext: "Featured in Spotify New and Noteworthy",
-    demographics: "25-44, predominantly female",
-    previousSponsors: "Notion, Canva, Shopify",
-    rates: "From $150 per episode",
-    socials: { instagram: "@theshiftpod", linkedin: "theshiftpodcast" },
-    audienceLocations: ["AU", "US"],
-    format: "Video and audio",
-  },
-  {
-    id: 2,
-    name: "Good Dirt",
-    publisher: "Tom & Rhys Callahan",
-    category: "Sustainability & Environment",
-    location: "NZ",
-    coverColor: "#C4D4C4",
-    adFormats: ["Pre-roll", "Mid-roll", "Sponsored segment"],
-    listensRange: "1K to 10K",
-    bestMonth: "8,900",
-    bestMonthContext: "",
-    demographics: "18-35, mixed gender",
-    previousSponsors: "",
-    rates: "",
-    socials: { instagram: "@gooddirtpod" },
-    audienceLocations: ["NZ", "AU"],
-    format: "Audio only",
-  },
-  {
-    id: 3,
-    name: "Barely Legal",
-    publisher: "Centennial World",
-    category: "True Crime & Law",
-    location: "AU",
-    coverColor: "#2D2D2D",
-    adFormats: ["Mid-roll", "Native episode"],
-    listensRange: "10K to 50K",
-    bestMonth: "61,000",
-    bestMonthContext: "Episode featured on Reddit r/truecrime",
-    demographics: "25-54, predominantly female",
-    previousSponsors: "BetterHelp, Squarespace",
-    rates: "From $400 per episode",
-    socials: { instagram: "@barelylegal", tiktok: "@barelylegal" },
-    audienceLocations: ["AU", "US", "UK"],
-    format: "Video and audio",
-  },
-  {
-    id: 4,
-    name: "Plate Up",
-    publisher: "Jessie Nguyen",
-    category: "Food & Hospitality",
-    location: "AU",
-    coverColor: "#F2C4A0",
-    adFormats: ["Sponsored segment", "Product placement", "Social amplification"],
-    listensRange: "Under 1K",
-    bestMonth: "2,100",
-    bestMonthContext: "",
-    demographics: "25-45, predominantly female",
-    previousSponsors: "",
-    rates: "From $50 per episode",
-    socials: { instagram: "@plateuppod", youtube: "PlateUpPodcast" },
-    audienceLocations: ["AU"],
-    format: "Video and audio",
-  },
-  {
-    id: 5,
-    name: "The Long Run",
-    publisher: "Sam Okafor",
-    category: "Health & Fitness",
-    location: "AU",
-    coverColor: "#C4D4E8",
-    adFormats: ["Pre-roll", "Mid-roll", "Product placement"],
-    listensRange: "1K to 10K",
-    bestMonth: "12,400",
-    bestMonthContext: "",
-    demographics: "28-45, mixed gender",
-    previousSponsors: "Hoka, Precision Hydration",
-    rates: "",
-    socials: { instagram: "@thelongrunpod" },
-    audienceLocations: ["AU", "US"],
-    format: "Video and audio",
-  },
-  {
-    id: 6,
-    name: "Startup Sauce",
-    publisher: "Priya Mehta",
-    category: "Business & Entrepreneurship",
-    location: "AU",
-    coverColor: "#F2E8C4",
-    adFormats: ["Mid-roll", "Native episode", "Sponsored segment"],
-    listensRange: "1K to 10K",
-    bestMonth: "18,700",
-    bestMonthContext: "Interviewed Atlassian co-founder",
-    demographics: "25-45, mixed gender",
-    previousSponsors: "Xero, Mailchimp",
-    rates: "From $200 per episode",
-    socials: { instagram: "@startupsauce", linkedin: "startupsaucepod" },
-    audienceLocations: ["AU", "US"],
-    format: "Audio only",
-  },
+  { id: 1, name: "The Shift", publisher: "Mia Sutherland", category: "Business & Entrepreneurship", location: "AU", coverColor: "#E8D5C4", adFormats: ["Mid-roll", "Native episode", "Social amplification"], listensRange: "1K to 10K", bestMonth: "14,200", bestMonthContext: "Featured in Spotify New and Noteworthy", demographics: "25-44, predominantly female", previousSponsors: "Notion, Canva, Shopify", rates: "From $150 per episode", socials: { instagram: "@theshiftpod", linkedin: "theshiftpodcast" }, audienceLocations: ["AU", "US"], format: "Video and audio" },
+  { id: 2, name: "Good Dirt", publisher: "Tom & Rhys Callahan", category: "Sustainability & Environment", location: "NZ", coverColor: "#C4D4C4", adFormats: ["Pre-roll", "Mid-roll", "Sponsored segment"], listensRange: "1K to 10K", bestMonth: "8,900", bestMonthContext: "", demographics: "18-35, mixed gender", previousSponsors: "", rates: "", socials: { instagram: "@gooddirtpod" }, audienceLocations: ["NZ", "AU"], format: "Audio only" },
+  { id: 3, name: "Barely Legal", publisher: "Centennial World", category: "True Crime & Law", location: "AU", coverColor: "#2D2D2D", adFormats: ["Mid-roll", "Native episode"], listensRange: "10K to 50K", bestMonth: "61,000", bestMonthContext: "Episode featured on Reddit r/truecrime", demographics: "25-54, predominantly female", previousSponsors: "BetterHelp, Squarespace", rates: "From $400 per episode", socials: { instagram: "@barelylegal", tiktok: "@barelylegal" }, audienceLocations: ["AU", "US", "UK"], format: "Video and audio" },
+  { id: 4, name: "Plate Up", publisher: "Jessie Nguyen", category: "Food & Hospitality", location: "AU", coverColor: "#F2C4A0", adFormats: ["Sponsored segment", "Product placement", "Social amplification"], listensRange: "Under 1K", bestMonth: "2,100", bestMonthContext: "", demographics: "25-45, predominantly female", previousSponsors: "", rates: "From $50 per episode", socials: { instagram: "@plateuppod", youtube: "PlateUpPodcast" }, audienceLocations: ["AU"], format: "Video and audio" },
+  { id: 5, name: "The Long Run", publisher: "Sam Okafor", category: "Health & Fitness", location: "AU", coverColor: "#C4D4E8", adFormats: ["Pre-roll", "Mid-roll", "Product placement"], listensRange: "1K to 10K", bestMonth: "12,400", bestMonthContext: "", demographics: "28-45, mixed gender", previousSponsors: "Hoka, Precision Hydration", rates: "", socials: { instagram: "@thelongrunpod" }, audienceLocations: ["AU", "US"], format: "Video and audio" },
+  { id: 6, name: "Startup Sauce", publisher: "Priya Mehta", category: "Business & Entrepreneurship", location: "AU", coverColor: "#F2E8C4", adFormats: ["Mid-roll", "Native episode", "Sponsored segment"], listensRange: "1K to 10K", bestMonth: "18,700", bestMonthContext: "Interviewed Atlassian co-founder", demographics: "25-45, mixed gender", previousSponsors: "Xero, Mailchimp", rates: "From $200 per episode", socials: { instagram: "@startupsauce", linkedin: "startupsaucepod" }, audienceLocations: ["AU", "US"], format: "Audio only" },
 ];
 
 export default function PodcastProfile({ params }: { params: { id: string } }) {
   const podcast = podcasts.find((p) => p.id === parseInt(params.id)) || podcasts[0];
-  const isLoggedIn = false;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isBrand, setIsBrand] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
   const [inPlan, setInPlan] = useState(false);
   const [showConnectConfirm, setShowConnectConfirm] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setIsLoggedIn(true);
+        // Check if user is a brand
+        const { data: brandData } = await supabase
+          .from("brands")
+          .select("id")
+          .eq("user_id", session.user.id)
+          .single();
+        if (brandData) setIsBrand(true);
+      }
+      setAuthLoading(false);
+    };
+    checkAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+        setIsBrand(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const showGatedContent = isLoggedIn && isBrand;
+
+  if (authLoading) {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 48px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+          <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
@@ -146,15 +90,11 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             </p>
 
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "8px" }}>
-              <span style={{ fontSize: "12px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px" }}>
-                {podcast.category}
-              </span>
-              <span style={{ fontSize: "12px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px" }}>
-                {podcast.location}
-              </span>
-              <span style={{ fontSize: "12px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px" }}>
-                {podcast.format}
-              </span>
+              {[podcast.category, podcast.location, podcast.format].map((tag) => (
+                <span key={tag} style={{ fontSize: "12px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px" }}>
+                  {tag}
+                </span>
+              ))}
             </div>
 
             <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", marginTop: "16px", marginBottom: "24px" }}>
@@ -170,7 +110,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
               </div>
             </div>
 
-            {isLoggedIn && (
+            {showGatedContent && (
               <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
                 {!showConnectConfirm ? (
                   <button
@@ -224,11 +164,24 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
                 </a>
               </div>
             )}
+
+            {isLoggedIn && !isBrand && (
+              <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px" }}>
+                <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "8px", padding: "14px 16px" }}>
+                  <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>
+                    ✦ Brand accounts can view full stats and connect with podcasters.
+                  </p>
+                  <a href="/signup/brand" style={{ fontSize: "13px", color: "#FF7C6F", fontFamily: "var(--font-sans)", fontWeight: "600", textDecoration: "none", display: "block", marginTop: "8px" }}>
+                    Create a brand account →
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right column */}
           <div>
-            {!isLoggedIn && (
+            {!showGatedContent && (
               <div style={{ position: "relative", marginBottom: "32px" }}>
                 <div style={{ filter: "blur(6px)", pointerEvents: "none", userSelect: "none" }}>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
@@ -272,7 +225,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
               </div>
             )}
 
-            {isLoggedIn && (
+            {showGatedContent && (
               <div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
                   <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
@@ -284,9 +237,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
                     <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
                       <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Best month</p>
                       <p style={{ fontSize: "22px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)" }}>{podcast.bestMonth}</p>
-                      {podcast.bestMonthContext && (
-                        <p style={{ fontSize: "11px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "4px" }}>{podcast.bestMonthContext}</p>
-                      )}
+                      {podcast.bestMonthContext && <p style={{ fontSize: "11px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "4px" }}>{podcast.bestMonthContext}</p>}
                     </div>
                   )}
                   <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
@@ -324,7 +275,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             )}
 
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "20px", lineHeight: "1.6" }}>
-              ✦ Self-reported by the podcaster and reviewed by SponStudio. Listens may include a combination of downloads, streams, Spotify plays and YouTube views.
+              ✦ Self-reported by the podcaster and reviewed by SponStudio. Listens include downloads, streams, Spotify plays and YouTube views.
             </p>
           </div>
         </div>
