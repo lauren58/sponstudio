@@ -1,6 +1,9 @@
 "use client";
+
+import { useState } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+
 const podcasts = [
   {
     id: 1,
@@ -10,13 +13,15 @@ const podcasts = [
     location: "AU",
     coverColor: "#E8D5C4",
     adFormats: ["Mid-roll", "Native episode", "Social amplification"],
-    listensRange: "1k to 10k",
+    listensRange: "1K to 10K",
     bestMonth: "14,200",
     bestMonthContext: "Featured in Spotify New and Noteworthy",
     demographics: "25-44, predominantly female",
     previousSponsors: "Notion, Canva, Shopify",
     rates: "From $150 per episode",
     socials: { instagram: "@theshiftpod", linkedin: "theshiftpodcast" },
+    audienceLocations: ["AU", "US"],
+    format: "Video and audio",
   },
   {
     id: 2,
@@ -26,13 +31,15 @@ const podcasts = [
     location: "NZ",
     coverColor: "#C4D4C4",
     adFormats: ["Pre-roll", "Mid-roll", "Sponsored segment"],
-    listensRange: "1k to 10k",
+    listensRange: "1K to 10K",
     bestMonth: "8,900",
     bestMonthContext: "",
     demographics: "18-35, mixed gender",
     previousSponsors: "",
     rates: "",
     socials: { instagram: "@gooddirtpod" },
+    audienceLocations: ["NZ", "AU"],
+    format: "Audio only",
   },
   {
     id: 3,
@@ -42,13 +49,15 @@ const podcasts = [
     location: "AU",
     coverColor: "#2D2D2D",
     adFormats: ["Mid-roll", "Native episode"],
-    listensRange: "10k to 50k",
+    listensRange: "10K to 50K",
     bestMonth: "61,000",
     bestMonthContext: "Episode featured on Reddit r/truecrime",
     demographics: "25-54, predominantly female",
     previousSponsors: "BetterHelp, Squarespace",
     rates: "From $400 per episode",
     socials: { instagram: "@barelylegal", tiktok: "@barelylegal" },
+    audienceLocations: ["AU", "US", "UK"],
+    format: "Video and audio",
   },
   {
     id: 4,
@@ -58,13 +67,15 @@ const podcasts = [
     location: "AU",
     coverColor: "#F2C4A0",
     adFormats: ["Sponsored segment", "Product placement", "Social amplification"],
-    listensRange: "Under 1k",
+    listensRange: "Under 1K",
     bestMonth: "2,100",
     bestMonthContext: "",
     demographics: "25-45, predominantly female",
     previousSponsors: "",
     rates: "From $50 per episode",
     socials: { instagram: "@plateuppod", youtube: "PlateUpPodcast" },
+    audienceLocations: ["AU"],
+    format: "Video and audio",
   },
   {
     id: 5,
@@ -74,13 +85,15 @@ const podcasts = [
     location: "AU",
     coverColor: "#C4D4E8",
     adFormats: ["Pre-roll", "Mid-roll", "Product placement"],
-    listensRange: "1k to 10k",
+    listensRange: "1K to 10K",
     bestMonth: "12,400",
     bestMonthContext: "",
     demographics: "28-45, mixed gender",
     previousSponsors: "Hoka, Precision Hydration",
     rates: "",
     socials: { instagram: "@thelongrunpod" },
+    audienceLocations: ["AU", "US"],
+    format: "Video and audio",
   },
   {
     id: 6,
@@ -90,24 +103,26 @@ const podcasts = [
     location: "AU",
     coverColor: "#F2E8C4",
     adFormats: ["Mid-roll", "Native episode", "Sponsored segment"],
-    listensRange: "1k to 10k",
+    listensRange: "1K to 10K",
     bestMonth: "18,700",
     bestMonthContext: "Interviewed Atlassian co-founder",
     demographics: "25-45, mixed gender",
     previousSponsors: "Xero, Mailchimp",
     rates: "From $200 per episode",
     socials: { instagram: "@startupsauce", linkedin: "startupsaucepod" },
+    audienceLocations: ["AU", "US"],
+    format: "Audio only",
   },
 ];
 
 export default function PodcastProfile({ params }: { params: { id: string } }) {
-  const id = params.id;
-  const podcast = podcasts.find((p) => p.id === parseInt(id)) || podcasts[0];
-  const isLoggedIn = false;
+  const podcast = podcasts.find((p) => p.id === parseInt(params.id)) || podcasts[0];
+  const isLoggedIn = true;
+  const [inPlan, setInPlan] = useState(false);
+  const [showConnectConfirm, setShowConnectConfirm] = useState(false);
 
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
-
       <Nav />
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 48px" }}>
@@ -117,6 +132,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "48px", alignItems: "flex-start" }}>
 
+          {/* Left column */}
           <div>
             <div style={{ background: podcast.coverColor, borderRadius: "16px", height: "280px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "24px" }}>
               <span style={{ fontSize: "72px", opacity: 0.3 }}>🎙</span>
@@ -129,16 +145,19 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
               by {podcast.publisher}
             </p>
 
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "8px" }}>
               <span style={{ fontSize: "12px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px" }}>
                 {podcast.category}
               </span>
               <span style={{ fontSize: "12px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px" }}>
                 {podcast.location}
               </span>
+              <span style={{ fontSize: "12px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px" }}>
+                {podcast.format}
+              </span>
             </div>
 
-            <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", marginBottom: "24px" }}>
+            <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", marginTop: "16px", marginBottom: "24px" }}>
               <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>
                 Ad formats
               </p>
@@ -152,13 +171,47 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             </div>
 
             {isLoggedIn && (
-              <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px" }}>
-                <a href="#connect" style={{ display: "block", background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "15px", padding: "14px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)", textAlign: "center", marginBottom: "12px" }}>
-                  Request to connect
-                </a>
+              <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {!showConnectConfirm ? (
+                  <button
+                    onClick={() => setShowConnectConfirm(true)}
+                    style={{ display: "block", width: "100%", background: "#FF7C6F", color: "#FFFFFF", fontWeight: "600", fontSize: "15px", padding: "14px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "none", cursor: "pointer", textAlign: "center" }}
+                  >
+                    Request to connect
+                  </button>
+                ) : (
+                  <div style={{ background: "#FFF0EE", border: "1px solid #FFD4CC", borderRadius: "8px", padding: "16px" }}>
+                    <p style={{ fontSize: "13px", fontWeight: "700", color: "#FF7C6F", fontFamily: "var(--font-sans)", marginBottom: "6px" }}>Before you connect</p>
+                    <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6", marginBottom: "12px" }}>
+                      ✦ Tip: ask this podcaster for their media kit upon connecting.
+                    </p>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <button onClick={() => alert("Connection request sent!")} style={{ flex: 1, background: "#FF7C6F", color: "#FFFFFF", fontWeight: "600", fontSize: "13px", padding: "10px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "none", cursor: "pointer" }}>
+                        Send request
+                      </button>
+                      <button onClick={() => setShowConnectConfirm(false)} style={{ fontSize: "13px", color: "#6B6B6B", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", fontFamily: "var(--font-sans)", cursor: "pointer" }}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => setInPlan(!inPlan)}
+                  style={{ display: "block", width: "100%", background: inPlan ? "#FFF0EE" : "#FAFAF8", color: inPlan ? "#FF7C6F" : "#00215e", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: `1px solid ${inPlan ? "#FF7C6F" : "#EFEFED"}`, cursor: "pointer", textAlign: "center" }}
+                >
+                  {inPlan ? "✦ Saved to plan" : "+ Save to plan"}
+                </button>
+
+                {inPlan && (
+                  <a href="/plan" style={{ display: "block", textAlign: "center", fontSize: "13px", color: "#FF7C6F", fontFamily: "var(--font-sans)", textDecoration: "none", fontWeight: "600" }}>
+                    View your plan →
+                  </a>
+                )}
+
                 <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "8px", padding: "12px 14px" }}>
                   <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>
-                    <span style={{ color: "#FF7C6F", fontWeight: "700" }}>✦ Tip:</span> ask this podcaster for their media kit upon connecting.
+                    ✦ Save multiple shows to your plan to generate a combined reach report.
                   </p>
                 </div>
               </div>
@@ -173,24 +226,21 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             )}
           </div>
 
+          {/* Right column */}
           <div>
             {!isLoggedIn && (
               <div style={{ position: "relative", marginBottom: "32px" }}>
                 <div style={{ filter: "blur(6px)", pointerEvents: "none", userSelect: "none" }}>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
                     {[
-                      { label: "Monthly listens", value: "1k to 10k" },
+                      { label: "Monthly listens", value: "1K to 10K" },
                       { label: "Best month", value: "14,200 listens" },
                       { label: "Audience", value: "25-44, female skew" },
                       { label: "Rates", value: "From $150/ep" },
                     ].map((item) => (
                       <div key={item.label} style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
-                        <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>
-                          {item.label}
-                        </p>
-                        <p style={{ fontSize: "20px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)" }}>
-                          {item.value}
-                        </p>
+                        <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>{item.label}</p>
+                        <p style={{ fontSize: "20px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)" }}>{item.value}</p>
                       </div>
                     ))}
                   </div>
@@ -207,16 +257,14 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(250,250,248,0.7)", borderRadius: "12px" }}>
                   <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "12px", padding: "32px 40px", textAlign: "center", maxWidth: "340px", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
                     <div style={{ fontSize: "24px", marginBottom: "12px" }}>🔒</div>
-                    <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "10px" }}>
-                      Unlock full profile
-                    </h3>
+                    <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "10px" }}>Unlock full profile</h3>
                     <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "20px" }}>
                       Sign in with a company email to view listener stats, demographics and more.
                     </p>
                     <a href="/login" style={{ display: "block", background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "12px 20px", borderRadius: "6px", fontFamily: "var(--font-sans)", marginBottom: "10px" }}>
                       Sign in
                     </a>
-                    <a href="/signup?role=brand" style={{ display: "block", fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>
+                    <a href="/signup/brand" style={{ display: "block", fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>
                       No account? Sign up free
                     </a>
                   </div>
@@ -276,14 +324,13 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             )}
 
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "20px", lineHeight: "1.6" }}>
-              ✦ Listener numbers are self-reported by podcasters and may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live. 
+              ✦ Self-reported by the podcaster and reviewed by SponStudio. Listens may include a combination of downloads, streams, Spotify plays and YouTube views.
             </p>
           </div>
         </div>
       </div>
 
       <Footer />
-
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
+
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+
 const podcasts = [
   {
     id: 1,
@@ -10,12 +12,6 @@ const podcasts = [
     location: "AU",
     coverColor: "#E8D5C4",
     adFormats: ["Mid-roll", "Native episode", "Social amplification"],
-    listensRange: "1k to 10k",
-    bestMonth: "14,200",
-    bestMonthContext: "Featured in Spotify New and Noteworthy",
-    demographics: "25-44, predominantly female",
-    previousSponsors: "Notion, Canva, Shopify",
-    rates: "From $150 per episode",
   },
   {
     id: 2,
@@ -25,12 +21,6 @@ const podcasts = [
     location: "NZ",
     coverColor: "#C4D4C4",
     adFormats: ["Pre-roll", "Mid-roll", "Sponsored segment"],
-    listensRange: "1k to 10k",
-    bestMonth: "8,900",
-    bestMonthContext: "",
-    demographics: "18-35, mixed gender",
-    previousSponsors: "",
-    rates: "",
   },
   {
     id: 3,
@@ -40,12 +30,6 @@ const podcasts = [
     location: "AU",
     coverColor: "#2D2D2D",
     adFormats: ["Mid-roll", "Native episode"],
-    listensRange: "10k to 50k",
-    bestMonth: "61,000",
-    bestMonthContext: "Episode featured on Reddit r/truecrime",
-    demographics: "25-54, predominantly female",
-    previousSponsors: "BetterHelp, Squarespace",
-    rates: "From $400 per episode",
   },
   {
     id: 4,
@@ -55,12 +39,6 @@ const podcasts = [
     location: "AU",
     coverColor: "#F2C4A0",
     adFormats: ["Sponsored segment", "Product placement", "Social amplification"],
-    listensRange: "Under 1k",
-    bestMonth: "2,100",
-    bestMonthContext: "",
-    demographics: "25-45, predominantly female",
-    previousSponsors: "",
-    rates: "From $50 per episode",
   },
   {
     id: 5,
@@ -70,12 +48,6 @@ const podcasts = [
     location: "AU",
     coverColor: "#C4D4E8",
     adFormats: ["Pre-roll", "Mid-roll", "Product placement"],
-    listensRange: "1k to 10k",
-    bestMonth: "12,400",
-    bestMonthContext: "",
-    demographics: "28-45, mixed gender",
-    previousSponsors: "Hoka, Precision Hydration",
-    rates: "",
   },
   {
     id: 6,
@@ -85,34 +57,45 @@ const podcasts = [
     location: "AU",
     coverColor: "#F2E8C4",
     adFormats: ["Mid-roll", "Native episode", "Sponsored segment"],
-    listensRange: "1k to 10k",
-    bestMonth: "18,700",
-    bestMonthContext: "Interviewed Atlassian co-founder",
-    demographics: "25-45, mixed gender",
-    previousSponsors: "Xero, Mailchimp",
-    rates: "From $200 per episode",
   },
 ];
+
+const selectStyle: React.CSSProperties = {
+  fontSize: "13px",
+  color: "#00215e",
+  fontFamily: "var(--font-sans)",
+  background: "#FFFFFF",
+  border: "1px solid #EFEFED",
+  borderRadius: "6px",
+  padding: "10px 16px",
+  cursor: "pointer",
+  fontWeight: "500",
+  appearance: "none",
+  WebkitAppearance: "none",
+  backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300215e' d='M6 8L1 3h10z'/%3E%3C/svg%3E\")",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "right 12px center",
+  paddingRight: "32px",
+};
 
 export default function Browse() {
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
-
-  <Nav />
+      <Nav />
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "60px 48px 40px" }}>
         <h1 style={{ fontSize: "44px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", marginBottom: "12px" }}>
           Browse podcasts
         </h1>
         <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", maxWidth: "560px" }}>
-          Discover indie podcasts of every size and niche. Sign in with a company email to unlock listener stats, demographics and connect with shows.
+          Discover indie podcasts of every size and niche. Sign in with your work email to unlock listener stats, demographics and connect with shows.
         </p>
       </section>
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 40px" }}>
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
-           <option>All categories</option>
+          <select style={selectStyle}>
+            <option>All categories</option>
             <option>Arts & Culture</option>
             <option>Business & Entrepreneurship</option>
             <option>Comedy</option>
@@ -125,7 +108,7 @@ export default function Browse() {
             <option>Technology</option>
             <option>True Crime & Law</option>
           </select>
-          <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
+          <select style={selectStyle}>
             <option>All locations</option>
             <option>AU</option>
             <option>Canada</option>
@@ -134,22 +117,21 @@ export default function Browse() {
             <option>US</option>
             <option>Global</option>
           </select>
-          <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
+          <select style={selectStyle}>
             <option>All sizes</option>
-            <option>Under 1K</option>
-            <option>1K to 10K</option>
-            <option>10K to 50K</option>
-            <option>50K to 200K</option>
-            <option>200K+</option>
+            <option>Under 1k</option>
+            <option>1k to 10k</option>
+            <option>10k to 50k</option>
+            <option>50k to 200k</option>
+            <option>200k+</option>
           </select>
-          <select style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", cursor: "pointer", fontWeight: "500" }}>
+          <select style={selectStyle}>
             <option>All formats</option>
             <option>Pre-roll</option>
             <option>Mid-roll</option>
             <option>Sponsored segment</option>
             <option>Product placement</option>
             <option>Native episode</option>
-            <option>Branded mini series</option>
             <option>Social amplification</option>
           </select>
         </div>
@@ -157,7 +139,7 @@ export default function Browse() {
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 32px" }}>
         <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", display: "inline-block" }}>
-          ✦ Listener numbers are self-reported by podcasters and include may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live.
+          ✦ Listener numbers are self-reported by podcasters and may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live.
         </p>
       </section>
 
@@ -205,7 +187,6 @@ export default function Browse() {
       </section>
 
       <Footer />
-
     </div>
   );
 }
