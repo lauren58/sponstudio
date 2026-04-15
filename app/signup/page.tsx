@@ -1,7 +1,9 @@
 "use client";
+
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { useState } from "react";
 
 const CATEGORIES = [
   "Arts & Culture", "Business & Entrepreneurship", "Comedy",
@@ -11,59 +13,37 @@ const CATEGORIES = [
 ];
 
 const LOCATIONS = ["AU", "Canada", "NZ", "UK", "US", "Global"];
-
-const LISTENS_RANGES = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 200K", "200K+"];
-
-const AD_FORMATS = [
-  "Pre-roll", "Mid-roll", "Sponsored segment",
-  "Product placement", "Native episode", "Social amplification"
-];
-
+const LISTENS_RANGES = ["Under 1k", "1k to 10k", "10k to 50k", "50k to 200k", "200k+"];
+const FORMATS = ["Audio only", "Video and audio", "Video only"];
+const AD_FORMATS = ["Pre-roll", "Mid-roll", "Sponsored segment", "Product placement", "Native episode", "Social amplification"];
 const AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55+"];
-
-const GENDER_OPTIONS = [
-  "Predominantly identify as women",
-  "Predominantly identify as men",
-  "Mixed gender",
-  "Unsure"
-];
+const GENDER_OPTIONS = ["Predominantly identify as women", "Predominantly identify as men", "Mixed gender", "Unsure"];
 
 const inputStyle: React.CSSProperties = {
-  width: "100%",
-  fontSize: "14px",
-  color: "#00215e",
-  fontFamily: "var(--font-sans)",
-  background: "#FFFFFF",
-  border: "1px solid #EFEFED",
-  borderRadius: "6px",
-  padding: "12px 16px",
-  outline: "none",
-  boxSizing: "border-box",
+  width: "100%", fontSize: "14px", color: "#00215e", fontFamily: "var(--font-sans)",
+  background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px",
+  padding: "12px 16px", outline: "none", boxSizing: "border-box",
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: "13px",
-  fontWeight: "600",
-  color: "#00215e",
-  fontFamily: "var(--font-sans)",
-  display: "block",
-  marginBottom: "8px",
+  fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)",
+  display: "block", marginBottom: "8px",
 };
 
 const hintStyle: React.CSSProperties = {
-  fontSize: "12px",
-  color: "#6B6B6B",
-  fontFamily: "var(--font-sans)",
-  marginTop: "6px",
+  fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px",
 };
 
 export default function PodcasterSignup() {
   const [step, setStep] = useState(1);
   const totalSteps = 6;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const [form, setForm] = useState({
     name: "", email: "", password: "",
-    rssUrl: "", podcastName: "", category: "", coverArt: "",
+    rssUrl: "", podcastName: "", category: "", coverArt: "", podcastFormat: "",
     listensRange: "", bestMonth: "", milestones: "",
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", gender: "",
@@ -76,7 +56,10 @@ export default function PodcasterSignup() {
 
   const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
 
+  const isVideoFormat = form.podcastFormat === "Video and audio" || form.podcastFormat === "Video only";
+
   const toggleFormat = (format: string) => {
+    if (format === "Product placement" && !isVideoFormat) return;
     setForm((f) => ({
       ...f,
       adFormats: f.adFormats.includes(format)
@@ -89,29 +72,97 @@ export default function PodcasterSignup() {
     if (!form.rssUrl) return;
     setRssLoading(true);
     await new Promise((r) => setTimeout(r, 1500));
-    setRssPreview({
-      name: "The Shift",
-      description: "A podcast about building businesses that matter.",
-      coverArt: "#E8D5C4",
-    });
-    setForm((f) => ({
-      ...f,
-      podcastName: "The Shift",
-      coverArt: "#E8D5C4",
-    }));
+    setRssPreview({ name: "Your Podcast", description: "Auto-filled from RSS feed.", coverArt: "#E8D5C4" });
+    setForm((f) => ({ ...f, podcastName: f.podcastName || "Your Podcast", coverArt: "#E8D5C4" }));
     setRssLoading(false);
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: { name: form.name, role: "podcaster" }
+        }
+      });
+
+      if (authError) throw authError;
+
+      if (authData.user) {
+        const { error: profileError } = await supabase.from("podcasters").insert({
+          user_id: authData.user.id,
+          podcast_name: form.podcastName,
+          publisher_name: form.name,
+          email: form.email,
+          category: form.category,
+          location: form.audienceLocation1,
+          podcast_format: form.podcastFormat,
+          rss_url: form.rssUrl,
+          listens_range: form.listensRange,
+          best_month: form.bestMonth,
+          best_month_context: form.milestones,
+          audience_location_1: form.audienceLocation1,
+          audience_location_2: form.audienceLocation2,
+          audience_location_3: form.audienceLocation3,
+          age_range: form.ageRange,
+          gender: form.gender,
+          ad_formats: form.adFormats,
+          rates: form.rates,
+          looking_for: form.lookingFor,
+          previous_sponsors: form.previousSponsors,
+          instagram: form.instagram,
+          tiktok: form.tiktok,
+          youtube: form.youtube,
+          linkedin: form.linkedin,
+          facebook: form.facebook,
+          status: "pending",
+        });
+
+        if (profileError) throw profileError;
+        setSubmitted(true);
+      }
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const progressWidth = ((step - 1) / (totalSteps - 1)) * 100;
 
+  if (submitted) {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+          <div style={{ fontSize: "48px", marginBottom: "24px" }}>🎙</div>
+          <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "16px" }}>
+            You're submitted!
+          </h1>
+          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "12px" }}>
+            Thanks for listing your podcast on SponStudio. We'll review your application and be in touch within 2 to 3 business days.
+          </p>
+          <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>
+            Check your email to confirm your account.
+          </p>
+          <a href="/browse" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>
+            Browse the marketplace
+          </a>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
-
       <Nav />
-
       <div style={{ maxWidth: "560px", margin: "0 auto", padding: "60px 24px 100px" }}>
 
-        <div style={{ marginBottom: "48px" }}>
+        <div style={{ marginBottom: "40px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
             <span style={{ fontSize: "12px", fontWeight: "600", color: "#6B6B6B", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase" }}>
               Step {step} of {totalSteps}
@@ -132,12 +183,8 @@ export default function PodcasterSignup() {
 
         {step === 1 && (
           <div>
-            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
-              Create your account
-            </h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
-              List your podcast for free and start getting discovered by brands.
-            </p>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Create your account</h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>List your podcast for free and start getting discovered by brands.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
                 <label style={labelStyle}>Full name</label>
@@ -157,27 +204,19 @@ export default function PodcasterSignup() {
 
         {step === 2 && (
           <div>
-            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
-              Your show
-            </h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
-              Paste your RSS feed and we will pull your show details automatically.
-            </p>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Your show</h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>Paste your RSS feed and we will pull your show details automatically.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
                 <label style={labelStyle}>RSS feed URL</label>
                 <div style={{ display: "flex", gap: "8px" }}>
                   <input style={{ ...inputStyle, flex: 1 }} type="url" placeholder="https://feeds.example.com/yourshow" value={form.rssUrl} onChange={(e) => update("rssUrl", e.target.value)} />
-                  <button
-                    onClick={fetchRSS}
-                    style={{ background: "#00215e", color: "#FFFFFF", border: "none", borderRadius: "6px", padding: "0 16px", fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", cursor: "pointer", whiteSpace: "nowrap" }}
-                  >
+                  <button onClick={fetchRSS} style={{ background: "#00215e", color: "#FFFFFF", border: "none", borderRadius: "6px", padding: "0 16px", fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", cursor: "pointer", whiteSpace: "nowrap" }}>
                     {rssLoading ? "Loading..." : "Fetch"}
                   </button>
                 </div>
                 <p style={hintStyle}>Your RSS feed URL can be found in your podcast hosting platform settings.</p>
               </div>
-
               {rssPreview && (
                 <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "16px", display: "flex", gap: "16px", alignItems: "center" }}>
                   <div style={{ width: "64px", height: "64px", borderRadius: "8px", background: rssPreview.coverArt, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -189,12 +228,10 @@ export default function PodcasterSignup() {
                   </div>
                 </div>
               )}
-
               <div>
                 <label style={labelStyle}>Podcast name</label>
                 <input style={inputStyle} type="text" placeholder="Auto-filled from RSS or enter manually" value={form.podcastName} onChange={(e) => update("podcastName", e.target.value)} />
               </div>
-
               <div>
                 <label style={labelStyle}>Category</label>
                 <select style={inputStyle} value={form.category} onChange={(e) => update("category", e.target.value)}>
@@ -202,18 +239,25 @@ export default function PodcasterSignup() {
                   {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
+              <div>
+                <label style={labelStyle}>Podcast format</label>
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  {FORMATS.map((f) => (
+                    <button key={f} onClick={() => update("podcastFormat", f)} style={{ fontSize: "13px", fontFamily: "var(--font-sans)", fontWeight: "600", padding: "10px 18px", borderRadius: "6px", border: form.podcastFormat === f ? "1.5px solid #FF7C6F" : "1px solid #EFEFED", background: form.podcastFormat === f ? "#FFF0EE" : "#FFFFFF", color: form.podcastFormat === f ? "#FF7C6F" : "#6B6B6B", cursor: "pointer" }}>
+                      {f}
+                    </button>
+                  ))}
+                </div>
+                <p style={hintStyle}>This determines which ad formats are available to you.</p>
+              </div>
             </div>
           </div>
         )}
 
         {step === 3 && (
           <div>
-            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
-              Your audience
-            </h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
-              All figures are self-reported and will be labelled as such on your profile.
-            </p>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Your audience</h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>All figures are self-reported and will be labelled as such on your profile.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
                 <label style={labelStyle}>Monthly listens range</label>
@@ -229,28 +273,18 @@ export default function PodcasterSignup() {
               </div>
               <div>
                 <label style={labelStyle}>Additional wins or milestones <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
-                <textarea
-                  style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
-                  placeholder="e.g. Featured on a Spotify playlist, nominated for a podcast award, notable guest appearance"
-                  value={form.milestones}
-                  onChange={(e) => update("milestones", e.target.value)}
-                />
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} placeholder="e.g. Featured on a Spotify playlist, nominated for a podcast award, notable guest appearance" value={form.milestones} onChange={(e) => update("milestones", e.target.value)} />
               </div>
               <div>
                 <label style={labelStyle}>Top audience locations</label>
-                <p style={hintStyle}>Select up to 3 locations where most of your audience is based. Your show will appear in searches for each location you select.</p>
+                <p style={hintStyle}>Your show appears in search results for each location you select.</p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
                   {[
                     { key: "audienceLocation1", label: "Primary location" },
                     { key: "audienceLocation2", label: "Secondary location (optional)" },
                     { key: "audienceLocation3", label: "Third location (optional)" },
                   ].map((loc) => (
-                    <select
-                      key={loc.key}
-                      style={inputStyle}
-                      value={form[loc.key as keyof typeof form] as string}
-                      onChange={(e) => update(loc.key, e.target.value)}
-                    >
+                    <select key={loc.key} style={inputStyle} value={form[loc.key as keyof typeof form] as string} onChange={(e) => update(loc.key, e.target.value)}>
                       <option value="">{loc.label}</option>
                       {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
                     </select>
@@ -277,36 +311,23 @@ export default function PodcasterSignup() {
 
         {step === 4 && (
           <div>
-            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
-              Ad formats and rates
-            </h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
-              Let brands know what you offer and what you charge.
-            </p>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Ad formats and rates</h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>Let brands know what you offer and what you charge.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
                 <label style={labelStyle}>Ad formats offered</label>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "4px" }}>
-                  {AD_FORMATS.map((format) => (
-                    <button
-                      key={format}
-                      onClick={() => toggleFormat(format)}
-                      style={{
-                        fontSize: "13px",
-                        fontFamily: "var(--font-sans)",
-                        fontWeight: "600",
-                        padding: "8px 14px",
-                        borderRadius: "6px",
-                        border: form.adFormats.includes(format) ? "1.5px solid #FF7C6F" : "1px solid #EFEFED",
-                        background: form.adFormats.includes(format) ? "#FFF0EE" : "#FFFFFF",
-                        color: form.adFormats.includes(format) ? "#FF7C6F" : "#6B6B6B",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {format}
-                    </button>
-                  ))}
+                  {AD_FORMATS.map((format) => {
+                    const isLocked = format === "Product placement" && !isVideoFormat;
+                    const isSelected = form.adFormats.includes(format);
+                    return (
+                      <button key={format} onClick={() => toggleFormat(format)} disabled={isLocked} style={{ fontSize: "13px", fontFamily: "var(--font-sans)", fontWeight: "600", padding: "8px 14px", borderRadius: "6px", border: isSelected ? "1.5px solid #FF7C6F" : "1px solid #EFEFED", background: isLocked ? "#FAFAF8" : isSelected ? "#FFF0EE" : "#FFFFFF", color: isLocked ? "#D3D1C7" : isSelected ? "#FF7C6F" : "#6B6B6B", cursor: isLocked ? "not-allowed" : "pointer" }}>
+                        {format} {isLocked ? "🔒" : ""}
+                      </button>
+                    );
+                  })}
                 </div>
+                {!isVideoFormat && <p style={{ ...hintStyle, marginTop: "10px" }}>✦ Product placement is only available for video podcasts.</p>}
               </div>
               <div>
                 <label style={labelStyle}>Rates <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
@@ -315,12 +336,7 @@ export default function PodcasterSignup() {
               </div>
               <div>
                 <label style={labelStyle}>What are you looking for in a brand partner? <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
-                <textarea
-                  style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
-                  placeholder="e.g. We love working with brands that align with our values around sustainability and wellness. We prefer long-term partnerships over one-off placements."
-                  value={form.lookingFor}
-                  onChange={(e) => update("lookingFor", e.target.value)}
-                />
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} placeholder="e.g. We love working with brands that align with our values around sustainability and wellness." value={form.lookingFor} onChange={(e) => update("lookingFor", e.target.value)} />
               </div>
               <div>
                 <label style={labelStyle}>Previous sponsors <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
@@ -333,12 +349,8 @@ export default function PodcasterSignup() {
 
         {step === 5 && (
           <div>
-            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
-              Your socials
-            </h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
-              All optional. Social links are only visible to logged-in brands.
-            </p>
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Your socials</h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>All optional. Social links are only visible to logged-in brands.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               {[
                 { key: "instagram", label: "Instagram", placeholder: "@yourhandle" },
@@ -349,13 +361,7 @@ export default function PodcasterSignup() {
               ].map((social) => (
                 <div key={social.key}>
                   <label style={labelStyle}>{social.label}</label>
-                  <input
-                    style={inputStyle}
-                    type="text"
-                    placeholder={social.placeholder}
-                    value={form[social.key as keyof typeof form] as string}
-                    onChange={(e) => update(social.key, e.target.value)}
-                  />
+                  <input style={inputStyle} type="text" placeholder={social.placeholder} value={form[social.key as keyof typeof form] as string} onChange={(e) => update(social.key, e.target.value)} />
                 </div>
               ))}
             </div>
@@ -364,33 +370,32 @@ export default function PodcasterSignup() {
 
         {step === 6 && (
           <div>
-            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>
-              Review and submit
-            </h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>
-              Almost there. Check your details and submit your listing for review. We will be in touch within 2 to 3 business days.
-            </p>
-
+            <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Review and submit</h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>Almost there. Check your details and submit for review. We will be in touch within 2 to 3 business days.</p>
             {[
               { label: "Name", value: form.name },
               { label: "Email", value: form.email },
               { label: "Podcast", value: form.podcastName },
               { label: "Category", value: form.category },
+              { label: "Format", value: form.podcastFormat },
               { label: "Monthly listens", value: form.listensRange },
               { label: "Primary audience location", value: form.audienceLocation1 },
               { label: "Ad formats", value: form.adFormats.join(", ") },
               { label: "Rates", value: form.rates || "Not provided" },
-              { label: "Previous sponsors", value: form.previousSponsors || "Not provided" },
             ].map((item) => (
               <div key={item.label} style={{ display: "flex", justifyContent: "space-between", padding: "14px 0", borderBottom: "1px solid #EFEFED" }}>
                 <span style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", fontWeight: "500" }}>{item.label}</span>
                 <span style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", fontWeight: "600", textAlign: "right", maxWidth: "60%" }}>{item.value || "Not provided"}</span>
               </div>
             ))}
-
+            {error && (
+              <div style={{ background: "#FCEBEB", border: "1px solid #F09595", borderRadius: "8px", padding: "12px 16px", marginTop: "20px" }}>
+                <p style={{ fontSize: "13px", color: "#A32D2D", fontFamily: "var(--font-sans)" }}>{error}</p>
+              </div>
+            )}
             <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "8px", padding: "16px", marginTop: "24px" }}>
               <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>
-                By submitting, you confirm that all information provided is accurate to the best of your knowledge. Listener numbers are self-reported and will be labelled as such on your public profile. You will receive a confirmation email shortly after submitting, and we will let you know the outcome of your review within 2 to 3 business days.
+                By submitting, you confirm that all information is accurate to the best of your knowledge. Listener numbers are self-reported and will be labelled as such on your profile.
               </p>
             </div>
           </div>
@@ -398,25 +403,20 @@ export default function PodcasterSignup() {
 
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: "40px", gap: "12px" }}>
           {step > 1 && (
-            <button
-              onClick={() => setStep((s) => s - 1)}
-              style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#6B6B6B", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "13px 24px", cursor: "pointer" }}
-            >
+            <button onClick={() => setStep((s) => s - 1)} style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#6B6B6B", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "13px 24px", cursor: "pointer" }}>
               Back
             </button>
           )}
           <button
-            onClick={() => step < totalSteps ? setStep((s) => s + 1) : alert("Submitted! Check your email for a confirmation. We will be in touch within 2 to 3 business days.")}
-            style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px 24px", cursor: "pointer", marginLeft: "auto" }}
+            onClick={() => step < totalSteps ? setStep((s) => s + 1) : handleSubmit()}
+            disabled={loading}
+            style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: loading ? "#FFAB9F" : "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px 24px", cursor: loading ? "not-allowed" : "pointer", marginLeft: "auto" }}
           >
-            {step === totalSteps ? "Submit for review" : "Continue"}
+            {loading ? "Submitting..." : step === totalSteps ? "Submit for review" : "Continue"}
           </button>
         </div>
-
       </div>
-
-    <Footer />
-
+      <Footer />
     </div>
   );
 }

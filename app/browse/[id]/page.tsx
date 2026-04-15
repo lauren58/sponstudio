@@ -117,7 +117,7 @@ const podcasts = [
 
 export default function PodcastProfile({ params }: { params: { id: string } }) {
   const podcast = podcasts.find((p) => p.id === parseInt(params.id)) || podcasts[0];
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   const [inPlan, setInPlan] = useState(false);
   const [showConnectConfirm, setShowConnectConfirm] = useState(false);
 
