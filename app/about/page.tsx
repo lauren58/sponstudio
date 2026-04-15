@@ -84,8 +84,8 @@ export default function About() {
         </div>
 
         <div style={{ background: "#00215e", borderRadius: "16px", padding: "40px 48px", marginBottom: "48px" }}>
-          <p style={{ fontSize: "20px", fontWeight: "700", color: "#FFFFFF", fontFamily: "var(--font-display)", lineHeight: "1.5", fontStyle: "italic" }}>
-            Our ethos is simple: democratise podcast advertising for both sides. For podcasters, whatever your listens, you deserve to make money. For brands, whatever your budget, you should be able to advertise on podcasts.
+          <p style={{ fontSize: "20px", fontWeight: "700", color: "#FFFFFF", fontFamily: "var(--font-display)", lineHeight: "1.5" }}>
+           Our Ethos</p><p style={{ fontSize: "17px", color: "rgba(255,255,255,0.85)", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginTop: "12px" }}>To democratise podcast advertising for both sides. For podcasters, whatever your listens, you deserve to make money. For brands, whatever your budget, you should be able to advertise on podcasts.
           </p>
         </div>
 
