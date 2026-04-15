@@ -101,23 +101,23 @@ const listensOrder = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 200K", "200
 
 function getCombinedListens(ranges: string[]): string {
   const floors: Record<string, number> = {
-    "Under 1k": 0,
-    "1k to 10k": 1000,
-    "10k to 50k": 10000,
-    "50k to 200k": 50000,
-    "200k+": 200000,
+    "Under 1K": 0,
+    "1K to 10K": 1000,
+    "10K to 50K": 10000,
+    "50K to 200K": 50000,
+    "200K+": 200000,
   };
   const ceilings: Record<string, number | null> = {
-    "Under 1k": 1000,
-    "1k to 10k": 10000,
-    "10k to 50k": 50000,
-    "50k to 200k": 200000,
-    "200k+": null,
+    "Under 1K": 1000,
+    "1K to 10K": 10000,
+    "10K to 50K": 50000,
+    "50K to 200K": 200000,
+    "200K+": null,
   };
   const totalFloor = ranges.reduce((sum, r) => sum + (floors[r] || 0), 0);
   const hasOpenCeiling = ranges.some((r) => ceilings[r] === null);
   const totalCeiling = ranges.reduce((sum, r) => sum + ((ceilings[r] as number) || 0), 0);
-  const formatNum = (n: number) => n >= 1000 ? (n / 1000).toFixed(0) + "k" : n.toString();
+  const formatNum = (n: number) => n >= 1000 ? (n / 1000).toFixed(0) + "K" : n.toString();
   if (hasOpenCeiling) {
     return formatNum(totalFloor) + "+";
   }

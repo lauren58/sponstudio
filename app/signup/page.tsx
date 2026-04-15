@@ -13,7 +13,7 @@ const CATEGORIES = [
 ];
 
 const LOCATIONS = ["AU", "Canada", "NZ", "UK", "US", "Global"];
-const LISTENS_RANGES = ["Under 1k", "1k to 10k", "10k to 50k", "50k to 200k", "200k+"];
+const LISTENS_RANGES = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 200K", "200K+"];
 const FORMATS = ["Audio only", "Video and audio", "Video only"];
 const AD_FORMATS = ["Pre-roll", "Mid-roll", "Sponsored segment", "Product placement", "Native episode", "Social amplification"];
 const AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55+"];

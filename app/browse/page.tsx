@@ -119,11 +119,11 @@ export default function Browse() {
           </select>
           <select style={selectStyle}>
             <option>All sizes</option>
-            <option>Under 1k</option>
-            <option>1k to 10k</option>
-            <option>10k to 50k</option>
-            <option>50k to 200k</option>
-            <option>200k+</option>
+            <option>Under 1K</option>
+            <option>1K to 10K</option>
+            <option>10K to 50K</option>
+            <option>50K to 200K</option>
+            <option>200K+</option>
           </select>
           <select style={selectStyle}>
             <option>All formats</option>
