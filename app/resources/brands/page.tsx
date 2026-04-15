@@ -7,31 +7,31 @@ const adFormats = [
     title: "Host-read ad",
     tag: "Most common",
     tagColor: "#FF7C6F",
-    desc: "The host reads your ad in their own words, in their own voice, as part of the episode. This is the most trusted format in podcasting because listeners hear it as a genuine recommendation from someone they already trust. Host-read ads are burned in to the episode permanently.",
-    bestFor: "Brand awareness, trust-building, long-term recall",
-    notFor: "Last-click attribution or direct sales tracking",
+    desc: "The host reads your ad in their own words, in their own voice, as part of the episode. This is the most trusted format in podcasting because listeners hear it as a genuine recommendation from someone they already trust. Most host-read ads purchased directly from the creator are burned in to the episode permanently.",
+    bestFor: "Brand awareness, trust-building",
+    notFor: "One-off sponsorship campaigns",
   },
   {
     title: "Native episode",
     tag: "Highest impact",
     tagColor: "#00215e",
-    desc: "The brand sponsors an entire episode built around a topic relevant to both the show and the brand. The product or message is woven naturally into the content rather than read as a separate ad. Think of it as branded content that the audience actually wants to listen to.",
+    desc: "The brand sponsors an entire episode built around a topic relevant to both the show and the brand. The product or message is woven naturally into the content rather than read as a separate ad. Think of it as branded content that the audience actually wants to listen to. Sponsorship disclosure is still necessary here.",
     bestFor: "Deep brand integration, storytelling, audience education",
-    notFor: "Quick turnarounds or highly scripted messaging",
+    notFor: "Quick turnarounds or highly scripted brand messaging",
   },
   {
     title: "Sponsored segment",
     tag: "Flexible",
     tagColor: "#6B6B6B",
     desc: "A defined section of the episode is sponsored by your brand. The host introduces the segment as sponsored and integrates your messaging naturally within it. Less commitment than a full native episode but more integrated than a standard ad-read.",
-    bestFor: "Mid-funnel brand consideration, recurring sponsorships",
+    bestFor: "Mid-to-bottom funnel brand consideration",
     notFor: "Brands that need full content control",
   },
   {
     title: "Product placement",
     tag: "Video only",
     tagColor: "#BA7517",
-    desc: "Your product appears on screen during a video podcast episode. The host may reference it naturally or simply use it during filming. Works best for visually compelling products and video-first shows with strong YouTube presence.",
+    desc: "Your product appears on screen during a video podcast episode. The host may reference it naturally or it may simply sit on screen behind, beside, or in front of them. Works best for video-first shows with strong YouTube and Spotify video presence.",
     bestFor: "Visual products, lifestyle brands, video-first audiences",
     notFor: "Audio-only shows or non-visual products",
   },
@@ -39,9 +39,9 @@ const adFormats = [
     title: "Social amplification",
     tag: "Add-on",
     tagColor: "#534AB7",
-    desc: "The podcaster creates short-form content clipped from the episode and posts it to their social channels — TikTok, Instagram, YouTube Shorts — with your brand featured. Extends the reach of your podcast campaign beyond the RSS feed.",
-    bestFor: "Extending reach, reaching younger audiences, driving awareness",
-    notFor: "Brands without strong visual or social-friendly messaging",
+    desc: "The podcaster creates short-form content clipped from the episode and posts it to their social channels with your brand featured. Extends the reach of your podcast campaign beyond the RSS feed.",
+    bestFor: "Extending reach, integrated media campaigns with social deliverables",
+    notFor: "Shows that don't produce creative soical",
   },
 ];
 
@@ -61,12 +61,12 @@ const roiGuide = [
 ];
 
 const briefGuide = [
-  { step: "01", title: "Define your objective", desc: "Be clear about what you want the campaign to achieve. Brand awareness? Product consideration? Event promotion? Your objective shapes everything — the format, the messaging, and how you measure success." },
+  { step: "01", title: "Define your objective", desc: "Be clear about what you want the campaign to achieve. Brand awareness? Product consideration? Click-throughs? Your objective will shape how the podcaster responds to your request." },
   { step: "02", title: "Describe your product clearly", desc: "Give the podcaster everything they need to talk about your product authentically. Key features, what makes it different, what you want the audience to feel or do after hearing about it." },
   { step: "03", title: "Share your target audience", desc: "Who are you trying to reach? Age, gender, location, interests, behaviours. The more specific you are, the better the podcaster can tailor the integration to resonate with their audience." },
-  { step: "04", title: "Set your dos and don'ts", desc: "Are there competitor brands that should not be mentioned? Specific claims you cannot make? Messaging you want included? Be clear upfront so there are no surprises in the content approval process." },
-  { step: "05", title: "Agree on guarantees", desc: "Work with the podcaster to set minimum guarantees for listens and impressions. This gives you a clear benchmark for the post-campaign report and ensures both sides are aligned on expectations." },
-  { step: "06", title: "Allow one round of edits", desc: "Build in one round of content approval before the episode goes live. This is standard practice. Trust the host to interpret your brief in a way that resonates with their audience — over-scripting kills authenticity." },
+  { step: "04", title: "Set your dos and don'ts", desc: "Are there competitor brands that should not be mentioned? Specific claims you cannot make? Messaging you want included? Be clear upfront to streamline the content approval process." },
+  { step: "05", title: "Agree on deliverables", desc: "Work with the podcaster to set minimum guarantees for listens and impressions. This gives you a clear benchmark for the post-campaign report and ensures both sides are aligned on expectations." },
+  { step: "06", title: "Allow one round of edits", desc: "Build in one round of script approval before the podcaster gets on mic. Trust the host to interpret your brief in a way that resonates with their audience, but requesting approval on the ad-read copy or native brand integration is standard." },
 ];
 
 export default function BrandResources() {
@@ -110,7 +110,7 @@ export default function BrandResources() {
             The most important thing to understand
           </div>
           <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "800", color: "#FFFFFF", fontFamily: "var(--font-sans)", letterSpacing: "-0.5px", marginBottom: "16px", lineHeight: "1.2" }}>
-            Burned-in host-read podcast ads build trust with your target audience.
+            Host-read podcast ads build trust with your target audience.
           </h2>
           <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-sans)", lineHeight: "1.8" }}>
             The ROI looks different to what you might be used to from Meta, Google, or even influencers. Read on to understand what good results actually look like.
