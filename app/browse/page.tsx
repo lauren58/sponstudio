@@ -95,7 +95,7 @@ export default function Browse() {
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 40px" }}>
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           <select style={selectStyle}>
-            <option>All categories</option>
+            <option>Categories</option>
             <option>Arts & Culture</option>
             <option>Business & Entrepreneurship</option>
             <option>Comedy</option>
@@ -109,7 +109,7 @@ export default function Browse() {
             <option>True Crime & Law</option>
           </select>
           <select style={selectStyle}>
-            <option>All locations</option>
+            <option>Locations</option>
             <option>AU</option>
             <option>Canada</option>
             <option>NZ</option>
@@ -126,7 +126,7 @@ export default function Browse() {
             <option>200K+</option>
           </select>
           <select style={selectStyle}>
-            <option>All formats</option>
+            <option>Ad formats</option>
             <option>Pre-roll</option>
             <option>Mid-roll</option>
             <option>Sponsored segment</option>
