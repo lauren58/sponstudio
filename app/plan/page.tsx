@@ -221,7 +221,7 @@ export default function PlanPage() {
         {/* Self reported notice */}
         <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "12px 16px", marginBottom: "32px" }}>
           <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>
-            ✦ All listener numbers are self-reported by podcasters and may include downloads, streams, Spotify plays and YouTube views. All shows have been reviewed by the SponStudio team. Generated via SponStudio — sponstudio.com
+            ✦ All listener numbers are self-reported by podcasters and may include downloads, streams, Spotify plays and YouTube views. Generated via SponStudio — sponstudio.com
           </p>
         </div>
 
