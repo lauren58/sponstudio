@@ -1,5 +1,6 @@
 "use client";
-
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { useState } from "react";
 
 const INDUSTRIES = [
@@ -113,16 +114,7 @@ export default function BrandSignup() {
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
 
-      <nav style={{ background: "#FAFAF8", borderBottom: "1px solid #EFEFED", padding: "0 48px", height: "72px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="/" style={{ textDecoration: "none" }}>
-          <span style={{ fontSize: "22px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.5px" }}>
-            <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
-          </span>
-        </a>
-        <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>
-          Already have an account? <a href="/login" style={{ color: "#FF7C6F", textDecoration: "none", fontWeight: "600" }}>Log in</a>
-        </p>
-      </nav>
+    <Nav />
 
       <div style={{ maxWidth: "560px", margin: "0 auto", padding: "60px 24px 100px" }}>
 
@@ -283,18 +275,7 @@ export default function BrandSignup() {
 
       </div>
 
-      <footer style={{ background: "#FAFAF8", borderTop: "1px solid #EFEFED", padding: "40px 48px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-          <div>
-            <span style={{ fontSize: "18px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.5px" }}>
-              <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
-            </span>
-            <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px" }}>
-              Built by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   );

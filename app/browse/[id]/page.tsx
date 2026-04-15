@@ -1,5 +1,6 @@
 "use client";
-
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 const podcasts = [
   {
     id: 1,
@@ -107,21 +108,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
 
-      <nav style={{ background: "#FAFAF8", borderBottom: "1px solid #EFEFED", padding: "0 48px", height: "72px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <a href="/" style={{ textDecoration: "none" }}>
-          <span style={{ fontSize: "22px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.5px" }}>
-            <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
-          </span>
-        </a>
-        <div style={{ display: "flex", gap: "32px", alignItems: "center" }}>
-          <a href="/browse" style={{ fontSize: "14px", color: "#6B6B6B", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)" }}>Browse</a>
-          <a href="/about" style={{ fontSize: "14px", color: "#6B6B6B", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)" }}>About</a>
-          <a href="/login" style={{ fontSize: "14px", color: "#6B6B6B", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)" }}>Log in</a>
-          <a href="/signup" style={{ fontSize: "14px", background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", padding: "10px 22px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>
-            Join free
-          </a>
-        </div>
-      </nav>
+      <Nav />
 
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 48px" }}>
         <a href="/browse" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "32px" }}>
@@ -289,30 +276,13 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             )}
 
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "20px", lineHeight: "1.6" }}>
-              ✦ Listener numbers are self-reported by podcasters and include may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live. 
+              ✦ Listener numbers are self-reported by podcasters and may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live. 
             </p>
           </div>
         </div>
       </div>
 
-      <footer style={{ background: "#FAFAF8", borderTop: "1px solid #EFEFED", padding: "40px 48px", marginTop: "80px" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
-          <div>
-            <span style={{ fontSize: "18px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.5px" }}>
-              <span style={{ fontStyle: "italic" }}>Spon</span><span style={{ color: "#FF7C6F" }}>Studio</span><span style={{ color: "#FF7C6F", fontSize: "12px", marginLeft: "4px" }}>✦</span>
-            </span>
-            <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px" }}>
-              Built by <a href="https://centennialworld.com" style={{ color: "#6B6B6B", textDecoration: "underline" }}>Centennial World Podcast Network</a>
-            </p>
-          </div>
-          <div style={{ display: "flex", gap: "28px" }}>
-            <a href="/browse" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>Browse</a>
-            <a href="/about" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>About</a>
-            <a href="/signup?role=podcaster" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>List my podcast</a>
-            <a href="/signup?role=brand" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>For brands</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   );
