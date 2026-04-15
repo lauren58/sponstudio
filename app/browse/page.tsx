@@ -118,7 +118,7 @@ export default function Browse() {
             <option>Global</option>
           </select>
           <select style={selectStyle}>
-            <option>All sizes</option>
+            <option>All monthly listens</option>
             <option>Under 1K</option>
             <option>1K to 10K</option>
             <option>10K to 50K</option>

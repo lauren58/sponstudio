@@ -64,7 +64,13 @@ export default function BrandSignup() {
   };
 
   const handleContinue = () => {
-    if (step === 1 && !validateEmail()) return;
+    if (step === 1) {
+      if (!form.name.trim()) { setError("Full name is required."); return; }
+      if (!form.companyName.trim()) { setError("Company name is required."); return; }
+      if (!validateEmail()) return;
+      if (!form.password.trim()) { setError("Password is required."); return; }
+    }
+    setError("");
     if (step < totalSteps) setStep((s) => s + 1);
     else handleSubmit();
   };
