@@ -14,10 +14,12 @@ const fraunces = Fraunces({
   weight: ["400", "500", "600", "700", "800"],
   style: ["normal", "italic"],
 });
-
 export const metadata: Metadata = {
   title: "SponStudio — Podcast advertising for everyone",
-  description: "The free marketplace connecting indie podcasts with brands of every budget. No download minimums. No gatekeeping.",
+  description: "The free marketplace connecting indie podcasts...",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
