@@ -289,7 +289,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             )}
 
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "20px", lineHeight: "1.6" }}>
-              ✦ Listener numbers are self-reported by podcasters and include may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live. and may include a combination of downloads, streams, Spotify plays and YouTube views.
+              ✦ Listener numbers are self-reported by podcasters and include may include a combination of downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live. 
             </p>
           </div>
         </div>
