@@ -1,7 +1,9 @@
 "use client";
+
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { useState } from "react";
 
 const templates = [
   {
@@ -26,7 +28,8 @@ const templates = [
     includes: [
       "Campaign overview and deliverables",
       "Minimum guarantees vs actuals delivered",
-      "Platform breakdown (YouTube, RSS, social media)",
+      "Platform breakdown (Spotify, YouTube, RSS)",
+      "Impressions and listens achieved",
       "Audience sentiment and comments",
       "Key highlights and wins",
     ],
@@ -35,31 +38,70 @@ const templates = [
   },
 ];
 
-const guides = [
-  {
-    title: "How to set your rates",
-    desc: "Not sure what to charge? We break down how to think about your rates based on your audience size, engagement, and ad format — and why listing them (even as a starting point) helps you attract better brand fits.",
-  },
-  {
-    title: "What brands actually want",
-    desc: "A breakdown of what brands look for when evaluating a podcast for sponsorship — and how to make sure your profile and media kit speaks their language.",
-  },
-  {
-    title: "How to talk about your audience",
-    desc: "Downloads are just one piece of the puzzle. Here is how to present your full reach across YouTube, Spotify, TikTok and social in a way that resonates with brands.",
-  },
-  {
-    title: "Your first sponsor: what to expect",
-    desc: "Never worked with a brand before? Here is a plain-English walkthrough of how a typical podcast sponsorship works from first contact to post-campaign report.",
-  },
-];
-
 export default function PodcasterResources() {
+  const [authState, setAuthState] = useState<"loading" | "unauthorized" | "wrong-role" | "authorized">("loading");
   const [requested, setRequested] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) { setAuthState("unauthorized"); return; }
+
+      const { data: podcasterData } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id).single();
+      if (podcasterData) { setAuthState("authorized"); return; }
+
+      setAuthState("wrong-role");
+    };
+    checkAuth();
+  }, []);
+
+  if (authState === "loading") {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+          <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (authState === "unauthorized") {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "480px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+          <div style={{ fontSize: "40px", marginBottom: "24px" }}>🔒</div>
+          <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>Sign in to access resources</h1>
+          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>Podcaster resources are only available to logged-in podcaster accounts.</p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <a href="/login" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Log in</a>
+            <a href="/signup" style={{ background: "#FFFFFF", color: "#00215e", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", border: "1px solid #EFEFED", fontFamily: "var(--font-sans)" }}>Create a podcaster account</a>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (authState === "wrong-role") {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "480px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+          <div style={{ fontSize: "40px", marginBottom: "24px" }}>✦</div>
+          <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>These resources are for podcasters</h1>
+          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>You're logged in as a brand. Looking for brand resources?</p>
+          <a href="/resources/brands" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Go to brand resources →</a>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
-
       <Nav />
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "60px 48px 40px" }}>
@@ -70,12 +112,11 @@ export default function PodcasterResources() {
           Free resources for podcasters
         </h1>
         <p style={{ fontSize: "16px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", maxWidth: "600px" }}>
-          Everything you need to present yourself professionally to brands, run a smooth campaign, and report on results. Built from our own experience working with brands at Centennial World.
+          Everything you need to present yourself professionally to brands, run a smooth campaign, and report on results — built from our own experience working with brands at Centennial World.
         </p>
       </section>
 
-      {/* Templates */}
-      <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 60px" }}>
+      <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 100px" }}>
         <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "24px", letterSpacing: "-0.3px" }}>
           Templates
         </h2>
@@ -107,34 +148,26 @@ export default function PodcasterResources() {
                 </div>
               </div>
               <div style={{ marginTop: "auto" }}>
-                {template.comingSoon ? (
-                  requested[template.id] ? (
-                    <div style={{ background: "#EAF3DE", border: "1px solid #97C459", borderRadius: "6px", padding: "12px 16px" }}>
-                      <p style={{ fontSize: "13px", fontWeight: "600", color: "#27500A", fontFamily: "var(--font-sans)" }}>
-                        ✓ You'll be notified when this template is ready!
+                {requested[template.id] ? (
+                  <div style={{ background: "#EAF3DE", border: "1px solid #97C459", borderRadius: "6px", padding: "12px 16px" }}>
+                    <p style={{ fontSize: "13px", fontWeight: "600", color: "#27500A", fontFamily: "var(--font-sans)" }}>
+                      ✓ You'll be notified when this template is ready!
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", marginBottom: "12px" }}>
+                      <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>
+                        ✦ This template is coming soon. Notify me when it's ready.
                       </p>
                     </div>
-                  ) : (
-                    <div>
-                      <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", marginBottom: "12px" }}>
-                        <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>
-                          ✦ This template is coming soon. Notify me when it's ready.
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => setRequested((r) => ({ ...r, [template.id]: true }))}
-                        style={{ width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px", cursor: "pointer" }}
-                      >
-                        Notify me when ready
-                      </button>
-                    </div>
-                  )
-                ) : (
-                  <button
-                    style={{ width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px", cursor: "pointer" }}
-                  >
-                    Download free template →
-                  </button>
+                    <button
+                      onClick={() => setRequested((r) => ({ ...r, [template.id]: true }))}
+                      style={{ width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px", cursor: "pointer" }}
+                    >
+                      Notify me when ready
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -142,10 +175,7 @@ export default function PodcasterResources() {
         </div>
       </section>
 
-      {/* Guides */}
-
       <Footer />
-
     </div>
   );
 }

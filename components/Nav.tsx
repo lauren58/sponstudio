@@ -36,8 +36,8 @@ export default function Nav() {
     if (userRole === "brand") return [{ href: "/resources/brands", label: "For brands" }];
     if (userRole === "podcaster") return [{ href: "/resources/podcasters", label: "For podcasters" }];
     return [
-      { href: "/resources/podcasters", label: "For podcasters" },
-      { href: "/resources/brands", label: "For brands" },
+      { href: "/login", label: "For podcasters" },
+      { href: "/login", label: "For brands" },
     ];
   };
 
