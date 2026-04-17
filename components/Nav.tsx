@@ -1,15 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function Nav() {
   const pathname = usePathname();
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [joinOpen, setJoinOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userRole, setUserRole] = useState<"podcaster" | "brand" | null>(null);
+
+  useEffect(() => {
+    const checkRole = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) { setUserRole(null); return; }
+
+      const { data: brandData } = await supabase.from("brands").select("id").eq("user_id", session.user.id).single();
+      if (brandData) { setUserRole("brand"); return; }
+
+      const { data: podcasterData } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id).single();
+      if (podcasterData) { setUserRole("podcaster"); return; }
+
+      setUserRole(null);
+    };
+    checkRole();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => checkRole());
+    return () => subscription.unsubscribe();
+  }, []);
 
   const isActive = (path: string) => pathname === path;
+
+  const resourceLinks = () => {
+    if (userRole === "brand") return [{ href: "/resources/brands", label: "For brands" }];
+    if (userRole === "podcaster") return [{ href: "/resources/podcasters", label: "For podcasters" }];
+    return [
+      { href: "/resources/podcasters", label: "For podcasters" },
+      { href: "/resources/brands", label: "For brands" },
+    ];
+  };
 
   return (
     <nav style={{ background: "#FAFAF8", borderBottom: "1px solid #EFEFED", padding: "0 24px", height: "64px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
@@ -36,12 +66,11 @@ export default function Nav() {
           </button>
           {resourcesOpen && (
             <div style={{ position: "absolute", top: "32px", left: "50%", transform: "translateX(-50%)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "8px", minWidth: "180px", zIndex: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
-              <a href="/resources/podcasters" onClick={() => setResourcesOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px", background: pathname === "/resources/podcasters" ? "#FFF0EE" : "transparent" }}>
-                For podcasters
-              </a>
-              <a href="/resources/brands" onClick={() => setResourcesOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px", background: pathname === "/resources/brands" ? "#FFF0EE" : "transparent" }}>
-                For brands
-              </a>
+              {resourceLinks().map((link) => (
+                <a key={link.href} href={link.href} onClick={() => setResourcesOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px", background: pathname === link.href ? "#FFF0EE" : "transparent" }}>
+                  {link.label}
+                </a>
+              ))}
             </div>
           )}
         </div>
@@ -64,16 +93,16 @@ export default function Nav() {
           </button>
           {joinOpen && (
             <div style={{ position: "absolute", top: "44px", right: 0, background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "8px", minWidth: "200px", zIndex: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
-              <a href="/signup" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px", background: "transparent" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#FFF0EE"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+              <a href="/signup" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px" }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#FFF0EE")}
+                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
               >
                 <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "2px" }}>I'm a podcaster</p>
                 <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>List my show for free</p>
               </a>
-              <a href="/signup/brand" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px", background: "transparent" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#FFF0EE"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+              <a href="/signup/brand" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px" }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#FFF0EE")}
+                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
               >
                 <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "2px" }}>I'm a brand</p>
                 <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Find podcast partners</p>
@@ -98,8 +127,11 @@ export default function Nav() {
       {mobileMenuOpen && (
         <div style={{ position: "absolute", top: "64px", left: 0, right: 0, background: "#FAFAF8", borderBottom: "1px solid #EFEFED", padding: "16px 24px", zIndex: 100, display: "flex", flexDirection: "column", gap: "4px" }} className="mobile-menu">
           <a href="/browse" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Browse</a>
-          <a href="/resources/podcasters" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Resources for podcasters</a>
-          <a href="/resources/brands" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Resources for brands</a>
+          {resourceLinks().map((link) => (
+            <a key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>
+              Resources — {link.label}
+            </a>
+          ))}
           <a href="/about" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>About</a>
           <a href="/login" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Log in</a>
           <a href="/signup" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#FF7C6F", textDecoration: "none", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Join as a podcaster →</a>
