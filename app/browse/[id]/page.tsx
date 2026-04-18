@@ -275,7 +275,7 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
             )}
 
             <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "20px", lineHeight: "1.6" }}>
-              ✦ Self-reported by the podcaster and reviewed by SponStudio. Listens include downloads, streams, Spotify plays and YouTube views.
+              ✦ Self-reported by the podcaster and reviewed by SponStudio. Listens may include a combination of downloads, streams, Spotify plays and YouTube views.
             </p>
           </div>
         </div>
