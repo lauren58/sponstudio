@@ -23,8 +23,8 @@ export default function Footer() {
         <div>
             <p style={{ fontSize: "11px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>Resources</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <a href="/login" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>For podcasters</a>
-              <a href="/login" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>For brands</a>
+              <a href="/resources/podcasters" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>For podcasters</a>
+              <a href="/resources/brands" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)" }}>For brands</a>
             </div>
           </div>
         </div>
