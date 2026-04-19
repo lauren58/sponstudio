@@ -316,7 +316,7 @@ export default function PodcasterSignup() {
         {step === 3 && (
           <div>
             <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Your audience</h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>All figures are self-reported and will be labelled as such on your profile. Your stats are never shown publicly — listener numbers and audience demographics are only visible to verified brands logged in with a company email address. Your stats are never shown publicly — listener numbers and audience demographics are only visible to verified brands logged in with a company email address. Your stats are never shown publicly — listener numbers and audience demographics are only visible to verified brands logged in with a company email address.</p>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>All figures are self-reported and will be labelled as such on your profile. Your stats are never shown publicly — listener numbers and audience demographics are only visible to verified brands logged in with a company email address.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
                 <label style={labelStyle}>Monthly listens range</label>
