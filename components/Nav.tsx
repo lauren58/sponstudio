@@ -8,13 +8,16 @@ export default function Nav() {
   const pathname = usePathname();
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [joinOpen, setJoinOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userRole, setUserRole] = useState<"podcaster" | "brand" | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const checkRole = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) { setUserRole(null); return; }
+      if (!session?.user) { setUserRole(null); setIsLoggedIn(false); return; }
+      setIsLoggedIn(true);
 
       const { data: brandData } = await supabase.from("brands").select("id").eq("user_id", session.user.id).single();
       if (brandData) { setUserRole("brand"); return; }
@@ -29,6 +32,13 @@ export default function Nav() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => checkRole());
     return () => subscription.unsubscribe();
   }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsLoggedIn(false);
+    setUserRole(null);
+    window.location.href = "/";
+  };
 
   const isActive = (path: string) => pathname === path;
 
@@ -58,7 +68,7 @@ export default function Nav() {
         {/* Resources dropdown */}
         <div style={{ position: "relative" }}>
           <button
-            onClick={() => { setResourcesOpen(!resourcesOpen); setJoinOpen(false); }}
+            onClick={() => { setResourcesOpen(!resourcesOpen); setJoinOpen(false); setAccountOpen(false); }}
             style={{ fontSize: "14px", color: pathname.startsWith("/resources") ? "#FF7C6F" : "#6B6B6B", fontWeight: pathname.startsWith("/resources") ? "600" : "500", fontFamily: "var(--font-sans)", background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0, whiteSpace: "nowrap" }}
           >
             Resources
@@ -78,38 +88,73 @@ export default function Nav() {
         <a href="/about" style={{ fontSize: "14px", color: isActive("/about") ? "#FF7C6F" : "#6B6B6B", textDecoration: "none", fontWeight: isActive("/about") ? "600" : "500", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>
           About
         </a>
-        <a href="/login" style={{ fontSize: "14px", color: "#6B6B6B", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>
-          Log in
-        </a>
 
-        {/* Join free dropdown */}
-        <div style={{ position: "relative" }}>
-          <button
-            onClick={() => { setJoinOpen(!joinOpen); setResourcesOpen(false); }}
-            style={{ fontSize: "13px", background: "#FF7C6F", color: "#FFFFFF", fontWeight: "600", padding: "9px 18px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap" }}
-          >
-            Join free
-            <span style={{ fontSize: "10px" }}>{joinOpen ? "▲" : "▼"}</span>
-          </button>
-          {joinOpen && (
-            <div style={{ position: "absolute", top: "44px", right: 0, background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "8px", minWidth: "200px", zIndex: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
-              <a href="/signup" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px" }}
-                onMouseEnter={e => (e.currentTarget.style.background = "#FFF0EE")}
-                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+        {isLoggedIn ? (
+          /* Logged in state */
+          <div style={{ position: "relative" }}>
+            <button
+              onClick={() => { setAccountOpen(!accountOpen); setResourcesOpen(false); setJoinOpen(false); }}
+              style={{ fontSize: "13px", background: "#FAFAF8", color: "#00215e", fontWeight: "600", padding: "9px 18px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "1px solid #EFEFED", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap" }}
+            >
+              {userRole === "brand" ? "Brand account" : userRole === "podcaster" ? "My profile" : "Account"}
+              <span style={{ fontSize: "10px" }}>{accountOpen ? "▲" : "▼"}</span>
+            </button>
+            {accountOpen && (
+              <div style={{ position: "absolute", top: "44px", right: 0, background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "8px", minWidth: "180px", zIndex: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
+                {userRole === "podcaster" && (
+                  <a href="/profile/edit" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                    Edit my profile
+                  </a>
+                )}
+                {userRole === "brand" && (
+                  <a href="/plan" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                    My media plan
+                  </a>
+                )}
+                <button
+                  onClick={handleLogout}
+                  style={{ display: "block", width: "100%", textAlign: "left", fontSize: "13px", color: "#FF7C6F", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px", background: "transparent", border: "none", cursor: "pointer" }}
+                >
+                  Log out
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Logged out state */
+          <>
+            <a href="/login" style={{ fontSize: "14px", color: "#6B6B6B", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>
+              Log in
+            </a>
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => { setJoinOpen(!joinOpen); setResourcesOpen(false); }}
+                style={{ fontSize: "13px", background: "#FF7C6F", color: "#FFFFFF", fontWeight: "600", padding: "9px 18px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap" }}
               >
-                <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "2px" }}>I'm a podcaster</p>
-                <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>List my show for free</p>
-              </a>
-              <a href="/signup/brand" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px" }}
-                onMouseEnter={e => (e.currentTarget.style.background = "#FFF0EE")}
-                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-              >
-                <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "2px" }}>I'm a brand</p>
-                <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Find podcast partners</p>
-              </a>
+                Join free
+                <span style={{ fontSize: "10px" }}>{joinOpen ? "▲" : "▼"}</span>
+              </button>
+              {joinOpen && (
+                <div style={{ position: "absolute", top: "44px", right: 0, background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "8px", minWidth: "200px", zIndex: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
+                  <a href="/signup" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px" }}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#FFF0EE")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >
+                    <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "2px" }}>I'm a podcaster</p>
+                    <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>List my show for free</p>
+                  </a>
+                  <a href="/signup/brand" onClick={() => setJoinOpen(false)} style={{ display: "block", textDecoration: "none", padding: "12px 14px", borderRadius: "6px" }}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#FFF0EE")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >
+                    <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "2px" }}>I'm a brand</p>
+                    <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Find podcast partners</p>
+                  </a>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
 
       {/* Mobile hamburger */}
@@ -133,9 +178,19 @@ export default function Nav() {
             </a>
           ))}
           <a href="/about" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>About</a>
-          <a href="/login" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Log in</a>
-          <a href="/signup" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#FF7C6F", textDecoration: "none", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Join as a podcaster →</a>
-          <a href="/signup/brand" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#FF7C6F", textDecoration: "none", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0" }}>Join as a brand →</a>
+          {isLoggedIn ? (
+            <>
+              {userRole === "podcaster" && <a href="/profile/edit" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Edit my profile</a>}
+              {userRole === "brand" && <a href="/plan" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>My media plan</a>}
+              <button onClick={handleLogout} style={{ fontSize: "15px", color: "#FF7C6F", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0", background: "transparent", border: "none", cursor: "pointer", textAlign: "left" }}>Log out</button>
+            </>
+          ) : (
+            <>
+              <a href="/login" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Log in</a>
+              <a href="/signup" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#FF7C6F", textDecoration: "none", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Join as a podcaster →</a>
+              <a href="/signup/brand" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#FF7C6F", textDecoration: "none", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0" }}>Join as a brand →</a>
+            </>
+          )}
         </div>
       )}
 
