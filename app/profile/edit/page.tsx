@@ -76,10 +76,7 @@ const mockProfile = {
   linkedin: "theshiftpodcast",
   facebook: "",
 };
-function getYouTubeId(url: string): string {
-  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
-  return match ? match[1] : url;
-}
+
 export default function ProfileEditor() {
   const [step, setStep] = useState(1);
   const totalSteps = 5;

@@ -13,7 +13,10 @@ const podcasts = [
   { id: 5, name: "The Long Run", publisher: "Sam Okafor", category: "Health & Fitness", location: "AU", coverColor: "#C4D4E8", adFormats: ["Pre-roll", "Mid-roll", "Product placement"], listensRange: "1K to 10K", bestMonth: "12,400", bestMonthContext: "", demographics: "28-45, mixed gender", previousSponsors: "Hoka, Precision Hydration", rates: "", socials: { instagram: "@thelongrunpod" }, audienceLocations: ["AU", "US"], format: "Video and audio", youtube: "" },
   { id: 6, name: "Startup Sauce", publisher: "Priya Mehta", category: "Business & Entrepreneurship", location: "AU", coverColor: "#F2E8C4", adFormats: ["Mid-roll", "Native episode", "Sponsored segment"], listensRange: "1K to 10K", bestMonth: "18,700", bestMonthContext: "Interviewed Atlassian co-founder", demographics: "25-45, mixed gender", previousSponsors: "Xero, Mailchimp", rates: "From $200 per episode", socials: { instagram: "@startupsauce", linkedin: "startupsaucepod" }, audienceLocations: ["AU", "US"], format: "Audio only", youtube: "" },
 ];
-
+function getYouTubeId(url: string): string {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+  return match ? match[1] : url;
+}
 export default function PodcastProfile({ params }: { params: { id: string } }) {
   const podcast = podcasts.find((p) => p.id === parseInt(params.id)) || podcasts[0];
   const [isLoggedIn, setIsLoggedIn] = useState(false);
