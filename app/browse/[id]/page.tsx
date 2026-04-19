@@ -97,7 +97,16 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
               ))}
             </div>
 
-            <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", marginTop: "16px", marginBottom: "24px" }}>
+            {podcast.youtube && (
+                <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", marginTop: "16px", marginBottom: "16px" }}>
+                  <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>Featured episode</p>
+                  <div style={{ position: "relative", width: "100%", paddingBottom: "56.25%", background: "#000", borderRadius: "8px", overflow: "hidden" }}>
+                    <iframe src={`https://www.youtube.com/embed/${getYouTubeId(podcast.youtube)}`} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }} allowFullScreen />
+                  </div>
+                  <p style={{ fontSize: "11px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "8px" }}>Showcased by the podcaster</p>
+                </div>
+              )}
+              <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", marginTop: "16px", marginBottom: "24px" }}>
               <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>
                 Ad formats
               </p>

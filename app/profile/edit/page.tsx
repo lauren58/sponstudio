@@ -76,7 +76,10 @@ const mockProfile = {
   linkedin: "theshiftpodcast",
   facebook: "",
 };
-
+function getYouTubeId(url: string): string {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+  return match ? match[1] : url;
+}
 export default function ProfileEditor() {
   const [step, setStep] = useState(1);
   const totalSteps = 5;
@@ -277,7 +280,6 @@ export default function ProfileEditor() {
             {[
               { key: "instagram", label: "Instagram", placeholder: "@yourhandle" },
               { key: "tiktok", label: "TikTok", placeholder: "@yourhandle" },
-              { key: "youtube", label: "YouTube", placeholder: "Channel name or URL" },
               { key: "linkedin", label: "LinkedIn", placeholder: "Profile or page URL" },
               { key: "facebook", label: "Facebook", placeholder: "Page URL" },
             ].map((social) => (

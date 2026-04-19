@@ -57,7 +57,7 @@ export default function PodcasterSignup() {
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", gender: "",
     adFormats: [] as string[], rates: "", lookingFor: "", previousSponsors: "",
-    instagram: "", tiktok: "", youtube: "", linkedin: "", facebook: "",
+    instagram: "", tiktok: "", youtubeChannel: "", linkedin: "", facebook: "", youtube: "",
   });
 
   const [rssLoading, setRssLoading] = useState(false);
@@ -304,6 +304,11 @@ export default function PodcasterSignup() {
                 {fieldErrors.podcastFormat && <p style={errorStyle}>{fieldErrors.podcastFormat}</p>}
                 <p style={hintStyle}>This determines which ad formats are available to you.</p>
               </div>
+              <div>
+                <label style={labelStyle}>Featured YouTube video or channel URL <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <input style={inputStyle} type="url" placeholder="https://youtube.com/watch?v=... or https://youtube.com/@yourchannel" value={form.youtube} onChange={(e) => update("youtube", e.target.value)} />
+                <p style={hintStyle}>Paste a specific episode to showcase on your profile, or your channel URL. Only visible to logged-in brands.</p>
+              </div>
             </div>
           </div>
         )}
@@ -416,7 +421,6 @@ export default function PodcasterSignup() {
               {[
                 { key: "instagram", label: "Instagram", placeholder: "@yourhandle" },
                 { key: "tiktok", label: "TikTok", placeholder: "@yourhandle" },
-                { key: "youtube", label: "YouTube", placeholder: "Channel name or URL" },
                 { key: "linkedin", label: "LinkedIn", placeholder: "Profile or page URL" },
                 { key: "facebook", label: "Facebook", placeholder: "Page URL" },
               ].map((social) => (
