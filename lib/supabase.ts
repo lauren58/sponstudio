@@ -6,7 +6,6 @@ export const supabase = createClient(
   {
     auth: {
       persistSession: true,
-      storageKey: "sponstudio-auth",
       storage: typeof window !== "undefined" ? window.localStorage : undefined,
     }
   }
