@@ -52,7 +52,6 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
         .from("podcasters")
         .select("*")
         .eq("id", params.id)
-        .eq("status", "approved")
         .single();
       if (data) setPodcast(data);
       setPodcastLoading(false);
