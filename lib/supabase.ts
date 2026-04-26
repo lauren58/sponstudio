@@ -1,6 +1,6 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 
-export const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+export const supabase = createClient(
+  "https://vpdhlsnakvnxrfglphmn.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwZGhsc25ha3ZueHJmZ2xwaG1uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzkyOTIsImV4cCI6MjA5MTgxNTI5Mn0.VVUu7eM6AKqtgWasEU7yLtmS2tSe-d5rUqTmWHLBaC8"
 )

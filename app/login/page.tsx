@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Nav from "@/components/Nav";
@@ -22,6 +23,7 @@ const labelStyle: React.CSSProperties = {
 };
 
 export default function Login() {
+  const router = useRouter();
   const [tab, setTab] = useState<"podcaster" | "brand">("podcaster");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -56,7 +58,8 @@ export default function Login() {
       });
       if (authError) throw authError;
       await supabase.auth.getSession();
-      window.location.href = "/browse";
+      router.refresh();
+router.push("/browse");
     } catch (err: any) {
       setError(err.message || "Invalid email or password. Please try again.");
     } finally {
