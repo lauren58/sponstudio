@@ -10,9 +10,6 @@ export default function Home() {
 
       {/* Hero */}
       <section style={{ maxWidth: "800px", margin: "0 auto", padding: "80px 24px 100px", textAlign: "center" }}>
-        <div style={{ display: "inline-block", border: "1px solid #FF7C6F", color: "#FF7C6F", fontSize: "12px", fontWeight: "600", padding: "6px 16px", borderRadius: "100px", marginBottom: "40px", letterSpacing: "1px", textTransform: "uppercase", fontFamily: "var(--font-sans)" }}>
-          Free for every podcaster, every size
-        </div>
         <h1 style={{ fontSize: "clamp(38px, 7vw, 76px)", fontWeight: "800", color: "#00215e", lineHeight: "1.05", letterSpacing: "-2px", marginBottom: "28px", fontFamily: "var(--font-display)" }}>
           Democratising<br />podcast advertising<br />
           <span style={{ color: "#FF7C6F", fontStyle: "italic" }}>for everyone.</span>
