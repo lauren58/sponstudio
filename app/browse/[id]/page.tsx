@@ -148,6 +148,18 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
                           podcaster_id: podcast.id.toString(),
                           status: "pending",
                         });
+                        await fetch("/api/send-email", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            type: "connection_request",
+                            data: {
+                              brandName: "A brand",
+                              brandEmail: "brand@email.com",
+                              podcastName: podcast.name,
+                            },
+                          }),
+                        });
                         setShowConnectConfirm(false);
                         alert("Connection request sent!");
                       }} style={{ flex: 1, background: "#FF7C6F", color: "#FFFFFF", fontWeight: "600", fontSize: "13px", padding: "10px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "none", cursor: "pointer" }}>
