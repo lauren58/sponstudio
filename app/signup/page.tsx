@@ -281,8 +281,17 @@ export default function PodcasterSignup() {
               )}
               <div>
                 <label style={labelStyle}>Podcast name</label>
-                <input style={fieldErrors.podcastName ? errorInputStyle : inputStyle} type="text" placeholder="Auto-filled from RSS or enter manually" value={form.podcastName} onChange={(e) => update("podcastName", e.target.value)} />
+                <input style={fieldErrors.podcastName ? errorInputStyle : inputStyle} type="text" placeholder="Enter your podcast name" value={form.podcastName} onChange={(e) => update("podcastName", e.target.value)} />
+                <p style={hintStyle}>Enter your podcast name manually — the RSS fetch is just a guide.</p>
                 {fieldErrors.podcastName && <p style={errorStyle}>{fieldErrors.podcastName}</p>}
+              </div>
+              <div>
+                <label style={labelStyle}>Cover art <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <input style={inputStyle} type="file" accept="image/*" onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) update("coverArtFile", file.name);
+                }} />
+                <p style={hintStyle}>Upload your podcast cover art. Square images work best (1400x1400px recommended).</p>
               </div>
               <div>
                 <label style={labelStyle}>Category</label>
