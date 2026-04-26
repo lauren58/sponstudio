@@ -55,9 +55,8 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-        setIsBrand(false);
+        const role = session.user.user_metadata?.role;
+        if (role === "brand") setIsBrand(true);
       }
     });
 
