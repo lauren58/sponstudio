@@ -54,6 +54,34 @@ export async function POST(request: Request) {
       });
     }
 
+    if (type === "connection_accepted") {
+      await resend.emails.send({
+        from: "SponStudio <notifications@sponstudio.com>",
+        to: data.brandEmail,
+        subject: `Your connection request was accepted!`,
+        html: `<h2>Great news!</h2>
+          <p>${data.brandName}, your connection request was accepted.</p>
+          <p>You can now reach out directly to the podcaster at: <strong>${data.podcasterEmail}</strong></p>
+          <br/>
+          <p>We recommend introducing yourself, sharing your brief and asking for their media kit.</p>
+          <br/>
+          <a href="https://www.sponstudio.com/resources/brands">View our brand resources for tips on working with podcasters</a>`,
+      });
+    }
+
+    if (type === "connection_declined") {
+      await resend.emails.send({
+        from: "SponStudio <notifications@sponstudio.com>",
+        to: data.brandEmail,
+        subject: `Update on your connection request`,
+        html: `<h2>Connection request update</h2>
+          <p>Hi ${data.brandName}, the podcaster has reviewed your connection request and it wasn't the right fit at this time.</p>
+          <p>Don't be discouraged — there are plenty of other great shows on SponStudio that might be a better match.</p>
+          <br/>
+          <a href="https://www.sponstudio.com/browse">Browse more podcasts</a>`,
+      });
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

@@ -81,9 +81,14 @@ export default function Nav() {
             {accountOpen && (
               <div style={{ position: "absolute", top: "44px", right: 0, background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "8px", minWidth: "180px", zIndex: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}>
                 {userRole === "podcaster" && (
-                  <a href="/profile/edit" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
-                    Edit my profile
-                  </a>
+                  <>
+                    <a href="/dashboard" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                      Connection requests
+                    </a>
+                    <a href="/profile/edit" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                      Edit my profile
+                    </a>
+                  </>
                 )}
                 {userRole === "brand" && (
                   <a href="/plan" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
