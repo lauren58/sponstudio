@@ -55,6 +55,7 @@ export default function Login() {
         password,
       });
       if (authError) throw authError;
+      await supabase.auth.getSession();
       window.location.href = "/browse";
     } catch (err: any) {
       setError(err.message || "Invalid email or password. Please try again.");
