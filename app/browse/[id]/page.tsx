@@ -138,7 +138,19 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
                       ✦ Tip: ask this podcaster for their media kit upon connecting.
                     </p>
                     <div style={{ display: "flex", gap: "8px" }}>
-                      <button onClick={() => alert("Connection request sent!")} style={{ flex: 1, background: "#FF7C6F", color: "#FFFFFF", fontWeight: "600", fontSize: "13px", padding: "10px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "none", cursor: "pointer" }}>
+                      <button onClick={async () => {
+                        const { data: { session } } = await supabase.auth.getSession();
+                        if (!session?.user) return;
+                        const { data: brandData } = await supabase.from("brands").select("id").eq("user_id", session.user.id).single();
+                        if (!brandData) return;
+                        await supabase.from("connection_requests").insert({
+                          brand_id: brandData.id,
+                          podcaster_id: podcast.id.toString(),
+                          status: "pending",
+                        });
+                        setShowConnectConfirm(false);
+                        alert("Connection request sent!");
+                      }} style={{ flex: 1, background: "#FF7C6F", color: "#FFFFFF", fontWeight: "600", fontSize: "13px", padding: "10px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: "none", cursor: "pointer" }}>
                         Send request
                       </button>
                       <button onClick={() => setShowConnectConfirm(false)} style={{ fontSize: "13px", color: "#6B6B6B", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", fontFamily: "var(--font-sans)", cursor: "pointer" }}>
