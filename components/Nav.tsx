@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -10,33 +10,12 @@ export default function Nav() {
   const [joinOpen, setJoinOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userRole, setUserRole] = useState<"podcaster" | "brand" | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const checkRole = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) { setUserRole(null); setIsLoggedIn(false); return; }
-      setIsLoggedIn(true);
-
-      const { data: brandData } = await supabase.from("brands").select("id").eq("user_id", session.user.id).single();
-      if (brandData) { setUserRole("brand"); return; }
-
-      const { data: podcasterData } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id).single();
-      if (podcasterData) { setUserRole("podcaster"); return; }
-
-      setUserRole(null);
-    };
-    checkRole();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => checkRole());
-    return () => subscription.unsubscribe();
-  }, []);
+  const { isLoggedIn, isBrand, isPodcaster } = useAuth();
+  const userRole = isBrand ? "brand" : isPodcaster ? "podcaster" : null;
 
   const handleLogout = async () => {
+    const { supabase } = await import("@/lib/supabase");
     await supabase.auth.signOut();
-    setIsLoggedIn(false);
-    setUserRole(null);
     window.location.href = "/";
   };
 
