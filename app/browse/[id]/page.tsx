@@ -31,17 +31,22 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
       if (session?.user) {
         setIsLoggedIn(true);
         // Check if user is a brand
-        const role = session.user.user_metadata?.role;
-        if (role === "brand") {
-          setIsBrand(true);
-        } else {
-          const { data: brandData } = await supabase
-            .from("brands")
-            .select("id")
-            .eq("user_id", session.user.id)
-            .single();
-          if (brandData) setIsBrand(true);
+        const checkAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          setIsLoggedIn(true);
+          const role = session.user.user_metadata?.role;
+          if (role === "brand") {
+            setIsBrand(true);
+          }
         }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
       }
       setAuthLoading(false);
     };
