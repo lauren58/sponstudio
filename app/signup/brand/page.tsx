@@ -102,6 +102,20 @@ export default function BrandSignup() {
         });
 
         if (profileError) throw profileError;
+        await fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "new_brand",
+            data: {
+              companyName: form.companyName,
+              contactName: form.name,
+              email: form.email,
+              industry: form.industry,
+              budget: form.budget,
+            },
+          }),
+        });
         setSubmitted(true);
       }
     } catch (err: any) {

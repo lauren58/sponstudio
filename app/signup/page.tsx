@@ -169,6 +169,21 @@ export default function PodcasterSignup() {
           status: "pending",
         });
         if (profileError) throw profileError;
+        await fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "new_application",
+            data: {
+              podcastName: form.podcastName,
+              publisherName: form.name,
+              email: form.email,
+              category: form.category,
+              listensRange: form.listensRange,
+              location: form.audienceLocation1,
+            },
+          }),
+        });
         setSubmitted(true);
       }
     } catch (err: any) {
