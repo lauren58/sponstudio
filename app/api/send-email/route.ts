@@ -53,7 +53,31 @@ export async function POST(request: Request) {
           <a href="https://www.sponstudio.com/admin">Review in admin dashboard</a>`,
       });
     }
+if (type === "application_approved") {
+      await resend.emails.send({
+        from: "SponStudio <notifications@sponstudio.com>",
+        to: data.email,
+        subject: `Your podcast has been approved on SponStudio!`,
+        html: `<h2>You're live on SponStudio! 🎙</h2>
+          <p>Great news — <strong>${data.podcastName}</strong> has been approved and is now live on the SponStudio marketplace.</p>
+          <p>Brands can now discover your show and request to connect with you.</p>
+          <br/>
+          <a href="https://www.sponstudio.com/browse">View the marketplace</a>`,
+      });
+    }
 
+    if (type === "application_declined") {
+      await resend.emails.send({
+        from: "SponStudio <notifications@sponstudio.com>",
+        to: data.email,
+        subject: `Update on your SponStudio application`,
+        html: `<h2>Update on your application</h2>
+          <p>Thank you for submitting <strong>${data.podcastName}</strong> to SponStudio.</p>
+          <p>After review, we're unable to approve your listing at this time.</p>
+          ${data.reason ? `<p><strong>Reason:</strong> ${data.reason}</p>` : ""}
+          <p>You're welcome to reapply in the future.</p>`,
+      });
+    }
     if (type === "connection_accepted") {
       await resend.emails.send({
         from: "SponStudio <notifications@sponstudio.com>",
