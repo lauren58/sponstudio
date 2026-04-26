@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 import Nav from "@/components/Nav";
@@ -38,7 +38,8 @@ function getYouTubeId(url: string): string {
   return match ? match[1] : url;
 }
 
-export default function PodcastProfile({ params }: { params: { id: string } }) {
+export default function PodcastProfile({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = React.use(params);
   const { isLoggedIn, isBrand, loading: authLoading } = useAuth();
   const [podcast, setPodcast] = useState<Podcast | null>(null);
   const [podcastLoading, setPodcastLoading] = useState(true);
@@ -48,16 +49,18 @@ export default function PodcastProfile({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     const fetchPodcast = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("podcasters")
         .select("*")
-        .eq("id", params.id)
+        .eq("id", id)
         .single();
+      console.log("Podcast data:", data);
+      console.log("Podcast error:", error);
       if (data) setPodcast(data);
       setPodcastLoading(false);
     };
     fetchPodcast();
-  }, [params.id]);
+  }, [id]);
 
   const showGatedContent = isLoggedIn && isBrand;
 
