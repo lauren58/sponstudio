@@ -84,11 +84,19 @@ export default function PodcasterSignup() {
   const fetchRSS = async () => {
     if (!form.rssUrl) return;
     setRssLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setRssPreview({ name: "Your Podcast", description: "Auto-filled from RSS feed.", coverArt: "#E8D5C4" });
-    setForm((f) => ({ ...f, podcastName: f.podcastName || "Your Podcast", coverArt: "#E8D5C4" }));
-    setFieldErrors((e) => ({ ...e, rssUrl: "" }));
-    setRssLoading(false);
+    try {
+      const res = await fetch(`/api/parse-rss?url=${encodeURIComponent(form.rssUrl)}`);
+      const data = await res.json();
+      if (data.name) {
+        setForm((f) => ({ ...f, podcastName: f.podcastName || data.name }));
+        setRssPreview({ name: data.name, description: data.description || "", coverArt: "#E8D5C4" });
+      }
+      setFieldErrors((e) => ({ ...e, rssUrl: "" }));
+    } catch (e) {
+      console.error("RSS fetch failed", e);
+    } finally {
+      setRssLoading(false);
+    }
   };
 
   const validateStep = () => {
