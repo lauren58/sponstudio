@@ -95,8 +95,11 @@ export default function MediaKit() {
 
   const handlePrint = () => {
     setGenerating(true);
+    const originalTitle = document.title;
+    document.title = `${form.podcastName} — Media Kit`;
     setTimeout(() => {
       window.print();
+      document.title = originalTitle;
       setGenerating(false);
     }, 500);
   };
@@ -139,11 +142,11 @@ export default function MediaKit() {
       <style>{`
         @media print {
           .no-print { display: none !important; }
-          .print-only { display: block !important; }
-          body { margin: 0; padding: 0; }
-          .print-area { padding: 40px !important; max-width: 100% !important; }
+          .print-area { display: block !important; }
         }
-        .print-only { display: none; }
+        @media screen {
+          .print-area { display: none; }
+        }
       `}</style>
 
       <div className="no-print" style={{ background: "#FAFAF8", minHeight: "100vh" }}>
@@ -308,7 +311,7 @@ export default function MediaKit() {
       </div>
 
       {/* Print area */}
-      <div className="print-area" ref={printRef} style={{ display: "none", padding: "60px", maxWidth: "800px", margin: "0 auto", fontFamily: "sans-serif" }}>
+      <div className="print-area" ref={printRef} style={{ padding: "60px", maxWidth: "800px", margin: "0 auto", fontFamily: "sans-serif" }}>
         <div className="print-only">
           {/* Header */}
           <div style={{ borderBottom: "3px solid #FF7C6F", paddingBottom: "24px", marginBottom: "32px" }}>
