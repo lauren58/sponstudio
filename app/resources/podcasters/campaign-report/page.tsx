@@ -234,7 +234,7 @@ export default function CampaignReport() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                 <div>
-                  <label style={labelStyle}>Spotify listens {optionalBadge}</label>
+                  <label style={labelStyle}>Spotify plays {optionalBadge}</label>
                   <input style={inputStyle} value={form.spotifyListens} onChange={(e) => update("spotifyListens", e.target.value)} placeholder="e.g. 3,200" />
                 </div>
                 <div>
@@ -479,14 +479,14 @@ export default function CampaignReport() {
             <p style={{ fontSize: "32px", fontWeight: "800", color: "#FFFFFF", margin: 0 }}>{form.totalListens}</p>
           </div>
           {[
-            { label: "Spotify listens", value: form.spotifyListens },
+            { label: "Spotify plays", value: form.spotifyListens },
             { label: "YouTube views", value: form.youtubeViews },
             { label: "RSS downloads", value: form.rssDownloads },
             { label: "Live streams", value: form.liveStreams },
           ].filter(item => item.value).length > 0 && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" }}>
               {[
-                { label: "Spotify listens", value: form.spotifyListens },
+                { label: "Spotify plays", value: form.spotifyListens },
                 { label: "YouTube views", value: form.youtubeViews },
                 { label: "RSS downloads", value: form.rssDownloads },
                 { label: "Live streams", value: form.liveStreams },
