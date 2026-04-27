@@ -33,9 +33,13 @@ type Podcast = {
   looking_for: string;
 };
 
-function getYouTubeId(url: string): string {
+function getYouTubeId(url: string): string | null {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
-  return match ? match[1] : url;
+  return match ? match[1] : null;
+}
+
+function isChannelUrl(url: string): boolean {
+  return url.includes("youtube.com/@") || url.includes("youtube.com/channel/") || url.includes("youtube.com/c/");
 }
 
 export default function PodcastProfile({ params }: { params: Promise<{ id: string }> }) {
@@ -134,10 +138,22 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
 
             {podcast.youtube && (
               <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", marginTop: "16px", marginBottom: "16px" }}>
-                <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>Featured episode</p>
-                <div style={{ position: "relative", width: "100%", paddingBottom: "56.25%", background: "#000", borderRadius: "8px", overflow: "hidden" }}>
-                  <iframe src={`https://www.youtube.com/embed/${getYouTubeId(podcast.youtube)}`} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }} allowFullScreen />
-                </div>
+                {isChannelUrl(podcast.youtube) ? (
+                  <>
+                    <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>YouTube</p>
+                    <a href={podcast.youtube} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "10px", background: "#FF0000", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "12px 20px", borderRadius: "8px", fontFamily: "var(--font-sans)", width: "fit-content" }}>
+                      <svg width="20" height="14" viewBox="0 0 20 14" fill="white"><path d="M19.6 2.2C19.4 1.4 18.8.8 18 .6 16.4.2 10 .2 10 .2S3.6.2 2 .6C1.2.8.6 1.4.4 2.2.1 3.8 0 7 0 7s.1 3.2.4 4.8c.2.8.8 1.4 1.6 1.6C3.6 13.8 10 13.8 10 13.8s6.4 0 8-.4c.8-.2 1.4-.8 1.6-1.6.3-1.6.4-4.8.4-4.8s-.1-3.2-.4-4.8zM8 10V4l5.3 3L8 10z"/></svg>
+                      Watch on YouTube
+                    </a>
+                  </>
+                ) : getYouTubeId(podcast.youtube) ? (
+                  <>
+                    <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>Featured episode</p>
+                    <div style={{ position: "relative", width: "100%", paddingBottom: "56.25%", background: "#000", borderRadius: "8px", overflow: "hidden" }}>
+                      <iframe src={`https://www.youtube.com/embed/${getYouTubeId(podcast.youtube)}`} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }} allowFullScreen />
+                    </div>
+                  </>
+                ) : null}
               </div>
             )}
 

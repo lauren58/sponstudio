@@ -331,7 +331,7 @@ export default function PodcasterSignup() {
               <div>
                 <label style={labelStyle}>Featured YouTube video or channel URL <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
                 <input style={inputStyle} type="url" placeholder="https://youtube.com/watch?v=... or https://youtube.com/@yourchannel" value={form.youtube} onChange={(e) => update("youtube", e.target.value)} />
-                <p style={hintStyle}>Paste a specific episode to showcase on your profile, or your channel URL. Only visible to logged-in brands.</p>
+                <p style={hintStyle}>Paste a specific episode URL to embed a video on your profile, or your channel URL to display a link to your YouTube channel. Only visible to logged-in brands.</p>
               </div>
             </div>
           </div>
