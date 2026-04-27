@@ -155,11 +155,6 @@ export default function PodcasterResources() {
                   </div>
                 ) : (
                   <div>
-                    <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", marginBottom: "12px" }}>
-                      <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>
-                        ✦ This template is coming soon. Notify me when it's ready.
-                      </p>
-                    </div>
                     {template.id === 1 ? (
                       <a href="/resources/podcasters/media-kit" style={{ display: "block", width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", borderRadius: "6px", padding: "13px", cursor: "pointer", textDecoration: "none", textAlign: "center", boxSizing: "border-box" }}>
                         Build my media kit →

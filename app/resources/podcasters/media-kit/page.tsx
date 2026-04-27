@@ -51,6 +51,9 @@ export default function MediaKit() {
     tiktok: "",
     youtube: "",
     linkedin: "",
+    contactEmail: "",
+    contactWebsite: "",
+    contactNote: "",
     quote1: "",
     quote2: "",
     quote3: "",
@@ -271,8 +274,27 @@ export default function MediaKit() {
               ))}
             </div>
           </div>
+          {/* Section 5 — Contact */}
+          <div style={sectionStyle}>
+            <h2 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "24px" }}>Contact</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div>
+                <label style={labelStyle}>Email address</label>
+                <input style={inputStyle} value={form.contactEmail} onChange={(e) => update("contactEmail", e.target.value)} placeholder="your@email.com" />
+              </div>
+              <div>
+                <label style={labelStyle}>Website or link <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <input style={inputStyle} value={form.contactWebsite} onChange={(e) => update("contactWebsite", e.target.value)} placeholder="https://yourwebsite.com" />
+              </div>
+              <div>
+                <label style={labelStyle}>Preferred contact method <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <input style={inputStyle} value={form.contactNote} onChange={(e) => update("contactNote", e.target.value)} placeholder="e.g. Email is best, or DM on Instagram" />
+              </div>
+            </div>
+          </div>
 
-          {/* Section 5 — Audience quotes */}
+          {/* Section 6 — Audience quotes */}
+          
           <div style={sectionStyle}>
             <h2 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "8px" }}>Audience comments</h2>
             <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "24px", lineHeight: "1.7" }}>
@@ -412,6 +434,17 @@ export default function MediaKit() {
                 {socials.map((s) => (
                   <p key={s} style={{ fontSize: "13px", color: "#333", margin: 0 }}>{s}</p>
                 ))}
+              </div>
+            </div>
+          )}
+{/* Contact */}
+          {(form.contactEmail || form.contactWebsite) && (
+            <div style={{ marginBottom: "32px" }}>
+              <h2 style={{ fontSize: "13px", fontWeight: "700", color: "#00215e", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "12px" }}>Contact</h2>
+              <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+                {form.contactEmail && <p style={{ fontSize: "13px", color: "#333", margin: 0 }}>Email: {form.contactEmail}</p>}
+                {form.contactWebsite && <p style={{ fontSize: "13px", color: "#333", margin: 0 }}>Web: {form.contactWebsite}</p>}
+                {form.contactNote && <p style={{ fontSize: "13px", color: "#333", margin: 0 }}>{form.contactNote}</p>}
               </div>
             </div>
           )}
