@@ -24,7 +24,7 @@ const templates = [
   {
     id: 2,
     title: "Post-campaign report template",
-    description: "A clear, professional report to send brands after a campaign wraps. Shows what was delivered, how it performed against guarantees, audience sentiment and platform highlights. Makes you look like a pro and sets you up for repeat bookings.",
+    description: "A clear report to send brands after a campaign wraps. Shows what was delivered, how it performed against guarantees, and audience sentiment. We recommend you send a post-campaign report after every sponsorship.",
     includes: [
       "Campaign overview and deliverables",
       "Minimum guarantees vs actuals delivered",
