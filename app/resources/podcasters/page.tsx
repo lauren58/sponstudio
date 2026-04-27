@@ -18,7 +18,7 @@ const templates = [
       "Previous sponsors and audience sentiment",
       "Contact information",
     ],
-    format: "Canva template",
+    format: "PDF download",
     comingSoon: false,
   },
   {
@@ -32,7 +32,7 @@ const templates = [
       "Audience sentiment",
       "Key highlights and wins",
     ],
-    format: "Canva template",
+    format: "PDF download",
     comingSoon: true,
   },
 ];
