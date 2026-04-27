@@ -9,7 +9,7 @@ const templates = [
   {
     id: 1,
     title: "Media kit template",
-    description: "A professionally structured media kit template covering your show overview, audience demographics, reach across all platforms, ad formats, rates and past sponsors. Everything a brand needs to evaluate your show in one document.",
+    description: "A media kit template covering your show overview, audience demographics, reach across all platforms, ad formats, rates and past sponsors. This is a template to get you started.",
     includes: [
       "Show overview and description",
       "Audience demographics and location breakdown",
