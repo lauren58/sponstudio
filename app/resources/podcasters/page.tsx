@@ -159,6 +159,10 @@ export default function PodcasterResources() {
                       <a href="/resources/podcasters/media-kit" style={{ display: "block", width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", borderRadius: "6px", padding: "13px", cursor: "pointer", textDecoration: "none", textAlign: "center", boxSizing: "border-box" }}>
                         Build my media kit →
                       </a>
+                    ) : template.id === 2 ? (
+                      <a href="/resources/podcasters/campaign-report" style={{ display: "block", width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", borderRadius: "6px", padding: "13px", cursor: "pointer", textDecoration: "none", textAlign: "center", boxSizing: "border-box" }}>
+                        Build my campaign report →
+                      </a>
                     ) : (
                       <button
                         onClick={() => setRequested((r) => ({ ...r, [template.id]: true }))}
