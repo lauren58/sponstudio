@@ -19,7 +19,7 @@ const templates = [
       "Contact information",
     ],
     format: "Canva template",
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     id: 2,
@@ -161,12 +161,18 @@ export default function PodcasterResources() {
                         ✦ This template is coming soon. Notify me when it's ready.
                       </p>
                     </div>
-                    <button
-                      onClick={() => setRequested((r) => ({ ...r, [template.id]: true }))}
-                      style={{ width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px", cursor: "pointer" }}
-                    >
-                      Notify me when ready
-                    </button>
+                    {template.id === 1 ? (
+                      <a href="/resources/podcasters/media-kit" style={{ display: "block", width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", borderRadius: "6px", padding: "13px", cursor: "pointer", textDecoration: "none", textAlign: "center", boxSizing: "border-box" }}>
+                        Build my media kit →
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => setRequested((r) => ({ ...r, [template.id]: true }))}
+                        style={{ width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px", cursor: "pointer" }}
+                      >
+                        Notify me when ready
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
