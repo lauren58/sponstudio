@@ -11,6 +11,7 @@ type Podcast = {
   publisher_name: string;
   category: string;
   audience_location_1: string;
+  audience_location_2: string;
   ad_formats: string[];
   listens_range: string;
   podcast_format: string;
@@ -52,7 +53,7 @@ export default function Browse() {
     const fetchPodcasts = async () => {
       const { data } = await supabase
         .from("podcasters")
-        .select("id, podcast_name, publisher_name, category, audience_location_1, ad_formats, listens_range, podcast_format, cover_color")
+        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, ad_formats, listens_range, podcast_format, cover_color")
         .eq("status", "approved")
         .order("created_at", { ascending: false });
 
