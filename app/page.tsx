@@ -48,7 +48,7 @@ export default function Home() {
           </p>
           <div style={{ marginTop: "auto" }}>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 36px", display: "flex", flexDirection: "column", gap: "12px" }}>
-              {["Free profile, always", "You approve every connection", "Keep rates private if you prefer", "Download free report templates"].map(item => (
+              {["Free profile, always", "You approve every connection", "Keep rates private if you prefer", "Download free media kit & report templates"].map(item => (
                 <li key={item} style={{ fontSize: "14px", color: "#00215e", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: "10px" }}>
                   <span style={{ color: "#FF7C6F" }}>✦</span> {item}
                 </li>
