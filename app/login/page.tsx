@@ -61,7 +61,11 @@ export default function Login() {
       router.refresh();
 router.push("/browse");
     } catch (err: any) {
-      setError(err.message || "Invalid email or password. Please try again.");
+      if (err.message?.includes("Email not confirmed")) {
+        setError("Please check your email and click the confirmation link before logging in.");
+      } else {
+        setError(err.message || "Invalid email or password. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
