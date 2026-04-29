@@ -16,6 +16,7 @@ type Podcast = {
   listens_range: string;
   podcast_format: string;
   cover_color: string;
+  cover_art_url: string;
 };
 
 const CATEGORIES = [
@@ -137,9 +138,15 @@ export default function Browse() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
-                <div style={{ background: podcast.cover_color || getCoverColor(podcast.id), height: "180px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: "48px", opacity: 0.3 }}>🎙</span>
-                </div>
+                {podcast.cover_art_url ? (
+                  <div style={{ height: "180px", overflow: "hidden" }}>
+                    <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  </div>
+                ) : (
+                  <div style={{ background: podcast.cover_color || getCoverColor(podcast.id), height: "180px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: "48px", opacity: 0.3 }}>🎙</span>
+                  </div>
+                )}
                 <div style={{ padding: "20px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
                     <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.3px", margin: 0 }}>

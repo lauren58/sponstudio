@@ -52,7 +52,7 @@ export default function PodcasterSignup() {
 
   const [form, setForm] = useState({
     name: "", email: "", password: "",
-    rssUrl: "", podcastName: "", category: "", coverArt: "", podcastFormat: "",
+    rssUrl: "", podcastName: "", category: "", coverArt: "", podcastFormat: "", description: "", coverArtUrl: "",
     listensRange: "", bestMonth: "", milestones: "",
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", gender: "",
@@ -88,7 +88,12 @@ export default function PodcasterSignup() {
       const res = await fetch(`/api/parse-rss?url=${encodeURIComponent(form.rssUrl)}`);
       const data = await res.json();
       if (data.name) {
-        setForm((f) => ({ ...f, podcastName: f.podcastName || data.name }));
+        setForm((f) => ({ 
+          ...f, 
+          podcastName: f.podcastName || data.name,
+          description: f.description || data.description || "",
+          coverArtUrl: f.coverArtUrl || data.coverArt || "",
+        }));
         setRssPreview({ name: data.name, description: data.description || "", coverArt: "#E8D5C4" });
       }
       setFieldErrors((e) => ({ ...e, rssUrl: "" }));
@@ -174,6 +179,8 @@ export default function PodcasterSignup() {
           youtube: form.youtube,
           linkedin: form.linkedin,
           facebook: form.facebook,
+          description: form.description,
+          cover_art_url: form.coverArtUrl,
           status: "pending",
         });
         if (profileError) throw profileError;

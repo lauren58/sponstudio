@@ -30,6 +30,8 @@ type Podcast = {
   facebook: string;
   podcast_format: string;
   cover_color: string;
+  cover_art_url: string;
+  description: string;
   looking_for: string;
 };
 
@@ -117,9 +119,15 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
 
           {/* Left column */}
           <div>
-            <div style={{ background: coverColor, borderRadius: "16px", height: "280px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "24px" }}>
-              <span style={{ fontSize: "72px", opacity: 0.3 }}>🎙</span>
-            </div>
+            {podcast.cover_art_url ? (
+              <div style={{ borderRadius: "16px", height: "280px", overflow: "hidden", marginBottom: "24px" }}>
+                <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            ) : (
+              <div style={{ background: coverColor, borderRadius: "16px", height: "280px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "24px" }}>
+                <span style={{ fontSize: "72px", opacity: 0.3 }}>🎙</span>
+              </div>
+            )}
 
             <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "6px" }}>
               {podcast.podcast_name}
@@ -127,6 +135,11 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
             <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "16px" }}>
               by {podcast.publisher_name}
             </p>
+            {podcast.description && (
+              <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "16px" }}>
+                {podcast.description}
+              </p>
+            )}
 
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "8px" }}>
               {[podcast.category, podcast.audience_location_1, podcast.podcast_format].filter(Boolean).map((tag) => (
