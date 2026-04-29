@@ -91,7 +91,7 @@ export default function BrandSignup() {
 
       if (authData.user) {
         const { error: profileError } = await supabase.from("brands").insert({
-          user_id: authData.user.id,
+          user_id: userId,
           company_name: form.companyName,
           contact_name: form.name,
           email: form.email,

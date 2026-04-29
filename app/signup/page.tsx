@@ -152,9 +152,10 @@ export default function PodcasterSignup() {
         options: { data: { name: form.name, role: "podcaster" } }
       });
       if (authError) throw authError;
-      if (authData.user) {
+      const userId = authData.user?.id || authData.session?.user?.id;
+      if (userId) {
         const { error: profileError } = await supabase.from("podcasters").insert({
-          user_id: authData.user.id,
+          user_id: userId,
           podcast_name: form.podcastName,
           publisher_name: form.name,
           email: form.email,
