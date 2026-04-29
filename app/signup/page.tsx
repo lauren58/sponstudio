@@ -217,10 +217,13 @@ export default function PodcasterSignup() {
         <div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
           <div style={{ fontSize: "48px", marginBottom: "24px" }}>🎙</div>
           <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "16px" }}>
-            You're submitted!
+            Check your email!
           </h1>
           <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "12px" }}>
-            Thanks for listing your podcast on SponStudio. We'll review your application and be in touch within 2 to 3 business days.
+            We've sent a confirmation link to <strong>{form.email}</strong>. Please click it to activate your account.
+          </p>
+          <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "12px" }}>
+            Once confirmed, we'll review your application and be in touch within 2 to 3 business days.
           </p>
           <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>
             Check your email to confirm your account.
