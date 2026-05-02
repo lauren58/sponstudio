@@ -36,18 +36,17 @@ export default function PodcasterDashboard() {
 
     const fetchRequests = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) return;
+      if (!session?.user) { setLoadingRequests(false); return; }
 
       setPodcasterEmail(session.user.email || "");
 
-      const { data: podcasterData } = await supabase
+      const { data: podcasterRows } = await supabase
         .from("podcasters")
         .select("id")
-        .eq("user_id", session.user.id)
-        .single();
+        .eq("user_id", session.user.id);
 
-      const podcasterIds = [podcasterData?.id].filter(Boolean);
-      if (podcasterIds.length === 0) return;
+      const podcasterIds = (podcasterRows || []).map((p) => p.id);
+      if (podcasterIds.length === 0) { setLoadingRequests(false); return; }
 
       const { data: requestData } = await supabase
         .from("connection_requests")
