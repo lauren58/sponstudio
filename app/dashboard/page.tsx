@@ -109,6 +109,7 @@ export default function PodcasterDashboard() {
     }
 
     setActioned((prev) => ({ ...prev, [request.id]: action }));
+    setRequests((prev) => prev.map((r) => r.id === request.id ? { ...r, status: action } : r));
   };
 
   if (loading || loadingRequests) {
@@ -137,8 +138,8 @@ export default function PodcasterDashboard() {
     );
   }
 
-  const pending = requests.filter((r) => r.status === "pending" && !actioned[r.id]);
-  const past = requests.filter((r) => r.status !== "pending" || actioned[r.id]);
+  const pending = requests.filter((r) => r.status === "pending");
+  const past = requests.filter((r) => r.status !== "pending");
 
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
