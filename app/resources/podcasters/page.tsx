@@ -46,8 +46,8 @@ export default function PodcasterResources() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) { setAuthState("unauthorized"); return; }
 
-      const { data: podcasterData } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id).single();
-      if (podcasterData) { setAuthState("authorized"); return; }
+      const { data: podcasterRows } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id);
+      if (podcasterRows && podcasterRows.length > 0) { setAuthState("authorized"); return; }
 
       setAuthState("wrong-role");
     };
