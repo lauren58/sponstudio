@@ -52,7 +52,7 @@ export default function AddShow() {
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", gender: "",
     adFormats: [] as string[], rates: "", lookingFor: "", previousSponsors: "",
-    instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "",
+    instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "", description: "",
   });
 
   const [rssLoading, setRssLoading] = useState(false);
@@ -158,6 +158,7 @@ export default function AddShow() {
         linkedin: form.linkedin,
         facebook: form.facebook,
         cover_art_url: form.coverArtUrl,
+        description: form.description,
         status: "pending",
       });
 
@@ -289,6 +290,11 @@ export default function AddShow() {
                 <label style={labelStyle}>Podcast name</label>
                 <input style={fieldErrors.podcastName ? errorInputStyle : inputStyle} type="text" placeholder="Enter your podcast name" value={form.podcastName} onChange={(e) => update("podcastName", e.target.value)} />
                 {fieldErrors.podcastName && <p style={errorStyle}>{fieldErrors.podcastName}</p>}
+              </div>
+              <div>
+                <label style={labelStyle}>About your podcast <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <textarea style={{ ...inputStyle, minHeight: "100px", resize: "vertical" }} placeholder="Write a short description — what's your show about, who is it for, and what makes it unique?" value={form.description || ""} onChange={(e) => update("description", e.target.value)} />
+                <p style={hintStyle}>This appears on your public profile and helps brands understand your show.</p>
               </div>
               <div>
                 <label style={labelStyle}>Cover art <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>

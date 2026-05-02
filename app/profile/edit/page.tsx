@@ -68,6 +68,7 @@ export default function ProfileEditor() {
     rssUrl: data.rss_url || "",
     youtube: data.youtube || "",
     coverArtUrl: data.cover_art_url || "",
+    description: data.description || "",
     listensRange: data.listens_range || "",
     bestMonth: data.best_month || "",
     milestones: data.best_month_context || "",
@@ -106,6 +107,7 @@ export default function ProfileEditor() {
       podcast_format: form.podcastFormat,
       rss_url: form.rssUrl,
       cover_art_url: form.coverArtUrl,
+      description: form.description,
       youtube: form.youtube,
       listens_range: form.listensRange,
       best_month: form.bestMonth,
@@ -226,6 +228,11 @@ export default function ProfileEditor() {
                     </button>
                   ))}
                 </div>
+              </div>
+              <div>
+                <label style={labelStyle}>About your podcast <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <textarea style={{ ...inputStyle, minHeight: "100px", resize: "vertical" }} placeholder="Write a short description — what's your show about, who is it for, and what makes it unique?" value={form.description || ""} onChange={(e) => update("description", e.target.value)} />
+                <p style={hintStyle}>This appears on your public profile and helps brands understand your show.</p>
               </div>
               <div>
                 <label style={labelStyle}>Cover art <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>

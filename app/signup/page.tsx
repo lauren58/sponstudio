@@ -320,6 +320,11 @@ export default function PodcasterSignup() {
                 {fieldErrors.podcastName && <p style={errorStyle}>{fieldErrors.podcastName}</p>}
               </div>
               <div>
+                <label style={labelStyle}>About your podcast <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
+                <textarea style={{ ...inputStyle, minHeight: "100px", resize: "vertical" }} placeholder="Write a short description — what's your show about, who is it for, and what makes it unique?" value={form.description} onChange={(e) => update("description", e.target.value)} />
+                <p style={hintStyle}>This appears on your public profile and helps brands understand your show.</p>
+              </div>
+              <div>
                 <label style={labelStyle}>Cover art <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
                 <input style={inputStyle} type="file" accept="image/*" onChange={async (e) => {
                   const file = e.target.files?.[0];
