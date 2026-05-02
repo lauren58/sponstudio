@@ -157,6 +157,7 @@ export default function AddShow() {
         youtube: form.youtube,
         linkedin: form.linkedin,
         facebook: form.facebook,
+        cover_art_url: form.coverArtUrl,
         status: "pending",
       });
 
