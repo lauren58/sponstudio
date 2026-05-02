@@ -133,6 +133,9 @@ export default function AdminDashboard() {
               onKeyDown={(e) => e.key === "Enter" && handleLogin()} />
             {passwordError && <p style={{ fontSize: "12px", color: "#FF7C6F", fontFamily: "var(--font-sans)", marginTop: "6px" }}>{passwordError}</p>}
           </div>
+          <div style={{ textAlign: "right", marginBottom: "12px" }}>
+              <a href="/forgot-password" style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", textDecoration: "none" }}>Forgot password?</a>
+            </div>
           <button onClick={handleLogin} style={{ width: "100%", fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#00215e", border: "none", borderRadius: "6px", padding: "13px", cursor: "pointer" }}>
             Log in
           </button>
