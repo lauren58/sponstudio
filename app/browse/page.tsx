@@ -152,9 +152,13 @@ export default function Browse() {
                     <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.3px", margin: 0 }}>
                       {podcast.podcast_name}
                     </h3>
-                    <span style={{ fontSize: "11px", fontWeight: "600", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "2px 8px", whiteSpace: "nowrap", marginLeft: "8px" }}>
-                      {podcast.audience_location_1}
-                    </span>
+                    <div style={{ display: "flex", gap: "4px", marginLeft: "8px", flexShrink: 0 }}>
+                      {[podcast.audience_location_1, podcast.audience_location_2].filter(Boolean).map((loc) => (
+                        <span key={loc} style={{ fontSize: "11px", fontWeight: "600", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "2px 8px", whiteSpace: "nowrap" }}>
+                          {loc}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>
                     {podcast.category}
