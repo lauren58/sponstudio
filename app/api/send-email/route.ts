@@ -52,6 +52,18 @@ export async function POST(request: Request) {
           <br/>
           <a href="https://www.sponstudio.com/admin">Review in admin dashboard</a>`,
       });
+      await resend.emails.send({
+        from: "SponStudio <notifications@sponstudio.com>",
+        to: data.podcasterEmail,
+        subject: `A brand wants to connect with ${data.podcastName}`,
+        html: `<h2>You have a new connection request ✦</h2>
+          <p>A brand is interested in working with <strong>${data.podcastName}</strong> on SponStudio.</p>
+          <p>Log in to your account to review their details and accept or decline the request.</p>
+          <br/>
+          <a href="https://www.sponstudio.com/dashboard" style="display:inline-block;background:#FF7C6F;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:15px;padding:14px 28px;border-radius:6px;">Review connection request →</a>
+          <br/><br/>
+          <p style="color:#6B6B6B;font-size:13px;">You can accept or decline from your SponStudio dashboard. If you accept, the brand will receive your contact details.</p>`,
+      });
     }
 if (type === "application_approved") {
       await resend.emails.send({

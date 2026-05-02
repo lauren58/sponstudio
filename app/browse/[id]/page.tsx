@@ -209,6 +209,12 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
                           podcaster_id: podcast.id,
                           status: "pending",
                         });
+                        const { data: { user } } = await supabase.auth.getUser();
+                        const { data: podcasterData } = await supabase
+                          .from("podcasters")
+                          .select("email")
+                          .eq("id", podcast.id)
+                          .single();
                         await fetch("/api/send-email", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -218,6 +224,7 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
                               brandName: brandData.company_name,
                               brandEmail: brandData.email,
                               podcastName: podcast.podcast_name,
+                              podcasterEmail: podcasterData?.email || "",
                             },
                           }),
                         });
