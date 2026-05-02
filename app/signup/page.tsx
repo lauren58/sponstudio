@@ -321,10 +321,18 @@ export default function PodcasterSignup() {
               </div>
               <div>
                 <label style={labelStyle}>Cover art <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
-                <input style={inputStyle} type="file" accept="image/*" onChange={(e) => {
+                <input style={inputStyle} type="file" accept="image/*" onChange={async (e) => {
                   const file = e.target.files?.[0];
-                  if (file) update("coverArtFile", file.name);
+                  if (!file) return;
+                  const fileExt = file.name.split(".").pop();
+                  const fileName = `${Date.now()}.${fileExt}`;
+                  const { data, error } = await supabase.storage.from("cover-art").upload(fileName, file);
+                  if (!error && data) {
+                    const { data: urlData } = supabase.storage.from("cover-art").getPublicUrl(fileName);
+                    update("coverArtUrl", urlData.publicUrl);
+                  }
                 }} />
+                {form.coverArtUrl && <p style={{ fontSize: "12px", color: "#27500A", fontFamily: "var(--font-sans)", marginTop: "6px" }}>✓ Cover art uploaded!</p>}
                 <p style={hintStyle}>Upload your podcast cover art. Square images work best (1400x1400px recommended).</p>
               </div>
               <div>

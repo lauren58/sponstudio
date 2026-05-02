@@ -89,6 +89,7 @@ export default function MediaKit() {
           instagram: data.instagram || "",
           tiktok: data.tiktok || "",
           youtube: data.youtube || "",
+    coverArtUrl: data.cover_art_url || "",
           linkedin: data.linkedin || "",
         }));
       }
