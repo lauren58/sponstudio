@@ -18,6 +18,7 @@ type Podcast = {
   cover_color: string;
   cover_art_url: string;
   description: string;
+  cover_art_position: string;
 };
 
 const CATEGORIES = [
@@ -55,7 +56,7 @@ export default function Browse() {
     const fetchPodcasts = async () => {
       const { data } = await supabase
         .from("podcasters")
-        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, ad_formats, listens_range, podcast_format, cover_color, cover_art_url, description")
+        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, ad_formats, listens_range, podcast_format, cover_color, cover_art_url, description, cover_art_position")
         .eq("status", "approved")
         .order("created_at", { ascending: false });
 
@@ -141,7 +142,7 @@ export default function Browse() {
               >
                 {podcast.cover_art_url ? (
                   <div style={{ height: "180px", overflow: "hidden", background: "#F5F5F5", borderRadius: "11px 11px 0 0" }}>
-                    <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                    <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: podcast.cover_art_position || "center" }} />
                   </div>
                 ) : (
                   <div style={{ background: podcast.cover_color || getCoverColor(podcast.id), height: "180px", display: "flex", alignItems: "center", justifyContent: "center" }}>

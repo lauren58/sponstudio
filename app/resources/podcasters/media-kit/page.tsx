@@ -90,6 +90,7 @@ export default function MediaKit() {
           tiktok: data.tiktok || "",
           youtube: data.youtube || "",
     coverArtUrl: data.cover_art_url || "",
+    coverArtPosition: data.cover_art_position || "center",
     description: data.description || "",
           linkedin: data.linkedin || "",
         }));

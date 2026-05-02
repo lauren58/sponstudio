@@ -182,6 +182,7 @@ export default function PodcasterSignup() {
           facebook: form.facebook,
           description: form.description,
           cover_art_url: form.coverArtUrl,
+      cover_art_position: form.coverArtPosition,
           status: "pending",
         });
         if (profileError) throw profileError;
