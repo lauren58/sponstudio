@@ -139,8 +139,8 @@ export default function Browse() {
                 onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
                 {podcast.cover_art_url ? (
-                  <div style={{ height: "180px", overflow: "hidden", background: "#F5F5F5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  <div style={{ height: "180px", overflow: "hidden" }}>
+                    <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </div>
                 ) : (
                   <div style={{ background: podcast.cover_color || getCoverColor(podcast.id), height: "180px", display: "flex", alignItems: "center", justifyContent: "center" }}>
