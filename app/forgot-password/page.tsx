@@ -41,7 +41,7 @@ export default function ForgotPassword() {
             <div style={{ fontSize: "40px", marginBottom: "24px" }}>✉️</div>
             <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>Check your email</h1>
             <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>
-              We've sent a password reset link to <strong>{email}</strong>. Click the link in the email to set a new password.
+              We've sent a password reset link to <strong>{email}</strong>. Click the link in the email to set a new password. If you don't see it within a few minutes, check your spam or junk folder.
             </p>
             <a href="/login" style={{ fontSize: "14px", color: "#FF7C6F", fontFamily: "var(--font-sans)", fontWeight: "600", textDecoration: "none" }}>
               Back to log in
