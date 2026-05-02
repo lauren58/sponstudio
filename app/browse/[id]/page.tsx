@@ -124,7 +124,7 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
           <div>
             {podcast.cover_art_url ? (
               <div style={{ borderRadius: "16px", height: "280px", overflow: "hidden", marginBottom: "24px" }}>
-                <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "contain", background: "#F5F5F5" }} />
               </div>
             ) : (
               <div style={{ background: coverColor, borderRadius: "16px", height: "280px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "24px" }}>
