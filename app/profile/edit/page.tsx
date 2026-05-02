@@ -35,6 +35,13 @@ const hintStyle: React.CSSProperties = {
 export default function ProfileEditor() {
   const { isLoggedIn, isPodcaster, loading } = useAuth();
   const [status, setStatus] = useState<"loading" | "pending" | "approved" | "declined" | "unauthorized">("loading");
+  
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setStatus((s) => s === "loading" ? "unauthorized" : s);
+    }, 3000);
+    return () => clearTimeout(timeout);
+  }, []);
   const [podcasterList, setPodcasterList] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string>("");
   const [saving, setSaving] = useState(false);
@@ -43,7 +50,8 @@ export default function ProfileEditor() {
 
   useEffect(() => {
     if (loading) return;
-    if (!isLoggedIn || !isPodcaster) { setStatus("unauthorized"); return; }
+    if (!isLoggedIn) { setStatus("unauthorized"); return; }
+    if (!isPodcaster) { setStatus("unauthorized"); return; }
     const fetchData = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) { setStatus("unauthorized"); return; }
