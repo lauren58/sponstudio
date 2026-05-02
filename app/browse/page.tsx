@@ -17,6 +17,7 @@ type Podcast = {
   podcast_format: string;
   cover_color: string;
   cover_art_url: string;
+  description: string;
 };
 
 const CATEGORIES = [
@@ -54,7 +55,7 @@ export default function Browse() {
     const fetchPodcasts = async () => {
       const { data } = await supabase
         .from("podcasters")
-        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, ad_formats, listens_range, podcast_format, cover_color, cover_art_url")
+        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, ad_formats, listens_range, podcast_format, cover_color, cover_art_url, description")
         .eq("status", "approved")
         .order("created_at", { ascending: false });
 
@@ -139,8 +140,8 @@ export default function Browse() {
                 onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
                 {podcast.cover_art_url ? (
-                  <div style={{ height: "180px", overflow: "hidden" }}>
-                    <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{ height: "180px", overflow: "hidden", background: "#F5F5F5", borderRadius: "11px 11px 0 0" }}>
+                    <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </div>
                 ) : (
                   <div style={{ background: podcast.cover_color || getCoverColor(podcast.id), height: "180px", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -160,9 +161,14 @@ export default function Browse() {
                       ))}
                     </div>
                   </div>
-                  <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>
+                  <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: podcast.description ? "8px" : "12px" }}>
                     {podcast.category}
                   </p>
+                  {podcast.description && (
+                    <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "12px", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                      {podcast.description}
+                    </p>
+                  )}
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                     {podcast.ad_formats?.slice(0, 2).map((f) => (
                       <span key={f} style={{ fontSize: "11px", color: "#FF7C6F", fontFamily: "var(--font-sans)", fontWeight: "600", background: "#FFF0EE", borderRadius: "4px", padding: "3px 8px" }}>
