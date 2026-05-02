@@ -46,7 +46,7 @@ function isChannelUrl(url: string): boolean {
 
 export default function PodcastProfile({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params);
-  const { isLoggedIn, isBrand, loading: authLoading } = useAuth();
+  const { isLoggedIn, isBrand, isPodcaster, session, loading: authLoading } = useAuth();
   const [podcast, setPodcast] = useState<Podcast | null>(null);
   const [podcastLoading, setPodcastLoading] = useState(true);
   const [inPlan, setInPlan] = useState(false);
@@ -68,7 +68,8 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
     fetchPodcast();
   }, [id]);
 
-  const showGatedContent = isLoggedIn && isBrand;
+  const isOwnProfile = isPodcaster && podcast?.user_id === session?.user?.id;
+  const showGatedContent = (isLoggedIn && isBrand) || isOwnProfile;
 
   if (authLoading || podcastLoading) {
     return (
