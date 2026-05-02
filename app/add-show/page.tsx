@@ -310,10 +310,27 @@ export default function AddShow() {
                     update("coverArtUrl", urlData.publicUrl);
                   }
                 }} />
-                {form.coverArtUrl && (
-                  <div style={{ marginTop: "8px", display: "flex", alignItems: "center", gap: "10px" }}>
-                    <img src={form.coverArtUrl} alt="Cover art" style={{ width: "48px", height: "48px", borderRadius: "6px", objectFit: "cover" }} />
-                    <p style={{ fontSize: "12px", color: "#27500A", fontFamily: "var(--font-sans)" }}>✓ Cover art uploaded!</p>
+              {form.coverArtUrl && (
+                  <div style={{ marginTop: "12px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
+                      <img src={form.coverArtUrl} alt="Cover art" style={{ width: "48px", height: "48px", borderRadius: "6px", objectFit: "cover" }} />
+                      <p style={{ fontSize: "12px", color: "#27500A", fontFamily: "var(--font-sans)" }}>✓ Cover art uploaded!</p>
+                    </div>
+                    <label style={labelStyle}>Browse card position</label>
+                    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                      {[
+                        { value: "top", label: "Top" },
+                        { value: "center", label: "Center" },
+                        { value: "bottom", label: "Bottom" },
+                        { value: "left", label: "Left" },
+                        { value: "right", label: "Right" },
+                      ].map((pos) => (
+                        <button key={pos.value} onClick={() => update("coverArtPosition", pos.value)} style={{ fontSize: "13px", fontFamily: "var(--font-sans)", fontWeight: "600", padding: "8px 14px", borderRadius: "6px", border: form.coverArtPosition === pos.value ? "1.5px solid #FF7C6F" : "1px solid #EFEFED", background: form.coverArtPosition === pos.value ? "#FFF0EE" : "#FFFFFF", color: form.coverArtPosition === pos.value ? "#FF7C6F" : "#6B6B6B", cursor: "pointer" }}>
+                          {pos.label}
+                        </button>
+                      ))}
+                    </div>
+                    <p style={hintStyle}>Choose which part of your cover art shows on the browse card.</p>
                   </div>
                 )}
                 <p style={hintStyle}>Square images work best (1400x1400px recommended).</p>
@@ -330,7 +347,7 @@ export default function AddShow() {
                     update("coverArtUrl", urlData.publicUrl);
                   }
                 }} />
-                {form.coverArtUrl && <p style={{ fontSize: "12px", color: "#27500A", fontFamily: "var(--font-sans)", marginTop: "6px" }}>✓ Cover art uploaded!</p>}
+               
                 <p style={hintStyle}>Square images work best (1400x1400px recommended).</p>
               </div>
               <div>
