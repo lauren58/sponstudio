@@ -65,7 +65,7 @@ export default function PodcasterDashboard() {
           )
         `)
         .eq("podcaster_id", podcasterData.id)
-        .order("created_at", { ascending: false });
+        .order("sort_order", { ascending: true });
 
       if (requestData) setRequests(requestData as any);
       setLoadingRequests(false);

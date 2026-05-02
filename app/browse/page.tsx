@@ -58,7 +58,7 @@ export default function Browse() {
         .from("podcasters")
         .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, ad_formats, listens_range, podcast_format, cover_color, cover_art_url, description, cover_art_position")
         .eq("status", "approved")
-        .order("created_at", { ascending: false });
+        .order("sort_order", { ascending: true });
 
       if (data) {
         setPodcasts(data);
@@ -72,7 +72,7 @@ export default function Browse() {
   useEffect(() => {
     let result = podcasts;
     if (category !== "All categories") result = result.filter((p) => p.category === category);
-    if (location !== "All locations") result = result.filter((p) => p.audience_location_1 === location);
+    if (location !== "All locations") result = result.filter((p) => p.audience_location_1 === location || p.audience_location_2 === location);
     if (listens !== "All monthly listens") result = result.filter((p) => p.listens_range === listens);
     if (format !== "All formats") result = result.filter((p) => p.ad_formats?.includes(format));
     setFiltered(result);
