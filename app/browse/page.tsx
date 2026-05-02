@@ -166,7 +166,7 @@ export default function Browse() {
                     {podcast.category}
                   </p>
                   {podcast.description && (
-                    <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "12px", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                    <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "12px", lineHeight: "1.5", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                       {podcast.description}
                     </p>
                   )}
