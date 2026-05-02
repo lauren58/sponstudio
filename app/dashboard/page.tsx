@@ -31,6 +31,7 @@ export default function PodcasterDashboard() {
   const [podcasterEmail, setPodcasterEmail] = useState("");
 
   useEffect(() => {
+    if (loading) return;
     if (!isLoggedIn || !isPodcaster) return;
 
     const fetchRequests = async () => {
@@ -73,7 +74,7 @@ export default function PodcasterDashboard() {
     };
 
     fetchRequests();
-  }, [isLoggedIn, isPodcaster]);
+  }, [isLoggedIn, isPodcaster, loading]);
 
   const handleAction = async (request: ConnectionRequest, action: "accepted" | "declined") => {
     await supabase
