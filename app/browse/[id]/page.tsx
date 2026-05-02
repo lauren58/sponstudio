@@ -71,6 +71,7 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
 
   const isOwnProfile = isPodcaster && podcast?.user_id === session?.user?.id;
   const showGatedContent = (isLoggedIn && isBrand) || isOwnProfile;
+  const showActions = isLoggedIn && isBrand;
 
   if (authLoading || podcastLoading) {
     return (
@@ -183,7 +184,7 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
               </div>
             </div>
 
-            {showGatedContent && (
+            {showActions && (
               <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
                 {connectSent ? (
                   <div style={{ background: "#EAF3DE", border: "1px solid #97C459", borderRadius: "8px", padding: "14px 16px" }}>
