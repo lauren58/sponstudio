@@ -45,7 +45,8 @@ export default function PodcasterDashboard() {
         .eq("user_id", session.user.id)
         .single();
 
-      if (!podcasterData) return;
+      const podcasterIds = [podcasterData?.id].filter(Boolean);
+      if (podcasterIds.length === 0) return;
 
       const { data: requestData } = await supabase
         .from("connection_requests")
@@ -64,8 +65,8 @@ export default function PodcasterDashboard() {
             budget
           )
         `)
-        .eq("podcaster_id", podcasterData.id)
-        .order("sort_order", { ascending: true });
+        .in("podcaster_id", podcasterIds)
+        .order("created_at", { ascending: false });
 
       if (requestData) setRequests(requestData as any);
       setLoadingRequests(false);
