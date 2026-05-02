@@ -312,7 +312,6 @@ export default function AddShow() {
                 <p style={hintStyle}>Square images work best (1400x1400px recommended).</p>
               </div>
               <div>
-                <label style={labelStyle}>Cover art <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
                 <input style={inputStyle} type="file" accept="image/*" onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
