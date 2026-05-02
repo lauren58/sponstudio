@@ -18,6 +18,7 @@ type ConnectionRequest = {
     industry: string;
     website: string;
     looking_for: string;
+  user_id: string;
     budget: string;
   };
 };

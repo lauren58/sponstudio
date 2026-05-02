@@ -33,6 +33,7 @@ type Podcast = {
   cover_art_url: string;
   description: string;
   looking_for: string;
+  user_id: string;
 };
 
 function getYouTubeId(url: string): string | null {
