@@ -228,6 +228,27 @@ export default function ProfileEditor() {
                 </div>
               </div>
               <div>
+                <label style={labelStyle}>Cover art <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <input style={inputStyle} type="file" accept="image/*" onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const fileExt = file.name.split(".").pop();
+                  const fileName = `${Date.now()}.${fileExt}`;
+                  const { data, error } = await supabase.storage.from("cover-art").upload(fileName, file);
+                  if (!error && data) {
+                    const { data: urlData } = supabase.storage.from("cover-art").getPublicUrl(fileName);
+                    update("coverArtUrl", urlData.publicUrl);
+                  }
+                }} />
+                {form.coverArtUrl && (
+                  <div style={{ marginTop: "8px", display: "flex", alignItems: "center", gap: "10px" }}>
+                    <img src={form.coverArtUrl} alt="Cover art" style={{ width: "48px", height: "48px", borderRadius: "6px", objectFit: "cover" }} />
+                    <p style={{ fontSize: "12px", color: "#27500A", fontFamily: "var(--font-sans)" }}>✓ Cover art uploaded!</p>
+                  </div>
+                )}
+                <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px" }}>Square images work best (1400x1400px recommended).</p>
+              </div>
+              <div>
                 <label style={labelStyle}>RSS feed URL</label>
                 <input style={inputStyle} value={form.rssUrl} onChange={(e) => update("rssUrl", e.target.value)} />
               </div>
