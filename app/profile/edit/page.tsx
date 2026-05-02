@@ -1,7 +1,9 @@
 "use client";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
 
 const CATEGORIES = [
   "Arts & Culture", "Business & Entrepreneurship", "Comedy",
@@ -78,11 +80,62 @@ const mockProfile = {
 };
 
 export default function ProfileEditor() {
+  const { isLoggedIn, isPodcaster, loading } = useAuth();
+  const [status, setStatus] = useState<"loading" | "pending" | "approved" | "declined" | "unauthorized">("loading");
   const [step, setStep] = useState(1);
   const totalSteps = 5;
   const [form, setForm] = useState(mockProfile);
   const [saved, setSaved] = useState(false);
 
+  useEffect(() => {
+    if (loading) return;
+    if (!isLoggedIn || !isPodcaster) { setStatus("unauthorized"); return; }
+    const fetchStatus = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) { setStatus("unauthorized"); return; }
+      const { data } = await supabase.from("podcasters").select("status").eq("user_id", session.user.id).single();
+      if (data) setStatus(data.status as any);
+      else setStatus("unauthorized");
+    };
+    fetchStatus();
+  }, [isLoggedIn, isPodcaster, loading]);
+if (status === "loading") return (
+    <div style={{ background: "#FAFAF8", minHeight: "100vh" }}><Nav /><div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}><p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Loading...</p></div><Footer /></div>
+  );
+
+  if (status === "unauthorized") return (
+    <div style={{ background: "#FAFAF8", minHeight: "100vh" }}><Nav /><div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}><h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>Access denied</h1><a href="/login" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Log in</a></div><Footer /></div>
+  );
+
+  if (status === "pending") return (
+    <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+      <Nav />
+      <div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+        <div style={{ fontSize: "40px", marginBottom: "24px" }}>⏳</div>
+        <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>Your application is under review</h1>
+        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>
+          We'll review your listing and be in touch within 2 to 3 business days. You'll receive an email when you're approved.
+        </p>
+        <a href="/browse" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Browse the marketplace</a>
+      </div>
+      <Footer />
+    </div>
+  );
+
+  if (status === "declined") return (
+    <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+      <Nav />
+      <div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+        <div style={{ fontSize: "40px", marginBottom: "24px" }}>✦</div>
+        <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>Application not approved</h1>
+        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>
+          Unfortunately your listing wasn't approved at this time. If you have questions please get in touch.
+        </p>
+        <a href="mailto:hello@sponstudio.com" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Contact us</a>
+      </div>
+      <Footer />
+    </div>
+  );
   const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
 
   const toggleFormat = (format: string) => {
