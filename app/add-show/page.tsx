@@ -335,21 +335,7 @@ export default function AddShow() {
                 )}
                 <p style={hintStyle}>Square images work best (1400x1400px recommended).</p>
               </div>
-              <div>
-                <input style={inputStyle} type="file" accept="image/*" onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-                  const fileExt = file.name.split(".").pop();
-                  const fileName = `${Date.now()}.${fileExt}`;
-                  const { data, error } = await supabase.storage.from("cover-art").upload(fileName, file);
-                  if (!error && data) {
-                    const { data: urlData } = supabase.storage.from("cover-art").getPublicUrl(fileName);
-                    update("coverArtUrl", urlData.publicUrl);
-                  }
-                }} />
-               
-                <p style={hintStyle}>Square images work best (1400x1400px recommended).</p>
-              </div>
+       
               <div>
                 <label style={labelStyle}>Category</label>
                 <select style={fieldErrors.category ? errorInputStyle : inputStyle} value={form.category} onChange={(e) => update("category", e.target.value)}>
