@@ -52,7 +52,7 @@ export default function AddShow() {
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", gender: "",
     adFormats: [] as string[], rates: "", lookingFor: "", previousSponsors: "",
-    instagram: "", tiktok: "", linkedin: "", facebook: "",
+    instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "",
   });
 
   const [rssLoading, setRssLoading] = useState(false);
