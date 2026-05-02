@@ -52,7 +52,7 @@ export default function PodcasterSignup() {
 
   const [form, setForm] = useState({
     name: "", email: "", password: "",
-    rssUrl: "", podcastName: "", category: "", coverArt: "", podcastFormat: "", description: "", coverArtUrl: "",
+    rssUrl: "", podcastName: "", category: "", coverArt: "", podcastFormat: "", description: "", coverArtUrl: "", coverArtPosition: "center",
     listensRange: "", bestMonth: "", milestones: "",
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", gender: "",
@@ -182,7 +182,7 @@ export default function PodcasterSignup() {
           facebook: form.facebook,
           description: form.description,
           cover_art_url: form.coverArtUrl,
-      cover_art_position: form.coverArtPosition,
+          cover_art_position: form.coverArtPosition,
           status: "pending",
         });
         if (profileError) throw profileError;
