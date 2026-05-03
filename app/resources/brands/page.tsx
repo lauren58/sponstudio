@@ -159,7 +159,7 @@ export default function BrandResources() {
         </div>
 
         <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "8px", letterSpacing: "-0.5px" }}>How to write a good brief</h2>
-        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "32px", lineHeight: "1.7" }}>Many podcasters produce their shows as a hobby. They may not be career creators or have management guiding them through the sponsorship process. Here's what an indie podcast needs to know to bring your campaign to life.</p>
+        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "32px", lineHeight: "1.7" }}>Many podcasters produce their show as a hobby. They may not be career creators or have management guiding them through the sponsorship process. Here's what an indie podcast needs to know to bring your campaign to life.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}>
           {briefGuide.map((item) => (
             <div key={item.step} style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "12px", padding: "28px", display: "flex", gap: "24px", alignItems: "flex-start" }}>
