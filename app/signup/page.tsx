@@ -12,8 +12,8 @@ const CATEGORIES = [
   "Technology", "True Crime & Law"
 ];
 
-const LOCATIONS = ["AU", "Canada", "NZ", "UK", "US", "Global"];
-const LISTENS_RANGES = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 200K", "200K+"];
+const LOCATIONS = ["ANZ", "US", "Canada", "UK", "Europe", "Global", "Other"];
+const LISTENS_RANGES = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 100K", "100K to 200K", "200K to 400K", "400K+"];
 const FORMATS = ["Audio only", "Video and audio", "Video only"];
 const AD_FORMATS = ["Pre-roll", "Mid-roll", "Sponsored segment", "Product placement", "Native episode", "Social amplification"];
 const AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55+"];
@@ -427,6 +427,7 @@ export default function PodcasterSignup() {
                     {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
                   </select>
                   {fieldErrors.audienceLocation1 && <p style={errorStyle}>{fieldErrors.audienceLocation1}</p>}
+                  {form.audienceLocation1 === "Other" && <p style={hintStyle}>✦ SponStudio is in early launch — we're expanding our location options soon. Select Other for now and add more detail in your profile description.</p>}
                   <select style={inputStyle} value={form.audienceLocation2} onChange={(e) => update("audienceLocation2", e.target.value)}>
                     <option value="">Second location (optional)</option>
                     {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
