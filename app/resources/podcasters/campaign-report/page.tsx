@@ -35,12 +35,16 @@ export default function CampaignReport() {
     // Show details
     podcastName: "",
     publisherName: "",
-    // Brand & episode
+    // Brand & campaign
     brandName: "",
-    episodeTitle: "",
-    publishDate: "",
-    episodeLink: "",
+    campaignName: "",
+    campaignStartDate: "",
+    campaignEndDate: "",
+    episodesDelivered: "",
+    episodeTitles: "",
+    episodeLinks: "",
     adFormats: "",
+    campaignNotes: "",
     // Impressions
     totalListens: "",
     spotifyListens: "",
@@ -199,23 +203,40 @@ export default function CampaignReport() {
             </div>
           </div>
 
-          {/* Section 2 — Episode details */}
+          {/* Section 2 — Campaign details */}
           <div style={sectionStyle}>
-            <h2 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "24px" }}>Episode details</h2>
+            <h2 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "24px" }}>Campaign details</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
-                <label style={labelStyle}>Episode title</label>
-                <input style={inputStyle} value={form.episodeTitle} onChange={(e) => update("episodeTitle", e.target.value)} placeholder="e.g. How to build a brand from scratch" />
+                <label style={labelStyle}>Campaign name <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <input style={inputStyle} value={form.campaignName} onChange={(e) => update("campaignName", e.target.value)} placeholder="e.g. Summer 2025 Campaign" />
+                <p style={hintStyle}>Leave blank if you're just reporting on a single episode buy.</p>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                 <div>
-                  <label style={labelStyle}>Publish date</label>
-                  <input style={inputStyle} type="date" value={form.publishDate} onChange={(e) => update("publishDate", e.target.value)} />
+                  <label style={labelStyle}>Campaign start date</label>
+                  <input style={inputStyle} type="date" value={form.campaignStartDate} onChange={(e) => update("campaignStartDate", e.target.value)} />
                 </div>
                 <div>
-                  <label style={labelStyle}>Episode link</label>
-                  <input style={inputStyle} value={form.episodeLink} onChange={(e) => update("episodeLink", e.target.value)} placeholder="https://..." />
+                  <label style={labelStyle}>Campaign end date</label>
+                  <input style={inputStyle} type="date" value={form.campaignEndDate} onChange={(e) => update("campaignEndDate", e.target.value)} />
                 </div>
+              </div>
+              <div>
+                <label style={labelStyle}>Number of episodes / posts delivered</label>
+                <input style={inputStyle} value={form.episodesDelivered} onChange={(e) => update("episodesDelivered", e.target.value)} placeholder="e.g. 3 podcast episodes + 2 Instagram posts" />
+              </div>
+              <div>
+                <label style={labelStyle}>Episode titles <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} value={form.episodeTitles} onChange={(e) => update("episodeTitles", e.target.value)} placeholder="e.g.&#10;Ep 42 — How to build a brand from scratch&#10;Ep 45 — Marketing on a budget&#10;Ep 48 — The future of podcasting" />
+              </div>
+              <div>
+                <label style={labelStyle}>Episode links <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} value={form.episodeLinks} onChange={(e) => update("episodeLinks", e.target.value)} placeholder="Paste one link per line..." />
+              </div>
+              <div>
+                <label style={labelStyle}>Campaign notes <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
+                <textarea style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} value={form.campaignNotes} onChange={(e) => update("campaignNotes", e.target.value)} placeholder="e.g. This campaign included 3 burned-in mid-rolls across our top-performing episodes and a social amplification package." />
               </div>
             </div>
           </div>
@@ -439,7 +460,7 @@ export default function CampaignReport() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
               <p style={{ fontSize: "11px", fontWeight: "700", color: "#FF7C6F", textTransform: "uppercase", letterSpacing: "1.5px", margin: "0 0 8px" }}>Post-Campaign Report</p>
-              <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", margin: "0 0 4px", letterSpacing: "-0.8px" }}>{form.podcastName} × {form.brandName}</h1>
+              <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", margin: "0 0 4px", letterSpacing: "-0.8px" }}>{form.podcastName} × {form.brandName}{form.campaignName ? ` — ${form.campaignName}` : ""}</h1>
               <p style={{ fontSize: "14px", color: "#6B6B6B", margin: 0 }}>by {form.publisherName}</p>
             </div>
             <div style={{ textAlign: "right" }}>
@@ -453,12 +474,14 @@ export default function CampaignReport() {
         {/* Campaign overview */}
         <div style={{ marginBottom: "32px" }}>
           <h2 style={{ fontSize: "13px", fontWeight: "700", color: "#00215e", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "16px" }}>Campaign overview</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "16px" }}>
             {[
               { label: "Brand", value: form.brandName },
+              { label: "Campaign name", value: form.campaignName },
               { label: "Ad formats", value: form.adFormats },
-              { label: "Episode", value: form.episodeTitle },
-              { label: "Published", value: form.publishDate ? new Date(form.publishDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : "" },
+              { label: "Episodes delivered", value: form.episodesDelivered },
+              { label: "Campaign start", value: form.campaignStartDate ? new Date(form.campaignStartDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : "" },
+              { label: "Campaign end", value: form.campaignEndDate ? new Date(form.campaignEndDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : "" },
             ].filter(item => item.value).map((item) => (
               <div key={item.label} style={{ background: "#FAFAF8", borderRadius: "6px", padding: "12px 14px" }}>
                 <p style={{ fontSize: "10px", fontWeight: "700", color: "#6B6B6B", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 4px" }}>{item.label}</p>
@@ -466,8 +489,23 @@ export default function CampaignReport() {
               </div>
             ))}
           </div>
-          {form.episodeLink && (
-            <p style={{ fontSize: "12px", color: "#6B6B6B", marginTop: "12px" }}>Episode link: {form.episodeLink}</p>
+          {form.episodeTitles && (
+            <div style={{ marginBottom: "12px" }}>
+              <p style={{ fontSize: "10px", fontWeight: "700", color: "#6B6B6B", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 6px" }}>Episodes</p>
+              <p style={{ fontSize: "13px", color: "#333", margin: 0, whiteSpace: "pre-line" }}>{form.episodeTitles}</p>
+            </div>
+          )}
+          {form.episodeLinks && (
+            <div style={{ marginBottom: "12px" }}>
+              <p style={{ fontSize: "10px", fontWeight: "700", color: "#6B6B6B", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 6px" }}>Episode links</p>
+              <p style={{ fontSize: "13px", color: "#333", margin: 0, whiteSpace: "pre-line" }}>{form.episodeLinks}</p>
+            </div>
+          )}
+          {form.campaignNotes && (
+            <div>
+              <p style={{ fontSize: "10px", fontWeight: "700", color: "#6B6B6B", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 6px" }}>Notes</p>
+              <p style={{ fontSize: "13px", color: "#333", margin: 0, lineHeight: "1.6" }}>{form.campaignNotes}</p>
+            </div>
           )}
         </div>
 
