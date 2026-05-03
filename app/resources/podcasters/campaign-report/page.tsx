@@ -465,7 +465,7 @@ export default function CampaignReport() {
             </div>
             <div style={{ textAlign: "right" }}>
               <p style={{ fontSize: "11px", color: "#6B6B6B", margin: "0 0 2px", textTransform: "uppercase", letterSpacing: "1px" }}>Campaign Report</p>
-              <p style={{ fontSize: "11px", color: "#6B6B6B", margin: 0 }}>{form.publishDate ? new Date(form.publishDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : new Date().toLocaleDateString("en-AU", { month: "long", year: "numeric" })}</p>
+              <p style={{ fontSize: "11px", color: "#6B6B6B", margin: 0 }}>{form.campaignStartDate ? new Date(form.campaignStartDate).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : new Date().toLocaleDateString("en-AU", { month: "long", year: "numeric" })}</p>
               <p style={{ fontSize: "10px", color: "#AAAAAA", margin: "4px 0 0" }}>via SponStudio ✦</p>
             </div>
           </div>
