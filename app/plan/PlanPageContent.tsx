@@ -1,54 +1,119 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
-const podcasts = [
-  { id: 1, name: "The Shift", publisher: "Mia Sutherland", category: "Business & Entrepreneurship", location: "AU", coverColor: "#E8D5C4", adFormats: ["Mid-roll", "Native episode", "Social amplification"], listensRange: "1K to 10K", bestMonth: "14,200", demographics: "25-44, predominantly female", audienceLocations: ["AU", "US"], format: "Video and audio", rates: "From $150 per episode" },
-  { id: 2, name: "Good Dirt", publisher: "Tom & Rhys Callahan", category: "Sustainability & Environment", location: "NZ", coverColor: "#C4D4C4", adFormats: ["Pre-roll", "Mid-roll", "Sponsored segment"], listensRange: "1K to 10K", bestMonth: "8,900", demographics: "18-35, mixed gender", audienceLocations: ["NZ", "AU"], format: "Audio only", rates: "" },
-  { id: 3, name: "Barely Legal", publisher: "Centennial World", category: "True Crime & Law", location: "AU", coverColor: "#2D2D2D", adFormats: ["Mid-roll", "Native episode"], listensRange: "10K to 50K", bestMonth: "61,000", demographics: "25-54, predominantly female", audienceLocations: ["AU", "US", "UK"], format: "Video and audio", rates: "From $400 per episode" },
-  { id: 4, name: "Plate Up", publisher: "Jessie Nguyen", category: "Food & Hospitality", location: "AU", coverColor: "#F2C4A0", adFormats: ["Sponsored segment", "Product placement", "Social amplification"], listensRange: "Under 1K", bestMonth: "2,100", demographics: "25-45, predominantly female", audienceLocations: ["AU"], format: "Video and audio", rates: "From $50 per episode" },
-  { id: 5, name: "The Long Run", publisher: "Sam Okafor", category: "Health & Fitness", location: "AU", coverColor: "#C4D4E8", adFormats: ["Pre-roll", "Mid-roll", "Product placement"], listensRange: "1K to 10K", bestMonth: "12,400", demographics: "28-45, mixed gender", audienceLocations: ["AU", "US"], format: "Video and audio", rates: "" },
-  { id: 6, name: "Startup Sauce", publisher: "Priya Mehta", category: "Business & Entrepreneurship", location: "AU", coverColor: "#F2E8C4", adFormats: ["Mid-roll", "Native episode", "Sponsored segment"], listensRange: "1K to 10K", bestMonth: "18,700", demographics: "25-45, mixed gender", audienceLocations: ["AU", "US"], format: "Audio only", rates: "From $200 per episode" },
-];
+type PlanPodcast = {
+  id: string;
+  plan_item_id: string;
+  podcast_name: string;
+  publisher_name: string;
+  category: string;
+  audience_location_1: string;
+  audience_location_2: string;
+  audience_location_3: string;
+  ad_formats: string[];
+  listens_range: string;
+  best_month: string;
+  age_range: string;
+  gender: string;
+  rates: string;
+  cover_art_url: string;
+  cover_color: string;
+  podcast_format: string;
+};
 
-const listensOrder = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 200K", "200K+"];
-
-const floors: Record<string, number> = { "Under 1K": 0, "1K to 10K": 1000, "10K to 50K": 10000, "50K to 200K": 50000, "200K+": 200000 };
-const ceilings: Record<string, number | null> = { "Under 1K": 1000, "1K to 10K": 10000, "10K to 50K": 50000, "50K to 200K": 200000, "200K+": null };
+const floors: Record<string, number> = { "Under 1K": 0, "1K to 10K": 1000, "10K to 50K": 10000, "50K to 100K": 50000, "100K to 200K": 100000, "200K to 400K": 200000, "400K+": 400000 };
+const ceilings: Record<string, number | null> = { "Under 1K": 1000, "1K to 10K": 10000, "10K to 50K": 50000, "50K to 100K": 100000, "100K to 200K": 200000, "200K to 400K": 400000, "400K+": null };
 
 function formatNum(n: number) { return n >= 1000 ? (n / 1000).toFixed(0) + "K" : n.toString(); }
 
 function getCombinedListens(ranges: string[]): string {
-  const hasOpenCeiling = ranges.some((r) => ceilings[r] === null);
-  const totalFloor = ranges.reduce((sum, r) => sum + (floors[r] || 0), 0);
-  const totalCeiling = ranges.reduce((sum, r) => sum + ((ceilings[r] as number) || 0), 0);
+  const valid = ranges.filter(r => floors[r] !== undefined);
+  if (valid.length === 0) return "N/A";
+  const hasOpenCeiling = valid.some((r) => ceilings[r] === null);
+  const totalFloor = valid.reduce((sum, r) => sum + (floors[r] || 0), 0);
+  const totalCeiling = valid.reduce((sum, r) => sum + ((ceilings[r] as number) || 0), 0);
   if (hasOpenCeiling) return formatNum(totalFloor) + "+";
   return formatNum(totalFloor) + " to " + formatNum(totalCeiling);
 }
 
-function getCombinedLocations(locationArrays: string[][]): string[] {
-  return Array.from(new Set(locationArrays.flat()));
-}
-
-function getCombinedFormats(formatArrays: string[][]): string[] {
-  return Array.from(new Set(formatArrays.flat()));
-}
-
 export default function PlanPageContent() {
-  const searchParams = useSearchParams();
-  const idsParam = searchParams.get("ids") || "";
-  const ids = idsParam.split(",").map(Number).filter(Boolean);
-  const selectedPodcasts = podcasts.filter((p) => ids.includes(p.id));
+  const { isLoggedIn, isBrand, loading } = useAuth();
+  const [podcasts, setPodcasts] = useState<PlanPodcast[]>([]);
+  const [loadingPlan, setLoadingPlan] = useState(true);
 
-  if (selectedPodcasts.length === 0) {
+  useEffect(() => {
+    if (loading) return;
+    if (!isLoggedIn || !isBrand) { setLoadingPlan(false); return; }
+    const fetchPlan = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) { setLoadingPlan(false); return; }
+      const { data: brandData } = await supabase.from("brands").select("id").eq("user_id", session.user.id).single();
+      if (!brandData) { setLoadingPlan(false); return; }
+      const { data: planItems } = await supabase
+        .from("plan_items")
+        .select("id, podcaster_id")
+        .eq("brand_id", brandData.id);
+      if (!planItems || planItems.length === 0) { setLoadingPlan(false); return; }
+      const podcasterIds = planItems.map((p) => p.podcaster_id);
+      const { data: podcastData } = await supabase
+        .from("podcasters")
+        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, audience_location_3, ad_formats, listens_range, best_month, age_range, gender, rates, cover_art_url, cover_color, podcast_format")
+        .in("id", podcasterIds);
+      if (podcastData) {
+        const merged = podcastData.map((pod) => ({
+          ...pod,
+          plan_item_id: planItems.find((p) => p.podcaster_id === pod.id)?.id || "",
+        }));
+        setPodcasts(merged);
+      }
+      setLoadingPlan(false);
+    };
+    fetchPlan();
+  }, [isLoggedIn, isBrand, loading]);
+
+  const removeFromPlan = async (planItemId: string) => {
+    await supabase.from("plan_items").delete().eq("id", planItemId);
+    setPodcasts((prev) => prev.filter((p) => p.plan_item_id !== planItemId));
+  };
+
+  if (loading || loadingPlan) {
     return (
       <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
         <Nav />
         <div style={{ maxWidth: "600px", margin: "0 auto", padding: "100px 48px", textAlign: "center" }}>
-          <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "16px" }}>No shows in your plan</h1>
-          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "32px" }}>Go back to browse and add some shows to get started.</p>
+          <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Loading your plan...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isLoggedIn || !isBrand) {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "600px", margin: "0 auto", padding: "100px 48px", textAlign: "center" }}>
+          <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "16px" }}>Sign in to view your plan</h1>
+          <a href="/login" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Log in</a>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (podcasts.length === 0) {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "600px", margin: "0 auto", padding: "100px 48px", textAlign: "center" }}>
+          <div style={{ fontSize: "40px", marginBottom: "24px" }}>🎙</div>
+          <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "16px" }}>No shows in your plan yet</h1>
+          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>Save shows from the browse page to build your media plan and generate a combined reach report.</p>
           <a href="/browse" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Browse podcasts</a>
         </div>
         <Footer />
@@ -56,104 +121,74 @@ export default function PlanPageContent() {
     );
   }
 
-  const combinedListens = getCombinedListens(selectedPodcasts.map((p) => p.listensRange));
-  const combinedLocations = getCombinedLocations(selectedPodcasts.map((p) => p.audienceLocations));
-  const combinedFormats = getCombinedFormats(selectedPodcasts.map((p) => p.adFormats));
-  const today = new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
+  const combinedListens = getCombinedListens(podcasts.map((p) => p.listens_range));
+  const allLocations = Array.from(new Set(podcasts.flatMap((p) => [p.audience_location_1, p.audience_location_2, p.audience_location_3].filter(Boolean))));
+  const allFormats = Array.from(new Set(podcasts.flatMap((p) => p.ad_formats || [])));
+  const COVER_COLORS = ["#E8D5C4", "#C4D4C4", "#2D2D2D", "#F2C4A0", "#C4D4E8", "#F2E8C4"];
 
   return (
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
       <Nav />
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "48px 48px 24px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "16px", marginBottom: "40px" }}>
-          <div>
-            <a href="/browse" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)", display: "inline-block", marginBottom: "16px" }}>← Back to browse</a>
-            <h1 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", marginBottom: "8px" }}>Your media plan</h1>
-            <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>{selectedPodcasts.length} shows selected ✦ Generated {today}</p>
-          </div>
-          <button onClick={() => window.print()} style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px 24px", cursor: "pointer" }}>
-            Download report →
-          </button>
-        </div>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "60px 48px 100px" }}>
+        <h1 style={{ fontSize: "40px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", marginBottom: "8px" }}>My media plan</h1>
+        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "48px" }}>{podcasts.length} show{podcasts.length !== 1 ? "s" : ""} saved</p>
 
-        <div style={{ background: "#00215e", borderRadius: "16px", padding: "40px", marginBottom: "40px" }}>
-          <div style={{ fontSize: "11px", fontWeight: "700", color: "rgba(255,255,255,0.5)", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "24px" }}>Combined plan overview</div>
+        {/* Combined reach */}
+        <div style={{ background: "#00215e", borderRadius: "16px", padding: "40px 48px", marginBottom: "48px" }}>
+          <p style={{ fontSize: "11px", fontWeight: "700", color: "rgba(255,255,255,0.5)", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "16px" }}>Combined reach report</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "24px", marginBottom: "24px" }}>
-            {[
-              { label: "Total shows", value: selectedPodcasts.length.toString() },
-              { label: "Combined monthly listens", value: combinedListens },
-              { label: "Audience locations", value: combinedLocations.join(", ") },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p style={{ fontSize: "11px", fontWeight: "600", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>{stat.label}</p>
-                <p style={{ fontSize: "20px", fontWeight: "700", color: "#FFFFFF", fontFamily: "var(--font-display)", letterSpacing: "-0.3px" }}>{stat.value}</p>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", fontFamily: "var(--font-sans)", marginBottom: "24px", lineHeight: "1.6" }}>
-            Based on self-reported ranges. Request media kits from individual shows for verified figures.
-          </p>
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "24px" }}>
-            <p style={{ fontSize: "11px", fontWeight: "600", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "12px" }}>Combined ad formats available</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {combinedFormats.map((format) => (
-                <span key={format} style={{ fontSize: "12px", fontWeight: "600", color: "#FF7C6F", background: "rgba(255,124,111,0.15)", borderRadius: "4px", padding: "4px 12px", fontFamily: "var(--font-sans)" }}>{format}</span>
-              ))}
+            <div>
+              <p style={{ fontSize: "11px", fontWeight: "600", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>Combined monthly listens</p>
+              <p style={{ fontSize: "32px", fontWeight: "800", color: "#FFFFFF", fontFamily: "var(--font-display)" }}>{combinedListens}</p>
+            </div>
+            <div>
+              <p style={{ fontSize: "11px", fontWeight: "600", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>Audience locations</p>
+              <p style={{ fontSize: "16px", fontWeight: "600", color: "#FFFFFF", fontFamily: "var(--font-sans)" }}>{allLocations.join(", ")}</p>
+            </div>
+            <div>
+              <p style={{ fontSize: "11px", fontWeight: "600", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" }}>Ad formats available</p>
+              <p style={{ fontSize: "14px", fontWeight: "600", color: "#FFFFFF", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>{allFormats.join(", ")}</p>
             </div>
           </div>
+          <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-sans)" }}>✦ All figures self-reported by podcasters. Listens may include downloads, streams, Spotify plays and YouTube views.</p>
         </div>
 
-        <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "8px", padding: "12px 16px", marginBottom: "32px" }}>
-          <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>
-            ✦ All listener numbers are self-reported by podcasters and may include downloads, streams, Spotify plays and YouTube views. All shows have been reviewed by the SponStudio team. Generated via SponStudio — sponstudio.com
-          </p>
-        </div>
-
-        <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "20px", letterSpacing: "-0.3px" }}>Individual show breakdown</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "60px" }}>
-          {selectedPodcasts.map((podcast) => (
-            <div key={podcast.id} style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "12px", padding: "24px", display: "flex", gap: "20px", alignItems: "flex-start" }}>
-              <div style={{ width: "64px", height: "64px", borderRadius: "10px", background: podcast.coverColor, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: "24px", opacity: 0.3 }}>🎙</span>
+        {/* Shows */}
+        <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "24px", letterSpacing: "-0.3px" }}>Shows in your plan</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {podcasts.map((podcast) => (
+            <div key={podcast.id} style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "12px", overflow: "hidden", display: "grid", gridTemplateColumns: "120px 1fr", minHeight: "120px" }}>
+              <div style={{ background: podcast.cover_art_url ? "#F5F5F5" : (podcast.cover_color || COVER_COLORS[podcast.id.charCodeAt(0) % COVER_COLORS.length]), display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                {podcast.cover_art_url ? (
+                  <img src={podcast.cover_art_url} alt={podcast.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                  <span style={{ fontSize: "32px", opacity: 0.3 }}>🎙</span>
+                )}
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
-                  <div>
-                    <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "4px" }}>{podcast.name}</h3>
-                    <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>by {podcast.publisher}</p>
-                  </div>
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <span style={{ fontSize: "11px", fontWeight: "600", color: "#00215e", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px", fontFamily: "var(--font-sans)" }}>{podcast.location}</span>
-                    <span style={{ fontSize: "11px", fontWeight: "600", color: "#6B6B6B", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px", fontFamily: "var(--font-sans)" }}>{podcast.format}</span>
+              <div style={{ padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", flexWrap: "wrap" }}>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "4px" }}>{podcast.podcast_name}</h3>
+                  <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>{podcast.category} · {podcast.publisher_name}</p>
+                  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                    <span style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>📊 {podcast.listens_range} listens</span>
+                    {podcast.audience_location_1 && <span style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>📍 {[podcast.audience_location_1, podcast.audience_location_2].filter(Boolean).join(", ")}</span>}
+                    {podcast.rates && <span style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>💰 {podcast.rates}</span>}
                   </div>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px", marginBottom: "16px" }}>
-                  {[
-                    { label: "Category", value: podcast.category },
-                    { label: "Monthly listens", value: podcast.listensRange },
-                    { label: "Best month", value: podcast.bestMonth },
-                    { label: "Audience", value: podcast.demographics },
-                    { label: "Audience locations", value: podcast.audienceLocations.join(", ") },
-                    { label: "Rates", value: podcast.rates || "Not provided" },
-                  ].map((item) => (
-                    <div key={item.label} style={{ background: "#FAFAF8", borderRadius: "6px", padding: "10px 12px" }}>
-                      <p style={{ fontSize: "10px", fontWeight: "700", color: "#6B6B6B", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase", marginBottom: "4px" }}>{item.label}</p>
-                      <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)" }}>{item.value}</p>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                  {podcast.adFormats.map((format) => (
-                    <span key={format} style={{ fontSize: "11px", color: "#FF7C6F", fontFamily: "var(--font-sans)", fontWeight: "600", background: "#FFF0EE", borderRadius: "4px", padding: "3px 10px" }}>{format}</span>
-                  ))}
+                <div style={{ display: "flex", gap: "8px", alignItems: "center", flexShrink: 0 }}>
+                  <a href={`/browse/${podcast.id}`} style={{ fontSize: "13px", color: "#FF7C6F", fontFamily: "var(--font-sans)", fontWeight: "600", textDecoration: "none", background: "#FFF0EE", padding: "8px 14px", borderRadius: "6px" }}>View profile</a>
+                  <button onClick={() => removeFromPlan(podcast.plan_item_id)} style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "6px", padding: "8px 14px", cursor: "pointer" }}>Remove</button>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        <div style={{ marginTop: "48px", textAlign: "center" }}>
+          <a href="/browse" style={{ fontSize: "14px", color: "#FF7C6F", fontFamily: "var(--font-sans)", fontWeight: "600", textDecoration: "none" }}>+ Add more shows →</a>
+        </div>
       </div>
       <Footer />
-      <style>{`@media print { nav, footer, button, a[href="/browse"] { display: none !important; } body { background: white !important; } @page { margin: 20mm; } }`}</style>
     </div>
   );
 }
