@@ -106,6 +106,9 @@ export default function Nav() {
                     </a>
                   </>
                 )}
+                <a href="mailto:hello@sponstudio.com" style={{ display: "block", fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                  Need help?
+                </a>
                 <button
                   onClick={handleLogout}
                   style={{ display: "block", width: "100%", textAlign: "left", fontSize: "13px", color: "#FF7C6F", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px", background: "transparent", border: "none", cursor: "pointer" }}
