@@ -85,6 +85,9 @@ export default function Nav() {
                     <a href="/dashboard" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
                       Connection requests
                     </a>
+                    <a href="/my-listings" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                      My listings
+                    </a>
                     <a href="/profile/edit" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
                       Edit my profile
                     </a>
