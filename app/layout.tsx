@@ -21,6 +21,27 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg',
   },
+  openGraph: {
+    title: "SponStudio — Podcast advertising for everyone",
+    description: "The marketplace connecting indie podcasts and sponsors",
+    url: "https://www.sponstudio.com",
+    siteName: "SponStudio",
+    images: [
+      {
+        url: "https://www.sponstudio.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "SponStudio — Podcast advertising for everyone",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SponStudio — Podcast advertising for everyone",
+    description: "The marketplace connecting indie podcasts and sponsors",
+    images: ["https://www.sponstudio.com/og-image.png"],
+  },
 };
 
 export default function RootLayout({
