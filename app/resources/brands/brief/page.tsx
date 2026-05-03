@@ -139,7 +139,7 @@ export default function BriefBuilder() {
                 </div>
                 <div>
                   <label style={labelStyle}>Campaign name {optionalBadge}</label>
-                  <input style={inputStyle} value={form.campaignName} onChange={(e) => update("campaignName", e.target.value)} placeholder="e.g. Own Your Thing 2026" />
+                  <input style={inputStyle} value={form.campaignName} onChange={(e) => update("campaignName", e.target.value)} placeholder="e.g. Global Podcast Campaign 2026" />
                 </div>
               </div>
               <div>
