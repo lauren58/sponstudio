@@ -346,7 +346,6 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
                     <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
                       <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Best month</p>
                       <p style={{ fontSize: "22px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)" }}>{podcast.best_month}</p>
-                      {podcast.best_month_context && <p style={{ fontSize: "11px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "4px" }}>{podcast.best_month_context}</p>}
                     </div>
                   )}
                   <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
