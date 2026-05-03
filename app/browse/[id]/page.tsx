@@ -371,6 +371,13 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
                   </div>
                 )}
 
+                {podcast.best_month_context && (
+                  <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px", marginBottom: "16px" }}>
+                    <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Milestones & wins</p>
+                    <p style={{ fontSize: "14px", color: "#00215e", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>{podcast.best_month_context}</p>
+                  </div>
+                )}
+
                 {podcast.previous_sponsors && (
                   <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px", marginBottom: "16px" }}>
                     <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Previous sponsors</p>
