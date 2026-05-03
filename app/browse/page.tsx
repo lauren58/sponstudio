@@ -51,6 +51,7 @@ export default function Browse() {
   const [location, setLocation] = useState("All locations");
   const [listens, setListens] = useState("All monthly listens");
   const [format, setFormat] = useState("All formats");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchPodcasts = async () => {
@@ -75,8 +76,14 @@ export default function Browse() {
     if (location !== "All locations") result = result.filter((p) => p.audience_location_1 === location || p.audience_location_2 === location);
     if (listens !== "All monthly listens") result = result.filter((p) => p.listens_range === listens);
     if (format !== "All formats") result = result.filter((p) => p.ad_formats?.includes(format));
+    if (search.trim()) result = result.filter((p) => 
+      p.podcast_name.toLowerCase().includes(search.toLowerCase()) ||
+      p.publisher_name.toLowerCase().includes(search.toLowerCase()) ||
+      p.category.toLowerCase().includes(search.toLowerCase()) ||
+      p.description?.toLowerCase().includes(search.toLowerCase())
+    );
     setFiltered(result);
-  }, [category, location, listens, format, podcasts]);
+  }, [category, location, listens, format, search, podcasts]);
 
   const getCoverColor = (id: string) => {
     const index = id.charCodeAt(0) % COVER_COLORS.length;
@@ -97,7 +104,14 @@ export default function Browse() {
       </section>
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 40px" }}>
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+          <input
+            type="text"
+            placeholder="Search podcasts..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", outline: "none", minWidth: "200px" }}
+          />
           <select style={selectStyle} value={category} onChange={(e) => setCategory(e.target.value)}>
             {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
