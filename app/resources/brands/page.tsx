@@ -177,6 +177,7 @@ export default function BrandResources() {
             <h3 style={{ fontSize: "22px", fontWeight: "800", color: "#FFFFFF", fontFamily: "var(--font-display)", marginBottom: "8px", fontStyle: "italic", letterSpacing: "-0.5px" }}>Ready to find your show?</h3>
             <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.85)", fontFamily: "var(--font-sans)" }}>Browse indie podcasts across every niche, size and location.</p>
           </div>
+          <a href="/resources/brands/brief" style={{ background: "#FFFFFF", color: "#FF7C6F", textDecoration: "none", fontWeight: "700", fontSize: "14px", padding: "13px 28px", borderRadius: "6px", fontFamily: "var(--font-sans)", whiteSpace: "nowrap", marginRight: "12px" }}>Build a campaign brief →</a>
           <a href="/browse" style={{ background: "#FFFFFF", color: "#FF7C6F", textDecoration: "none", fontWeight: "700", fontSize: "14px", padding: "13px 28px", borderRadius: "6px", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>Browse podcasts →</a>
         </div>
       </section>
