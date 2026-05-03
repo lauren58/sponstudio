@@ -172,13 +172,10 @@ export default function BrandResources() {
           ))}
         </div>
 
-        <div style={{ background: "#FF7C6F", borderRadius: "16px", padding: "40px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "24px" }}>
-          <div>
-            <h3 style={{ fontSize: "22px", fontWeight: "800", color: "#FFFFFF", fontFamily: "var(--font-display)", marginBottom: "8px", fontStyle: "italic", letterSpacing: "-0.5px" }}>Ready to find your show?</h3>
-            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.85)", fontFamily: "var(--font-sans)" }}>Browse indie podcasts across every niche, size and location.</p>
-          </div>
-          <a href="/resources/brands/brief" style={{ background: "#FFFFFF", color: "#FF7C6F", textDecoration: "none", fontWeight: "700", fontSize: "14px", padding: "13px 28px", borderRadius: "6px", fontFamily: "var(--font-sans)", whiteSpace: "nowrap", marginRight: "12px" }}>Build a campaign brief →</a>
-          <a href="/browse" style={{ background: "#FFFFFF", color: "#FF7C6F", textDecoration: "none", fontWeight: "700", fontSize: "14px", padding: "13px 28px", borderRadius: "6px", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>Browse podcasts →</a>
+        <div style={{ textAlign: "center", padding: "20px 0 40px" }}>
+          <a href="/resources/brands/brief" style={{ display: "inline-block", background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "15px", padding: "16px 36px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>
+            Build a campaign brief →
+          </a>
         </div>
       </section>
 
