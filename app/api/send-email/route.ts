@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     if (type === "new_application") {
       await resend.emails.send({
         from: "SponStudio <notifications@sponstudio.com>",
-        to: "lauren@centennialworld.com",
+        to: "hello@sponstudio.com",
         subject: `New podcast application: ${data.podcastName}`,
         html: `<h2>New podcast application received</h2>
           <p><strong>Podcast:</strong> ${data.podcastName}</p>
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     if (type === "new_brand") {
       await resend.emails.send({
         from: "SponStudio <notifications@sponstudio.com>",
-        to: "lauren@centennialworld.com",
+        to: "hello@sponstudio.com",
         subject: `New brand account: ${data.companyName}`,
         html: `<h2>New brand account created</h2>
           <p><strong>Company:</strong> ${data.companyName}</p>
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     if (type === "connection_request") {
       await resend.emails.send({
         from: "SponStudio <notifications@sponstudio.com>",
-        to: "lauren@centennialworld.com",
+        to: "hello@sponstudio.com",
         subject: `New connection request on SponStudio`,
         html: `<h2>New connection request</h2>
           <p><strong>Brand:</strong> ${data.brandName}</p>
