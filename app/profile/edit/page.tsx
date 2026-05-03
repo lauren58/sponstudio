@@ -36,12 +36,6 @@ export default function ProfileEditor() {
   const { isLoggedIn, isPodcaster, loading } = useAuth();
   const [status, setStatus] = useState<"loading" | "pending" | "approved" | "declined" | "unauthorized">("loading");
   
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setStatus((s) => s === "loading" ? "unauthorized" : s);
-    }, 3000);
-    return () => clearTimeout(timeout);
-  }, []);
   const [podcasterList, setPodcasterList] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string>("");
   const [saving, setSaving] = useState(false);
@@ -108,8 +102,8 @@ export default function ProfileEditor() {
   };
 
   const handleSave = async () => {
-    setSaving(true);
-    const { error } = await supabase.from("podcasters").update({
+   setSaving(true);
+    const { error, data } = await supabase.from("podcasters").update({
       podcast_name: form.podcastName,
       publisher_name: form.publisherName,
       category: form.category,
