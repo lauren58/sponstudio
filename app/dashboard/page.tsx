@@ -112,7 +112,7 @@ export default function PodcasterDashboard() {
     setRequests((prev) => prev.map((r) => r.id === request.id ? { ...r, status: action } : r));
   };
 
-  if (loading || loadingRequests) {
+  if (loading) {
     return (
       <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
         <Nav />
@@ -124,14 +124,42 @@ export default function PodcasterDashboard() {
     );
   }
 
-  if (!isLoggedIn || !isPodcaster) {
+  if (!isLoggedIn) {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "480px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+          <div style={{ fontSize: "40px", marginBottom: "24px" }}>🔒</div>
+          <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>Sign in to view your connection requests</h1>
+          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>Log in with your podcaster account to review and respond to brand connection requests.</p>
+          <a href="/login" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Log in</a>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isPodcaster) {
+    return (
+      <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
+        <Nav />
+        <div style={{ maxWidth: "480px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
+          <div style={{ fontSize: "40px", marginBottom: "24px" }}>✦</div>
+          <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>This page is for podcasters</h1>
+          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "32px" }}>You're logged in as a brand. Connection requests are managed by podcasters.</p>
+          <a href="/browse" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Browse podcasts →</a>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (loadingRequests) {
     return (
       <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
         <Nav />
         <div style={{ maxWidth: "700px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}>
-          <h1 style={{ fontSize: "24px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "12px" }}>Access denied</h1>
-          <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "32px" }}>This page is only available to podcaster accounts.</p>
-          <a href="/login" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>Log in</a>
+          <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Loading your requests...</p>
         </div>
         <Footer />
       </div>
