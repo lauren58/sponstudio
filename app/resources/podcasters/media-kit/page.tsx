@@ -223,7 +223,6 @@ export default function MediaKit() {
               <div>
                 <label style={labelStyle}>Audience location breakdown</label>
                 <input style={inputStyle} value={form.audienceLocationBreakdown} onChange={(e) => update("audienceLocationBreakdown", e.target.value)} placeholder="e.g. AU 65%, US 20%, UK 10%, Other 5%" />
-                <p style={hintStyle}>Check your Spotify for Podcasters or RSS analytics for location data.</p>
               </div>
               <div>
                 <label style={labelStyle}>Age range</label>
