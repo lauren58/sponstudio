@@ -18,6 +18,7 @@ type Podcaster = {
   status: string;
   created_at: string;
   podcast_format: string;
+  sort_order: number;
 };
 
 type Brand = {
@@ -259,6 +260,22 @@ export default function AdminDashboard() {
                         <span key={f} style={{ fontSize: "12px", color: "#FF7C6F", background: "#FFF0EE", borderRadius: "4px", padding: "3px 10px", fontFamily: "var(--font-sans)", fontWeight: "600" }}>{f}</span>
                       ))}
                     </div>
+                  </div>
+                )}
+                {pod.status === "approved" && (
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+                    <p style={{ fontSize: "12px", fontWeight: "600", color: "#6B6B6B", fontFamily: "var(--font-sans)", letterSpacing: "1px", textTransform: "uppercase" }}>Sort order</p>
+                    <button onClick={async () => {
+                      const newOrder = Math.max(1, (pod.sort_order || 999) - 1);
+                      await supabase.from("podcasters").update({ sort_order: newOrder }).eq("id", pod.id);
+                      setPodcasters((prev) => prev.map((p) => p.id === pod.id ? { ...p, sort_order: newOrder } : p));
+                    }} style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: "14px" }}>↑</button>
+                    <span style={{ fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", minWidth: "32px", textAlign: "center" }}>{pod.sort_order || 999}</span>
+                    <button onClick={async () => {
+                      const newOrder = (pod.sort_order || 999) + 1;
+                      await supabase.from("podcasters").update({ sort_order: newOrder }).eq("id", pod.id);
+                      setPodcasters((prev) => prev.map((p) => p.id === pod.id ? { ...p, sort_order: newOrder } : p));
+                    }} style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: "14px" }}>↓</button>
                   </div>
                 )}
                 {pod.status === "pending" && (
