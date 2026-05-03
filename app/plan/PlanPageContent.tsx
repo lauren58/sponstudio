@@ -63,7 +63,7 @@ export default function PlanPageContent() {
       const podcasterIds = planItems.map((p) => p.podcaster_id);
       const { data: podcastData } = await supabase
         .from("podcasters")
-        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, audience_location_3, ad_formats, listens_range, best_month, age_range, gender, rates, cover_art_url, cover_color, podcast_format")
+        .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, audience_location_3, ad_formats, listens_range, best_month, age_range, age_range_2, gender, rates, cover_art_url, cover_color, podcast_format")
         .in("id", podcasterIds);
       if (podcastData) {
         const merged = podcastData.map((pod) => ({
