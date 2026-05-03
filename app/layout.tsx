@@ -17,7 +17,7 @@ const fraunces = Fraunces({
 });
 export const metadata: Metadata = {
   title: "SponStudio — Podcast advertising for everyone",
-  description: "The free marketplace connecting indie podcasts...",
+  description: "The marketplace connecting indie podcasts and sponsors",
   icons: {
     icon: '/favicon.svg',
   },
