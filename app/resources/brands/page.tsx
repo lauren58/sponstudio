@@ -6,11 +6,11 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 const adFormats = [
-  { title: "Host-read ad", tag: "Most common", tagColor: "#FF7C6F", desc: "The host reads your ad in their own words, in their own voice, as part of the episode. This is the most trusted format in podcasting because listeners hear it as a genuine recommendation from someone they already trust. Host-read ads are burned in to the episode permanently.", bestFor: "Brand awareness, trust-building, long-term recall", notFor: "Last-click attribution or direct sales tracking" },
+  { title: "Host-read ad", tag: "Most common", tagColor: "#FF7C6F", desc: "The host reads your ad in their own words, in their own voice, as part of the episode. This is the most trusted format in podcasting because listeners hear it as a genuine recommendation from someone they already trust. Host-read ads are burned in to the episode permanently.", bestFor: "Brand awareness, trust-building, long-term recall", notFor: "One-off sponsorships" },
   { title: "Native episode", tag: "Highest impact", tagColor: "#00215e", desc: "The brand sponsors an entire episode built around a topic relevant to both the show and the brand. The product or message is woven naturally into the content rather than read as a separate ad.", bestFor: "Deep brand integration, storytelling, audience education", notFor: "Quick turnarounds or highly scripted messaging" },
-  { title: "Sponsored segment", tag: "Flexible", tagColor: "#6B6B6B", desc: "A defined section of the episode is sponsored by your brand. The host introduces the segment as sponsored and integrates your messaging naturally within it.", bestFor: "Mid-funnel brand consideration, recurring sponsorships", notFor: "Brands that need full content control" },
+  { title: "Sponsored segment", tag: "Flexible", tagColor: "#6B6B6B", desc: "A defined section of the episode is sponsored by your brand. The host introduces the segment as sponsored and integrates your messaging naturally within it.", bestFor: "Blitz campaigns", notFor: "Brands that need full content control" },
   { title: "Product placement", tag: "Video only", tagColor: "#BA7517", desc: "Your product appears on screen during a video podcast episode. Works best for visually compelling products and video-first shows with strong YouTube presence.", bestFor: "Visual products, lifestyle brands, video-first audiences", notFor: "Audio-only shows or non-visual products" },
-  { title: "Social amplification", tag: "Add-on", tagColor: "#534AB7", desc: "The podcaster creates short-form content clipped from the episode and posts it to their social channels with your brand featured.", bestFor: "Extending reach, reaching younger audiences, driving awareness", notFor: "Brands without strong visual or social-friendly messaging" },
+  { title: "Social amplification", tag: "Add-on", tagColor: "#534AB7", desc: "The podcaster creates short-form content clipped from the episode and posts it to their social channels with your brand featured.", bestFor: "Integrated creative partnerships", notFor: "Brands with tightly controlled branding" },
 ];
 
 const briefGuide = [
@@ -18,8 +18,8 @@ const briefGuide = [
   { step: "02", title: "Describe your product clearly", desc: "Give the podcaster everything they need to talk about your product authentically. Key features, what makes it different, what you want the audience to feel or do." },
   { step: "03", title: "Share your target audience", desc: "Who are you trying to reach? Age, gender, location, interests, behaviours. The more specific you are, the better the podcaster can tailor the integration." },
   { step: "04", title: "Set your dos and don'ts", desc: "Are there competitor brands that should not be mentioned? Specific claims you cannot make? Messaging you want included? Be clear upfront." },
-  { step: "05", title: "Agree on guarantees", desc: "Work with the podcaster to set minimum guarantees for listens and impressions. This gives you a clear benchmark for the post-campaign report." },
-  { step: "06", title: "Allow one round of edits", desc: "Build in one round of content approval before the episode goes live. Trust the host to interpret your brief in a way that resonates with their audience." },
+  { step: "05", title: "Agree on guarantees", desc: "Work with the podcaster to set minimum guarantees for listens and impressions. Provide them with a trackable link if you are looking for conversions." },
+  { step: "06", title: "Allow one round of edits", desc: "Build in one round of script approval before the episode goes live. Most shows will not be able to re-record an entire episode or segment if you require changes, so agree on the copy ahead of time." },
 ];
 
 export default function BrandResources() {
@@ -94,7 +94,7 @@ export default function BrandResources() {
           How to buy podcast advertising
         </h1>
         <p style={{ fontSize: "16px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", maxWidth: "620px" }}>
-          Buying podcast advertising directly from a creator is different to other ways you might buy media. This is what you need to know to do it well.
+          Buying podcast advertising directly from a creator may be different to other ways you might buy media. Here are some helpful tips to get you started.
         </p>
       </section>
 
@@ -102,24 +102,23 @@ export default function BrandResources() {
         <div style={{ background: "#00215e", borderRadius: "16px", padding: "48px", marginBottom: "48px" }}>
           <div style={{ fontSize: "11px", fontWeight: "700", color: "rgba(255,255,255,0.5)", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "16px" }}>The most important thing to understand</div>
           <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: "800", color: "#FFFFFF", fontFamily: "var(--font-sans)", letterSpacing: "-0.5px", marginBottom: "16px", lineHeight: "1.2" }}>
-            Are host-read ads a media buy or a content play? Often both.
+            Host-read ads can be both a media buy and a content play
           </h2>
           <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "16px" }}>
-            Direct host-read podcast advertising sits at the intersection of paid media and branded content — and understanding the difference matters for your internal budget conversations.
+            Direct host-read podcast advertising sits at the intersection of paid media and branded content.
           </p>
           <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "16px" }}>
-            A standard host-read ad or pre-roll is closer to a traditional media placement. A native episode, a branded series, or a long-term ambassador partnership is a creative content investment. The host is not just reading your message — they are building a story around your brand in their own voice, creating an asset that lives on their channel indefinitely.
+            A standard host-read ad is closer to a traditional media placement. A native episode, a branded series, or an integrated partnership across multiple touch-points is a creative content investment.
           </p>
           <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-sans)", lineHeight: "1.8" }}>
-            If you are unsure which team should own this internally, ask yourself: are we buying a placement, or are we commissioning content?
           </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px", marginBottom: "60px" }}>
           {[
-            { title: "You are buying trust, not clicks", desc: "Podcast listeners have a deep, parasocial relationship with their favourite hosts. When a host recommends your brand, it carries the weight of a personal endorsement. That trust shows up in brand recall and long-term purchasing behaviour." },
-            { title: "Host-read ads are burned in forever", desc: "Unlike programmatic ads that disappear when your budget runs out, a burned-in host-read ad lives inside the episode permanently. An episode published today will still carry your ad in five years. You are buying a permanent placement, not a fleeting impression." },
-            { title: "How to measure success", desc: "Direct podcast campaigns can be both a top-of-funnel and bottom-of-funnel play. The right metrics are listens, impressions and audience sentiment — not click-through rates. If you want a conversion signal, give the podcaster a unique promo code or trackable URL for the episode description." },
+            { title: "You are buying trust, not clicks", desc: "Podcast listeners have a deep, parasocial relationship with their favourite hosts. When a host recommends your brand, it carries the weight of a personal endorsement. That trust shows up in brand recall, long-term purchasing behaviour, and positive brand affinity." },
+            { title: "Host-read ads are burned in forever", desc: "Unlike programmatic ads that disappear when your budget runs out, a burned-in host-read ad lives inside the episode permanently. An episode published today will still carry your ad in five years. You are buying a permanent placement." },
+            { title: "How to measure success", desc: "Direct podcast campaigns can be both a top-of-funnel and bottom-of-funnel play. The primary metrics to measure are listens, impressions and audience sentiment. If you want a conversion signal, give the podcaster a unique promo code or trackable URL for the episode description." },
           ].map((item) => (
             <div key={item.title} style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "12px", padding: "28px" }}>
               <h3 style={{ fontSize: "17px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "10px" }}>{item.title}</h3>
@@ -129,7 +128,7 @@ export default function BrandResources() {
         </div>
 
         <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "8px", letterSpacing: "-0.5px" }}>Understanding ad formats</h2>
-        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "28px", lineHeight: "1.7" }}>Podcast advertising is not one-size-fits-all. Here is what each format means and when to use it.</p>
+        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "28px", lineHeight: "1.7" }}>Here is what each format means and when to use it.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "2px", marginBottom: "60px" }}>
           {adFormats.map((format, i) => (
             <div key={format.title} style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: i === 0 ? "12px 12px 0 0" : i === adFormats.length - 1 ? "0 0 12px 12px" : "0", overflow: "hidden" }}>
@@ -160,7 +159,7 @@ export default function BrandResources() {
         </div>
 
         <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "8px", letterSpacing: "-0.5px" }}>How to write a good brief</h2>
-        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "32px", lineHeight: "1.7" }}>A clear brief makes for a better campaign. Here is what to include.</p>
+        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "32px", lineHeight: "1.7" }}>Many podcasters produce their shows as a hobby. They may not be career creators or have management guiding them through the sponsorship process. Here's what an indie podcast needs to know to bring your campaign to life.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}>
           {briefGuide.map((item) => (
             <div key={item.step} style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "12px", padding: "28px", display: "flex", gap: "24px", alignItems: "flex-start" }}>
