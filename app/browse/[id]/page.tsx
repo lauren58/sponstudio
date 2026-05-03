@@ -51,8 +51,22 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
   const [podcast, setPodcast] = useState<Podcast | null>(null);
   const [podcastLoading, setPodcastLoading] = useState(true);
   const [inPlan, setInPlan] = useState(false);
+  const [planItemId, setPlanItemId] = useState<string | null>(null);
   const [showConnectConfirm, setShowConnectConfirm] = useState(false);
   const [connectSent, setConnectSent] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn || !isBrand) return;
+    const checkPlan = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return;
+      const { data: brandData } = await supabase.from("brands").select("id").eq("user_id", session.user.id).single();
+      if (!brandData) return;
+      const { data } = await supabase.from("plan_items").select("id").eq("brand_id", brandData.id).eq("podcaster_id", id).single();
+      if (data) { setInPlan(true); setPlanItemId(data.id); }
+    };
+    checkPlan();
+  }, [isLoggedIn, isBrand, id]);
 
   useEffect(() => {
     const fetchPodcast = async () => {
@@ -240,7 +254,20 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
                   </div>
                 )}
 
-                <button onClick={() => setInPlan(!inPlan)} style={{ display: "block", width: "100%", background: inPlan ? "#FFF0EE" : "#FAFAF8", color: inPlan ? "#FF7C6F" : "#00215e", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: `1px solid ${inPlan ? "#FF7C6F" : "#EFEFED"}`, cursor: "pointer", textAlign: "center" }}>
+                <button onClick={async () => {
+                  const { data: { session } } = await supabase.auth.getSession();
+                  if (!session?.user) return;
+                  const { data: brandData } = await supabase.from("brands").select("id").eq("user_id", session.user.id).single();
+                  if (!brandData) return;
+                  if (inPlan && planItemId) {
+                    await supabase.from("plan_items").delete().eq("id", planItemId);
+                    setInPlan(false);
+                    setPlanItemId(null);
+                  } else {
+                    const { data } = await supabase.from("plan_items").insert({ brand_id: brandData.id, podcaster_id: id }).select("id").single();
+                    if (data) { setInPlan(true); setPlanItemId(data.id); }
+                  }
+                }} style={{ display: "block", width: "100%", background: inPlan ? "#FFF0EE" : "#FAFAF8", color: inPlan ? "#FF7C6F" : "#00215e", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)", border: `1px solid ${inPlan ? "#FF7C6F" : "#EFEFED"}`, cursor: "pointer", textAlign: "center" }}>
                   {inPlan ? "✦ Saved to plan" : "+ Save to plan"}
                 </button>
 
