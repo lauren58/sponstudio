@@ -82,7 +82,12 @@ export default function AddShow() {
       const res = await fetch(`/api/parse-rss?url=${encodeURIComponent(form.rssUrl)}`);
       const data = await res.json();
       if (data.name) {
-        setForm((f) => ({ ...f, podcastName: f.podcastName || data.name }));
+        setForm((f) => ({ 
+          ...f, 
+          podcastName: f.podcastName || data.name,
+          description: f.description || data.description || "",
+          coverArtUrl: f.coverArtUrl || data.coverArt || "",
+        }));
       }
     } catch (e) {
       console.error("RSS fetch failed", e);

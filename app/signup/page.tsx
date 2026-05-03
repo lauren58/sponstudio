@@ -94,7 +94,7 @@ export default function PodcasterSignup() {
           description: f.description || data.description || "",
           coverArtUrl: f.coverArtUrl || data.coverArt || "",
         }));
-        setRssPreview({ name: data.name, description: data.description || "", coverArt: "#E8D5C4" });
+        setRssPreview({ name: data.name, description: data.description || "", coverArt: data.coverArt || "#E8D5C4" });
       }
       setFieldErrors((e) => ({ ...e, rssUrl: "" }));
     } catch (e) {
@@ -305,8 +305,12 @@ export default function PodcasterSignup() {
               </div>
               {rssPreview && (
                 <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "16px", display: "flex", gap: "16px", alignItems: "center" }}>
-                  <div style={{ width: "64px", height: "64px", borderRadius: "8px", background: rssPreview.coverArt, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: "24px", opacity: 0.4 }}>🎙</span>
+                  <div style={{ width: "64px", height: "64px", borderRadius: "8px", background: "#F5F5F5", flexShrink: 0, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {rssPreview.coverArt && rssPreview.coverArt.startsWith("http") ? (
+                      <img src={rssPreview.coverArt} alt="Cover art" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <span style={{ fontSize: "24px", opacity: 0.4 }}>🎙</span>
+                    )}
                   </div>
                   <div>
                     <p style={{ fontSize: "15px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", marginBottom: "4px" }}>{rssPreview.name}</p>
