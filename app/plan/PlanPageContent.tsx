@@ -19,6 +19,7 @@ type PlanPodcast = {
   listens_range: string;
   best_month: string;
   age_range: string;
+  age_range_2: string;
   gender: string;
   rates: string;
   cover_art_url: string;

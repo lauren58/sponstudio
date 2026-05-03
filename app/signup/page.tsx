@@ -55,7 +55,7 @@ export default function PodcasterSignup() {
     rssUrl: "", podcastName: "", category: "", coverArt: "", podcastFormat: "", description: "", coverArtUrl: "", coverArtPosition: "center",
     listensRange: "", bestMonth: "", milestones: "",
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
-    ageRange: "", gender: "",
+    ageRange: "", ageRange2: "", gender: "",
     adFormats: [] as string[], rates: "", lookingFor: "", previousSponsors: "",
     instagram: "", tiktok: "", youtubeChannel: "", linkedin: "", facebook: "", youtube: "",
   });
@@ -170,6 +170,7 @@ export default function PodcasterSignup() {
           audience_location_2: form.audienceLocation2,
           audience_location_3: form.audienceLocation3,
           age_range: form.ageRange,
+          age_range_2: form.ageRange2,
           gender: form.gender,
           ad_formats: form.adFormats,
           rates: form.rates,
@@ -440,11 +441,17 @@ export default function PodcasterSignup() {
               </div>
               <div>
                 <label style={labelStyle}>Audience age range</label>
-                <select style={fieldErrors.ageRange ? errorInputStyle : inputStyle} value={form.ageRange} onChange={(e) => update("ageRange", e.target.value)}>
-                  <option value="">Select primary age range</option>
-                  {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
-                </select>
-                {fieldErrors.ageRange && <p style={errorStyle}>{fieldErrors.ageRange}</p>}
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <select style={fieldErrors.ageRange ? errorInputStyle : inputStyle} value={form.ageRange} onChange={(e) => update("ageRange", e.target.value)}>
+                    <option value="">Primary age range</option>
+                    {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                  {fieldErrors.ageRange && <p style={errorStyle}>{fieldErrors.ageRange}</p>}
+                  <select style={inputStyle} value={form.ageRange2} onChange={(e) => update("ageRange2", e.target.value)}>
+                    <option value="">Secondary age range (optional)</option>
+                    {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                </div>
               </div>
               <div>
                 <label style={labelStyle}>Audience gender</label>

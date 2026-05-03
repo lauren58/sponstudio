@@ -79,6 +79,7 @@ export default function ProfileEditor() {
     audienceLocation2: data.audience_location_2 || "",
     audienceLocation3: data.audience_location_3 || "",
     ageRange: data.age_range || "",
+    ageRange2: data.age_range_2 || "",
     gender: data.gender || "",
     adFormats: data.ad_formats || [],
     rates: data.rates || "",
@@ -120,6 +121,7 @@ export default function ProfileEditor() {
       audience_location_2: form.audienceLocation2,
       audience_location_3: form.audienceLocation3,
       age_range: form.ageRange,
+      age_range_2: form.ageRange2,
       gender: form.gender,
       ad_formats: form.adFormats,
       rates: form.rates,
@@ -318,12 +320,18 @@ export default function ProfileEditor() {
                   ))}
                 </div>
               </div>
-              <div>
+             <div>
                 <label style={labelStyle}>Age range</label>
-                <select style={inputStyle} value={form.ageRange} onChange={(e) => update("ageRange", e.target.value)}>
-                  <option value="">Select</option>
-                  {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
-                </select>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <select style={inputStyle} value={form.ageRange} onChange={(e) => update("ageRange", e.target.value)}>
+                    <option value="">Primary age range</option>
+                    {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                  <select style={inputStyle} value={form.ageRange2} onChange={(e) => update("ageRange2", e.target.value)}>
+                    <option value="">Secondary age range (optional)</option>
+                    {AGE_RANGES.map((a) => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                </div>
               </div>
               <div>
                 <label style={labelStyle}>Gender</label>

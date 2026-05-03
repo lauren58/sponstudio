@@ -20,6 +20,7 @@ type Podcast = {
   best_month_context: string;
   demographics: string;
   age_range: string;
+  age_range_2: string;
   gender: string;
   previous_sponsors: string;
   rates: string;
@@ -350,7 +351,7 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
                   )}
                   <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
                     <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Audience</p>
-                    <p style={{ fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)" }}>{podcast.age_range}{podcast.gender ? `, ${podcast.gender}` : ""}</p>
+                    <p style={{ fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)" }}>{podcast.age_range}{podcast.age_range_2 ? ` & ${podcast.age_range_2}` : ""}{podcast.gender ? `, ${podcast.gender}` : ""}</p>
                   </div>
                   {podcast.rates && (
                     <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
