@@ -13,7 +13,7 @@ export default function Terms() {
         {[
           {
             title: "1. About SponStudio",
-            body: "SponStudio is a podcast advertising marketplace operated by Centennial World Podcast Network. We provide a platform that connects independent podcasters with brands and advertisers. SponStudio is not an advertising agency and does not facilitate, negotiate or guarantee any commercial arrangements between podcasters and brands."
+            body: "SponStudio is a podcast advertising marketplace operated by Centennial World. We provide a platform that connects independent podcasters with brands and advertisers. SponStudio is not an advertising agency and does not facilitate, negotiate or guarantee any commercial arrangements between podcasters and brands."
           },
           {
             title: "2. Eligibility",
@@ -37,11 +37,11 @@ export default function Terms() {
           },
           {
             title: "7. Intellectual property",
-            body: "All content on SponStudio, including design, copy and code, is owned by Centennial World Podcast Network. Podcasters and brands retain ownership of the content they submit to the platform but grant SponStudio a non-exclusive licence to display that content on the platform."
+            body: "All content on SponStudio, including design, copy and code, is owned by Centennial World. Podcasters and brands retain ownership of the content they submit to the platform but grant SponStudio a non-exclusive licence to display that content on the platform."
           },
           {
             title: "8. Limitation of liability",
-            body: "SponStudio is provided on an 'as is' basis. To the fullest extent permitted by law, Centennial World Podcast Network disclaims all warranties and accepts no liability for any loss or damage arising from your use of the platform, including any commercial arrangements made between users."
+            body: "SponStudio is provided on an 'as is' basis. To the fullest extent permitted by law, Centennial World disclaims all warranties and accepts no liability for any loss or damage arising from your use of the platform, including any commercial arrangements made between users."
           },
           {
             title: "9. Changes to these terms",

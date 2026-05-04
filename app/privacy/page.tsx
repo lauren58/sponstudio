@@ -8,7 +8,7 @@ export default function Privacy() {
       <div style={{ maxWidth: "760px", margin: "0 auto", padding: "60px 24px 100px" }}>
         <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Last updated: May 2026</p>
         <h1 style={{ fontSize: "36px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", marginBottom: "8px" }}>Privacy Policy</h1>
-        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "48px" }}>This policy explains what data we collect, how we use it and where it is stored. SponStudio is operated by Centennial World Podcast Network.</p>
+        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "48px" }}>This policy explains what data we collect, how we use it and where it is stored. SponStudio is operated by Centennial World.</p>
 
         {[
           {

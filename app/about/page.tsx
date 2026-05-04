@@ -23,7 +23,7 @@ export default function About() {
         </p>
 
         <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "24px" }}>
-          Built by the team at Centennial World Podcast Network, SponStudio serves as both a platform to buy host-read podcast advertising directly from creators, and an educational tool for both sides of the industry.
+          Built by the team at Centennial World, SponStudio serves as both a platform to buy host-read podcast advertising directly from creators, and an educational tool for both sides of the industry.
         </p>
 
         <p style={{ fontSize: "17px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.8", marginBottom: "48px" }}>
