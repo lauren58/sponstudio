@@ -178,8 +178,12 @@ export default function Nav() {
           <a href="/about" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>About</a>
           {isLoggedIn ? (
             <>
+              {userRole === "podcaster" && <a href="/my-listings" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>My listings</a>}
+              {userRole === "podcaster" && <a href="/dashboard" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Connection requests</a>}
               {userRole === "podcaster" && <a href="/profile/edit" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Edit my profile</a>}
+              {userRole === "podcaster" && <a href="/add-show" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Add another show</a>}
               {userRole === "brand" && <a href="/plan" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>My media plan</a>}
+              {userRole === "brand" && <a href="/resources/brands/brief" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Campaign brief builder</a>}sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>My media plan</a>}
               <button onClick={handleLogout} style={{ fontSize: "15px", color: "#FF7C6F", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0", background: "transparent", border: "none", cursor: "pointer", textAlign: "left" }}>Log out</button>
             </>
           ) : (

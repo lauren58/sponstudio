@@ -61,6 +61,7 @@ export async function POST(request: Request) {
           <p>Log in to your account to review their details and accept or decline the request.</p>
           <br/>
           <a href="https://www.sponstudio.com/dashboard" style="display:inline-block;background:#FF7C6F;color:#FFFFFF;text-decoration:none;font-weight:600;font-size:15px;padding:14px 28px;border-radius:6px;">Review connection request →</a>
+          <p style="color:#6B6B6B;font-size:13px;margin-top:16px;">If you are not already logged in, you will need to log in to your SponStudio podcaster account first, then visit <strong>My profile → Connection requests</strong> from the menu.</p>
           <br/><br/>
           <p style="color:#6B6B6B;font-size:13px;">You can accept or decline from your SponStudio dashboard. If you accept, the brand will receive your contact details.</p>`,
       });
