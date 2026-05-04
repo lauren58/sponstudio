@@ -28,8 +28,7 @@ const CATEGORIES = [
   "Technology", "True Crime & Law"
 ];
 
-const LOCATIONS = ["All locations", "ANZ", "US", "Canada", "UK", "Europe", "Global", "Other"];
-const LISTENS = ["All monthly listens", "Under 1K", "1K to 10K", "10K to 50K", "50K to 100K", "100K to 200K", "200K to 400K", "400K+"];
+const LOCATIONS = ["All locations", "ANZ", "US", "Canada", "UK", "Europe", "Other"];const LISTENS = ["All monthly listens", "Under 1K", "1K to 10K", "10K to 50K", "50K to 100K", "100K to 200K", "200K to 400K", "400K+"];
 const FORMATS = ["All formats", "Pre-roll", "Mid-roll", "Sponsored segment", "Product placement", "Native episode", "Social amplification"];
 
 const COVER_COLORS = ["#E8D5C4", "#C4D4C4", "#2D2D2D", "#F2C4A0", "#C4D4E8", "#F2E8C4", "#D4C4E8", "#C4E8D4", "#E8C4D4"];

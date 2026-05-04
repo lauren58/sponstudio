@@ -12,7 +12,7 @@ const CATEGORIES = [
   "Technology", "True Crime & Law"
 ];
 
-const LOCATIONS = ["ANZ", "US", "Canada", "UK", "Europe", "Global", "Other"];
+const LOCATIONS = ["All locations", "ANZ", "US", "Canada", "UK", "Europe", "Other"];
 const LISTENS_RANGES = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 100K", "100K to 200K", "200K to 400K", "400K+"];
 const AD_FORMATS = ["Pre-roll", "Mid-roll", "Sponsored segment", "Product placement", "Native episode", "Social amplification"];
 const AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55+"];
