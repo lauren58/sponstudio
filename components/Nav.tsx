@@ -179,5 +179,31 @@ export default function Nav() {
           {isLoggedIn ? (
             <>
               {userRole === "podcaster" && <a href="/my-listings" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>My listings</a>}
+              {userRole === "podcaster" && <a href="/my-listings" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>My listings</a>}
               {userRole === "podcaster" && <a href="/dashboard" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Connection requests</a>}
+              {userRole === "podcaster" && <a href="/profile/edit" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Edit my profile</a>}
+              {userRole === "podcaster" && <a href="/add-show" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Add another show</a>}
+              {userRole === "brand" && <a href="/plan" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>My media plan</a>}
               {userRole === "brand" && <a href="/resources/brands/brief" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Campaign brief builder</a>}
+              <a href="mailto:hello@sponstudio.com" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Need help?</a>
+              <button onClick={handleLogout} style={{ fontSize: "15px", color: "#FF7C6F", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0", background: "transparent", border: "none", cursor: "pointer", textAlign: "left" }}>Log out</button>
+            </>
+          ) : (
+            <>
+              <a href="/login" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Log in</a>
+              <a href="/signup" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#FF7C6F", textDecoration: "none", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0", borderBottom: "1px solid #EFEFED" }}>Join as a podcaster →</a>
+              <a href="/signup/brand" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: "15px", color: "#FF7C6F", textDecoration: "none", fontWeight: "600", fontFamily: "var(--font-sans)", padding: "12px 0" }}>Join as a brand →</a>
+            </>
+          )}
+        </div>
+      )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: flex !important; }
+        }
+      `}</style>
+    </nav>
+  );
+}
