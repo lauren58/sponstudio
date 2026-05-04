@@ -132,11 +132,13 @@ export default function Browse() {
         </div>
       </section>
 
-      <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 32px" }}>
-        <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", display: "inline-block" }}>
-          ✦ Listener numbers are self-reported by podcasters and may include downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live.
-        </p>
-      </section>
+      {isLoggedIn && isBrand && (
+        <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 32px" }}>
+          <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", display: "inline-block" }}>
+            ✦ Listener numbers are self-reported by podcasters and may include downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live.
+          </p>
+        </section>
+      )}
 
       <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 100px" }}>
         {loading && (
