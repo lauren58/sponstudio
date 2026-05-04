@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth-context";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -43,6 +44,7 @@ const selectStyle: React.CSSProperties = {
 };
 
 export default function Browse() {
+  const { isLoggedIn, isBrand } = useAuth();
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [filtered, setFiltered] = useState<Podcast[]>([]);
   const [loading, setLoading] = useState(true);
@@ -117,12 +119,16 @@ export default function Browse() {
           <select style={selectStyle} value={location} onChange={(e) => setLocation(e.target.value)}>
             {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
           </select>
-          <select style={selectStyle} value={listens} onChange={(e) => setListens(e.target.value)}>
-            {LISTENS.map((l) => <option key={l} value={l}>{l}</option>)}
-          </select>
-          <select style={selectStyle} value={format} onChange={(e) => setFormat(e.target.value)}>
-            {FORMATS.map((f) => <option key={f} value={f}>{f}</option>)}
-          </select>
+          {isLoggedIn && isBrand && (
+            <>
+              <select style={selectStyle} value={listens} onChange={(e) => setListens(e.target.value)}>
+                {LISTENS.map((l) => <option key={l} value={l}>{l}</option>)}
+              </select>
+              <select style={selectStyle} value={format} onChange={(e) => setFormat(e.target.value)}>
+                {FORMATS.map((f) => <option key={f} value={f}>{f}</option>)}
+              </select>
+            </>
+          )}
         </div>
       </section>
 
