@@ -270,7 +270,16 @@ export default function AdminDashboard() {
                       await supabase.from("podcasters").update({ sort_order: newOrder }).eq("id", pod.id);
                       setPodcasters((prev) => prev.map((p) => p.id === pod.id ? { ...p, sort_order: newOrder } : p));
                     }} style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 10px", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: "14px" }}>↑</button>
-                    <span style={{ fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", minWidth: "32px", textAlign: "center" }}>{pod.sort_order || 999}</span>
+                    <input
+                      type="number"
+                      value={pod.sort_order || 999}
+                      onChange={async (e) => {
+                        const newOrder = parseInt(e.target.value) || 999;
+                        await supabase.from("podcasters").update({ sort_order: newOrder }).eq("id", pod.id);
+                        setPodcasters((prev) => prev.map((p) => p.id === pod.id ? { ...p, sort_order: newOrder } : p));
+                      }}
+                      style={{ width: "60px", fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", textAlign: "center", border: "1px solid #EFEFED", borderRadius: "4px", padding: "4px 8px" }}
+                    />
                     <button onClick={async () => {
                       const newOrder = (pod.sort_order || 999) + 1;
                       await supabase.from("podcasters").update({ sort_order: newOrder }).eq("id", pod.id);
