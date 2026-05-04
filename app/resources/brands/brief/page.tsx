@@ -181,7 +181,7 @@ export default function BriefBuilder() {
               ) : (
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
                   <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", margin: 0 }}>{currentBriefName}</h1>
-                  <button onClick={() => setEditingName(true)} style={{ fontSize: "12px", color: "#6B6B6B", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-sans)", padding: "4px 8px", borderRadius: "4px", background: "#FAFAF8", border: "1px solid #EFEFED" }}>Rename</button>
+                  <button onClick={() => setEditingName(true)} style={{ fontSize: "12px", color: "#6B6B6B", background: "#FAFAF8", border: "1px solid #EFEFED", cursor: "pointer", fontFamily: "var(--font-sans)", padding: "4px 8px", borderRadius: "4px" }}>Rename</button>
                 </div>
               )}
               <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>
