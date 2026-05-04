@@ -553,7 +553,7 @@ export default function PodcasterSignup() {
             )}
             <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "8px", padding: "16px", marginTop: "24px" }}>
               <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>
-                By submitting, you confirm that all information is accurate to the best of your knowledge. Listener numbers are self-reported and will be labelled as such on your profile.
+                By submitting, you confirm that all information is accurate to the best of your knowledge. Listener numbers are self-reported and will be labelled as such on your profile. By creating an account you agree to our <a href="/terms" style={{ color: "#FF7C6F", textDecoration: "none", fontWeight: "600" }}>Terms of Service</a> and <a href="/privacy" style={{ color: "#FF7C6F", textDecoration: "none", fontWeight: "600" }}>Privacy Policy</a>.
               </p>
             </div>
           </div>
