@@ -138,7 +138,7 @@ export default function BrandSignup() {
             Welcome to SponStudio!
           </h1>
           <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "12px" }}>
-            Your brand account has been created. Check your email to confirm your account, then start browsing podcasts.
+            Your brand account has been created. Check your email to confirm your account, then start browsing podcasts. If you don't see the email within a few minutes, check your spam or junk folder.
           </p>
           <div style={{ marginTop: "32px" }}>
             <a href="/browse" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>

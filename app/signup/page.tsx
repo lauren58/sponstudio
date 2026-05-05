@@ -223,7 +223,7 @@ export default function PodcasterSignup() {
             Check your email!
           </h1>
           <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "12px" }}>
-            We've sent a confirmation link to <strong>{form.email}</strong>. Please click it to activate your account.
+            We've sent a confirmation link to <strong>{form.email}</strong>. Please click it to activate your account. If you don't see it within a few minutes, check your spam or junk folder.
           </p>
           <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "12px" }}>
             Once confirmed, we'll review your application and be in touch within 2 to 3 business days.
