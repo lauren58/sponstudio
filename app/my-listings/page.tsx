@@ -42,7 +42,7 @@ export default function MyListings() {
       setLoadingListings(false);
     };
     fetchListings();
-  }, [isLoggedIn, isPodcaster, loading]);
+  }, [isLoggedIn, isPodcaster, loading, preselectedId]);
 
   if (loading || loadingListings) {
     return (
@@ -119,7 +119,7 @@ export default function MyListings() {
                   {listing.status === "approved" && (
                     <a href={`/browse/${listing.id}`} style={{ fontSize: "13px", color: "#FF7C6F", fontFamily: "var(--font-sans)", fontWeight: "600", textDecoration: "none", background: "#FFF0EE", padding: "8px 14px", borderRadius: "6px" }}>View listing</a>
                   )}
-                  <a href="/profile/edit" style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", fontWeight: "600", textDecoration: "none", background: "#FAFAF8", border: "1px solid #EFEFED", padding: "8px 14px", borderRadius: "6px" }}>Edit</a>
+                  <a href={`/profile/edit?id=${listing.id}`} style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", fontWeight: "600", textDecoration: "none", background: "#FAFAF8", border: "1px solid #EFEFED", padding: "8px 14px", borderRadius: "6px" }}>Edit</a>
                 </div>
               </div>
             </div>

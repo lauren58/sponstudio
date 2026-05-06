@@ -2,6 +2,7 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 
@@ -34,6 +35,8 @@ const hintStyle: React.CSSProperties = {
 
 export default function ProfileEditor() {
   const { isLoggedIn, isPodcaster, loading } = useAuth();
+  const searchParams = useSearchParams();
+  const preselectedId = searchParams.get("id");
   const [status, setStatus] = useState<"loading" | "pending" | "approved" | "declined" | "unauthorized">("loading");
   
   const [podcasterList, setPodcasterList] = useState<any[]>([]);
@@ -52,15 +55,16 @@ export default function ProfileEditor() {
       const { data } = await supabase.from("podcasters").select("*").eq("user_id", session.user.id);
       if (data && data.length > 0) {
         setPodcasterList(data);
-        setSelectedId(data[0].id);
-        setForm(mapToForm(data[0]));
-        setStatus(data[0].status as any);
+        const target = preselectedId ? data.find((p: any) => p.id === preselectedId) || data[0] : data[0];
+        setSelectedId(target.id);
+        setForm(mapToForm(target));
+        setStatus(target.status as any);
       } else {
         setStatus("unauthorized");
       }
     };
     fetchData();
-  }, [isLoggedIn, isPodcaster, loading]);
+  }, [isLoggedIn, isPodcaster, loading, preselectedId]);
 
   const mapToForm = (data: any) => ({
     podcastName: data.podcast_name || "",
