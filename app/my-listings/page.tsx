@@ -42,7 +42,7 @@ export default function MyListings() {
       setLoadingListings(false);
     };
     fetchListings();
-  }, [isLoggedIn, isPodcaster, loading, preselectedId]);
+ }, [isLoggedIn, isPodcaster, loading]);
 
   if (loading || loadingListings) {
     return (
