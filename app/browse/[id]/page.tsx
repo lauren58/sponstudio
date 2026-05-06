@@ -128,13 +128,13 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
       <Nav />
 
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 48px" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 48px" }} className="profile-container">
         <a href="/browse" style={{ fontSize: "13px", color: "#6B6B6B", textDecoration: "none", fontFamily: "var(--font-sans)", display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "32px" }}>
           ← Back to browse
         </a>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "48px", alignItems: "flex-start" }}>
-
+        
+<div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "48px", alignItems: "flex-start" }} className="profile-grid">
           {/* Left column */}
           <div>
             {podcast.cover_art_url ? (
@@ -415,7 +415,18 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      <Footer />
+<Footer />
+      <style>{`
+        @media (max-width: 768px) {
+          .profile-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+          .profile-container {
+            padding: 24px 16px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
