@@ -33,11 +33,9 @@ const hintStyle: React.CSSProperties = {
   fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginTop: "6px", lineHeight: "1.6",
 };
 
-}
-
 export default function ProfileEditor() {
   return (
-    <Suspense fallback={<div style={{ background: "#FAFAF8", minHeight: "100vh" }}><Nav /><div style={{ maxWidth: "560px", margin: "0 auto", padding: "100px 24px", textAlign: "center" }}><p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Loading...</p></div><Footer /></div>}>
+    <Suspense fallback={<div style={{ background: "#FAFAF8", minHeight: "100vh" }} />}>
       <ProfileEditorInner />
     </Suspense>
   );
