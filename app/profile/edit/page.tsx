@@ -1,7 +1,7 @@
 "use client";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
@@ -34,12 +34,6 @@ const hintStyle: React.CSSProperties = {
 };
 
 export default function ProfileEditor() {
-  return (
-    <Suspense fallback={<div style={{ background: "#FAFAF8", minHeight: "100vh" }} />}>
-      <ProfileEditorInner />
-    </Suspense>
-  );
-}
   const { isLoggedIn, isPodcaster, loading } = useAuth();
   const searchParams = useSearchParams();
   const preselectedId = searchParams.get("id");
