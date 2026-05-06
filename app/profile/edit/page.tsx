@@ -2,7 +2,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 
@@ -35,8 +34,7 @@ const hintStyle: React.CSSProperties = {
 
 export default function ProfileEditor() {
   const { isLoggedIn, isPodcaster, loading } = useAuth();
-  const searchParams = useSearchParams();
-  const preselectedId = searchParams.get("id");
+  const preselectedId = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("id") : null;
   const [status, setStatus] = useState<"loading" | "pending" | "approved" | "declined" | "unauthorized">("loading");
   
   const [podcasterList, setPodcasterList] = useState<any[]>([]);
