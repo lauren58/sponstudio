@@ -89,7 +89,7 @@ export default function AddBundle() {
     if (!session?.user) { setSubmitting(false); return; }
     const { data: userData } = await supabase.from("podcasters").select("publisher_name, email").eq("user_id", session.user.id).single();
 
-    const { error: insertError } = await supabase.from("podcasters").insert({
+    const { data: insertData, error: insertError } = await supabase.from("podcasters").insert({
       user_id: session.user.id,
       podcast_name: networkName,
       publisher_name: userData?.publisher_name || "",
@@ -104,33 +104,18 @@ export default function AddBundle() {
       audience_location_3: combinedLocations[2] || "",
       ad_formats: combinedFormats,
       category: combinedCategories[0] || "",
-      status: "pending",
-    });
+      status: "approved",
+    }).select("id");
 
     if (insertError) { setError(insertError.message); setSubmitting(false); return; }
 
-    await fetch("/api/send-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type: "new_application",
-        data: {
-          podcastName: networkName + " (Bundle listing)",
-          publisherName: userData?.publisher_name || "",
-          email: userData?.email || "",
-          category: combinedCategories.join(", "),
-          listensRange: combinedListensRange,
-          location: combinedLocations[0] || "",
-        },
-      }),
-    });
-
+    const newBundleId = (insertData as any)?.[0]?.id;
     setSubmitting(false);
-    const { data: newBundle } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id).eq("is_bundle", true).order("created_at", { ascending: false }).limit(1).single();
-    if (newBundle) {
-      window.location.href = `/profile/edit?id=${newBundle.id}`;
+    if (newBundleId) {
+      window.location.href = `/profile/edit?id=${newBundleId}`;
     } else {
-      setSubmitted(true);
+      const { data: newBundle } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id).eq("is_bundle", true).order("created_at", { ascending: false }).limit(1).single();
+      if (newBundle) window.location.href = `/profile/edit?id=${newBundle.id}`;
     }
   };
 
@@ -164,7 +149,7 @@ export default function AddBundle() {
         </div>
         <h1 style={{ fontSize: "32px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", marginBottom: "8px", marginTop: "16px" }}>Create a bundle listing</h1>
         <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "40px" }}>
-          Bundle multiple shows into a single listing so brands can sponsor across your entire network with one deal.
+          Bundle multiple shows into a single listing so brands can sponsor across your entire network with one deal. After selecting your shows you'll be taken straight to the profile editor to fill in the rest of the details.
         </p>
 
         {/* Step 1 — Name */}
@@ -242,12 +227,12 @@ export default function AddBundle() {
 
         <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "8px", padding: "16px", marginBottom: "24px" }}>
           <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>
-            Bundle listings are reviewed by the SponStudio team before going live. Combined stats are calculated from your individual show listings and labelled as self-reported.
+            Bundle listings go live immediately. Combined stats are calculated from your individual show listings and labelled as self-reported. You can edit all details in the next step.
           </p>
         </div>
 
         <button onClick={handleSubmit} disabled={submitting || selectedIds.length < 2 || !networkName.trim()} style={{ fontSize: "15px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: submitting || selectedIds.length < 2 || !networkName.trim() ? "#FFAB9F" : "#FF7C6F", border: "none", borderRadius: "6px", padding: "16px 32px", cursor: submitting ? "not-allowed" : "pointer" }}>
-          {submitting ? "Submitting..." : "Submit bundle for review"}
+          {submitting ? "Creating bundle..." : "Create bundle and fill in details →"}
         </button>
       </div>
       <Footer />
