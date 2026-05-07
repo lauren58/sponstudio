@@ -94,15 +94,21 @@ export default function Nav() {
                     <a href="/add-show" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
                       Add another show
                     </a>
+                    <a href="/account/delete" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#A32D2D", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                      Delete account
+                    </a>
                   </>
                 )}
-                {userRole === "brand" && (
+              {userRole === "brand" && (
                   <>
                     <a href="/plan" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
                       My media plan
                     </a>
                     <a href="/resources/brands/brief" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#00215e", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
                       Campaign brief builder
+                    </a>
+                    <a href="/account/delete" onClick={() => setAccountOpen(false)} style={{ display: "block", fontSize: "13px", color: "#A32D2D", textDecoration: "none", fontWeight: "500", fontFamily: "var(--font-sans)", padding: "10px 14px", borderRadius: "6px" }}>
+                      Delete account
                     </a>
                   </>
                 )}

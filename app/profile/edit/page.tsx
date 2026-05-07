@@ -41,6 +41,7 @@ export default function ProfileEditor() {
   const [selectedId, setSelectedId] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [form, setForm] = useState<any>(null);
 
   useEffect(() => {
@@ -399,6 +400,31 @@ export default function ProfileEditor() {
           <button onClick={handleSave} disabled={saving} style={{ fontSize: "15px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: saving ? "#FFAB9F" : "#FF7C6F", border: "none", borderRadius: "6px", padding: "16px", cursor: saving ? "not-allowed" : "pointer", width: "100%" }}>
             {saving ? "Saving..." : "Save changes"}
           </button>
+
+          <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "24px", marginTop: "8px" }}>
+            <h3 style={{ fontSize: "14px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Delete this listing</h3>
+            <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6", marginBottom: "16px" }}>Permanently remove this podcast from SponStudio. This cannot be undone.</p>
+            {!confirmDelete ? (
+              <button onClick={() => setConfirmDelete(true)} style={{ fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#A32D2D", background: "#FCEBEB", border: "1px solid #F09595", borderRadius: "6px", padding: "10px 20px", cursor: "pointer" }}>
+                Delete listing
+              </button>
+            ) : (
+              <div style={{ background: "#FCEBEB", border: "1px solid #F09595", borderRadius: "8px", padding: "16px" }}>
+                <p style={{ fontSize: "13px", fontWeight: "600", color: "#A32D2D", fontFamily: "var(--font-sans)", marginBottom: "12px" }}>Are you sure? This will permanently delete {podcasterList.find(p => p.id === selectedId)?.podcast_name} from SponStudio.</p>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button onClick={async () => {
+                    await supabase.from("podcasters").delete().eq("id", selectedId);
+                    window.location.href = "/my-listings";
+                  }} style={{ fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: "#A32D2D", border: "none", borderRadius: "6px", padding: "10px 20px", cursor: "pointer" }}>
+                    Yes, delete it
+                  </button>
+                  <button onClick={() => setConfirmDelete(false)} style={{ fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#6B6B6B", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 20px", cursor: "pointer" }}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <Footer />
