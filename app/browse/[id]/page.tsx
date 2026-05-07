@@ -54,6 +54,7 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
   const { isLoggedIn, isBrand, isPodcaster, session, loading: authLoading } = useAuth();
   const [podcast, setPodcast] = useState<Podcast | null>(null);
   const [podcastLoading, setPodcastLoading] = useState(true);
+  const [bundleShows, setBundleShows] = useState<{id: string, podcast_name: string, cover_art_url: string, cover_color: string, category: string, listens_range: string}[]>([]);
   const [inPlan, setInPlan] = useState(false);
   const [planItemId, setPlanItemId] = useState<string | null>(null);
   const [showConnectConfirm, setShowConnectConfirm] = useState(false);
@@ -81,7 +82,13 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
         .single();
       console.log("Podcast data:", data);
       console.log("Podcast error:", error);
-      if (data) setPodcast(data);
+      if (data) {
+        setPodcast(data);
+        if (data.is_bundle && data.bundle_shows?.length > 0) {
+          const { data: shows } = await supabase.from("podcasters").select("id, podcast_name, cover_art_url, cover_color, category, listens_range").in("id", data.bundle_shows);
+          if (shows) setBundleShows(shows);
+        }
+      }
       setPodcastLoading(false);
     };
     fetchPodcast();
@@ -157,9 +164,28 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
               by {podcast.publisher_name}
             </p>
            {podcast.is_bundle && (
-              <div style={{ background: "#FFF0EE", border: "1px solid #FFD4CC", borderRadius: "8px", padding: "12px 16px", marginBottom: "16px" }}>
-                <p style={{ fontSize: "12px", fontWeight: "700", color: "#FF7C6F", fontFamily: "var(--font-sans)", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "1px" }}>✦ Bundle listing</p>
-                <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>This listing represents a network of {podcast.bundle_shows?.length || "multiple"} shows. Sponsorship covers all included shows in one deal.</p>
+              <div style={{ background: "#FFF0EE", border: "1px solid #FFD4CC", borderRadius: "8px", padding: "16px", marginBottom: "16px" }}>
+                <p style={{ fontSize: "12px", fontWeight: "700", color: "#FF7C6F", fontFamily: "var(--font-sans)", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "1px" }}>✦ Bundle listing</p>
+                <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6", marginBottom: "12px" }}>Sponsorship covers all {bundleShows.length} shows in one deal.</p>
+                {bundleShows.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {bundleShows.map((show) => {
+                      const COVER_COLORS = ["#E8D5C4", "#C4D4C4", "#2D2D2D", "#F2C4A0", "#C4D4E8", "#F2E8C4"];
+                      return (
+                        <a key={show.id} href={`/browse/${show.id}`} style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", background: "#FFFFFF", borderRadius: "6px", padding: "8px 10px" }}>
+                          <div style={{ width: "32px", height: "32px", borderRadius: "4px", overflow: "hidden", flexShrink: 0, background: show.cover_art_url ? "#F5F5F5" : (show.cover_color || COVER_COLORS[show.id.charCodeAt(0) % COVER_COLORS.length]) }}>
+                            {show.cover_art_url ? <img src={show.cover_art_url} alt={show.podcast_name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", fontSize: "14px", opacity: 0.4 }}>🎙</span>}
+                          </div>
+                          <div>
+                            <p style={{ fontSize: "13px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)", margin: "0 0 1px" }}>{show.podcast_name}</p>
+                            <p style={{ fontSize: "11px", color: "#6B6B6B", fontFamily: "var(--font-sans)", margin: 0 }}>{show.category} · {show.listens_range} listens</p>
+                          </div>
+                          <span style={{ marginLeft: "auto", fontSize: "12px", color: "#FF7C6F", fontFamily: "var(--font-sans)" }}>View →</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
             {podcast.description && (

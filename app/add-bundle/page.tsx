@@ -125,8 +125,13 @@ export default function AddBundle() {
       }),
     });
 
-    setSubmitted(true);
     setSubmitting(false);
+    const { data: newBundle } = await supabase.from("podcasters").select("id").eq("user_id", session.user.id).eq("is_bundle", true).order("created_at", { ascending: false }).limit(1).single();
+    if (newBundle) {
+      window.location.href = `/profile/edit?id=${newBundle.id}`;
+    } else {
+      setSubmitted(true);
+    }
   };
 
   if (loading) return (
