@@ -35,6 +35,9 @@ type Podcast = {
   description: string;
   looking_for: string;
   user_id: string;
+  is_bundle: boolean;
+  bundle_shows: string[];
+  network_name: string;
 };
 
 function getYouTubeId(url: string): string | null {
@@ -153,6 +156,12 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
             <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "16px" }}>
               by {podcast.publisher_name}
             </p>
+           {podcast.is_bundle && (
+              <div style={{ background: "#FFF0EE", border: "1px solid #FFD4CC", borderRadius: "8px", padding: "12px 16px", marginBottom: "16px" }}>
+                <p style={{ fontSize: "12px", fontWeight: "700", color: "#FF7C6F", fontFamily: "var(--font-sans)", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "1px" }}>✦ Bundle listing</p>
+                <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6" }}>This listing represents a network of {podcast.bundle_shows?.length || "multiple"} shows. Sponsorship covers all included shows in one deal.</p>
+              </div>
+            )}
             {podcast.description && (
               <p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7", marginBottom: "16px" }}>
                 {podcast.description}

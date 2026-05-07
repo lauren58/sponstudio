@@ -80,9 +80,14 @@ export default function MyListings() {
               {listings.length} show{listings.length !== 1 ? "s" : ""} on your account
             </p>
           </div>
-          <a href="/add-show" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "12px 20px", borderRadius: "6px", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>
-            + Add another show
-          </a>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <a href="/add-show" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "12px 20px", borderRadius: "6px", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>
+              + Add another show
+            </a>
+            <a href="/add-bundle" style={{ background: "#FFFFFF", color: "#00215e", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "12px 20px", borderRadius: "6px", border: "1px solid #EFEFED", fontFamily: "var(--font-sans)", whiteSpace: "nowrap" }}>
+              + Create a bundle
+            </a>
+          </div>
         </div>
 
         {listings.length === 0 && (
