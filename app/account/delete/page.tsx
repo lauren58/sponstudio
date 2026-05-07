@@ -17,6 +17,24 @@ export default function DeleteAccount() {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) { setDeleting(false); return; }
 
+    const { data: profileData } = (isPodcaster
+      ? await supabase.from("podcasters").select("podcast_name, publisher_name, email").eq("user_id", session.user.id).single()
+      : await supabase.from("brands").select("company_name, contact_name, email").eq("user_id", session.user.id).single()) as { data: any };
+
+    await fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "account_deleted",
+        data: {
+          name: isPodcaster ? profileData?.publisher_name : profileData?.contact_name,
+          email: profileData?.email || session.user.email,
+          role: isPodcaster ? "Podcaster" : "Brand",
+          accountName: isPodcaster ? profileData?.podcast_name : profileData?.company_name,
+        },
+      }),
+    });
+
     if (isPodcaster) {
       await supabase.from("podcasters").delete().eq("user_id", session.user.id);
     }
