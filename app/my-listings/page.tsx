@@ -18,6 +18,7 @@ type Listing = {
   cover_art_url: string;
   cover_color: string;
   podcast_format: string;
+  hidden: boolean;
 };
 
 const COVER_COLORS = ["#E8D5C4", "#C4D4C4", "#2D2D2D", "#F2C4A0", "#C4D4E8", "#F2E8C4"];
@@ -35,7 +36,7 @@ export default function MyListings() {
       if (!session?.user) { setLoadingListings(false); return; }
       const { data } = await supabase
         .from("podcasters")
-        .select("id, podcast_name, publisher_name, category, audience_location_1, listens_range, ad_formats, status, cover_art_url, cover_color, podcast_format")
+        .select("id, podcast_name, publisher_name, category, audience_location_1, listens_range, ad_formats, status, cover_art_url, cover_color, podcast_format, hidden")
         .eq("user_id", session.user.id)
         .order("created_at", { ascending: false });
       if (data) setListings(data);
@@ -113,8 +114,8 @@ export default function MyListings() {
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px", flexWrap: "wrap" }}>
                     <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-display)", margin: 0 }}>{listing.podcast_name}</h3>
-                    <span style={{ fontSize: "11px", fontWeight: "600", color: listing.status === "approved" ? "#27500A" : listing.status === "declined" ? "#A32D2D" : "#6B6B6B", background: listing.status === "approved" ? "#EAF3DE" : listing.status === "declined" ? "#FCEBEB" : "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "2px 10px", fontFamily: "var(--font-sans)" }}>
-                      {listing.status === "approved" ? "✓ Live" : listing.status === "declined" ? "Not approved" : "Under review"}
+                    <span style={{ fontSize: "11px", fontWeight: "600", color: listing.status === "approved" && !listing.hidden ? "#27500A" : listing.status === "declined" ? "#A32D2D" : "#6B6B6B", background: listing.status === "approved" && !listing.hidden ? "#EAF3DE" : listing.status === "declined" ? "#FCEBEB" : "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "4px", padding: "2px 10px", fontFamily: "var(--font-sans)" }}>
+                      {listing.status === "approved" && !listing.hidden ? "✓ Live" : listing.status === "approved" && listing.hidden ? "Hidden" : listing.status === "declined" ? "Not approved" : "Under review"}
                     </span>
                   </div>
                   <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "6px" }}>{listing.category} · {listing.audience_location_1}</p>

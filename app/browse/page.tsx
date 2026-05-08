@@ -60,6 +60,7 @@ export default function Browse() {
         .from("podcasters")
         .select("id, podcast_name, publisher_name, category, audience_location_1, audience_location_2, ad_formats, listens_range, podcast_format, cover_color, cover_art_url, description, cover_art_position")
         .eq("status", "approved")
+        .eq("hidden", false)
         .order("sort_order", { ascending: true });
 
       if (data) {

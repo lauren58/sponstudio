@@ -413,6 +413,16 @@ export default function ProfileEditor() {
           </button>
 
           <div style={{ borderTop: "1px solid #EFEFED", paddingTop: "24px", marginTop: "8px" }}>
+            <h3 style={{ fontSize: "14px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Visibility</h3>
+            <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6", marginBottom: "16px" }}>Hide this listing from the browse page while keeping it active. Hidden shows can still be included in a bundle listing — this is useful if you want to sell sponsorship across your network as a package rather than as individual shows.</p>
+            <button onClick={async () => {
+              const newHidden = !podcasterList.find(p => p.id === selectedId)?.hidden;
+              await supabase.from("podcasters").update({ hidden: newHidden }).eq("id", selectedId);
+              setPodcasterList((prev) => prev.map((p) => p.id === selectedId ? { ...p, hidden: newHidden } : p));
+            }} style={{ fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", color: podcasterList.find(p => p.id === selectedId)?.hidden ? "#27500A" : "#6B6B6B", background: podcasterList.find(p => p.id === selectedId)?.hidden ? "#EAF3DE" : "#FAFAF8", border: `1px solid ${podcasterList.find(p => p.id === selectedId)?.hidden ? "#97C459" : "#EFEFED"}`, borderRadius: "6px", padding: "10px 20px", cursor: "pointer", marginBottom: "24px" }}>
+              {podcasterList.find(p => p.id === selectedId)?.hidden ? "✓ Hidden from browse — click to unhide" : "Hide from browse page"}
+            </button>
+
             <h3 style={{ fontSize: "14px", fontWeight: "700", color: "#00215e", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Delete this listing</h3>
             <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.6", marginBottom: "16px" }}>Permanently remove this podcast from SponStudio. This cannot be undone.</p>
             {!confirmDelete ? (
