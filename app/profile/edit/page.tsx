@@ -146,6 +146,20 @@ export default function ProfileEditor() {
     if (pod) { setSelectedId(id); setForm(mapToForm(pod)); }
   };
 
+  useEffect(() => {
+    if (!form?.audienceLocation1) return;
+    const locationCurrency: Record<string, string> = {
+      "ANZ": "AUD",
+      "US": "USD",
+      "Canada": "CAD",
+      "UK": "GBP",
+      "Europe": "EUR",
+      "Other": "USD",
+    };
+    const suggested = locationCurrency[form.audienceLocation1];
+    if (suggested) update("currency", suggested);
+  }, [form?.audienceLocation1]);
+
   const isVideoFormat = form?.podcastFormat === "Video and audio" || form?.podcastFormat === "Video only";
 
   if (status === "loading" || !form) return (

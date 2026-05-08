@@ -62,6 +62,20 @@ export default function AddShow() {
     setFieldErrors((e) => ({ ...e, [field]: "" }));
   };
 
+  useEffect(() => {
+    if (!form.audienceLocation1) return;
+    const locationCurrency: Record<string, string> = {
+      "ANZ": "AUD",
+      "US": "USD",
+      "Canada": "CAD",
+      "UK": "GBP",
+      "Europe": "EUR",
+      "Other": "USD",
+    };
+    const suggested = locationCurrency[form.audienceLocation1];
+    if (suggested) update("currency", suggested);
+  }, [form.audienceLocation1]);
+
   const isVideoFormat = form.podcastFormat === "Video and audio" || form.podcastFormat === "Video only";
 
   const toggleFormat = (format: string) => {
