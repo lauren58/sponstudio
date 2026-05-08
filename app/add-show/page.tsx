@@ -169,6 +169,8 @@ export default function AddShow() {
         gender: form.gender,
         ad_formats: form.adFormats,
         rates: form.rates,
+        currency: form.currency,
+        age_range_2: form.ageRange2,
         looking_for: form.lookingFor,
         previous_sponsors: form.previousSponsors,
         instagram: form.instagram,
