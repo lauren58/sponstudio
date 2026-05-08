@@ -86,6 +86,7 @@ export default function ProfileEditor() {
     gender: data.gender || "",
     adFormats: data.ad_formats || [],
     rates: data.rates || "",
+    currency: data.currency || "AUD",
     lookingFor: data.looking_for || "",
     previousSponsors: data.previous_sponsors || "",
     instagram: data.instagram || "",
@@ -366,7 +367,17 @@ export default function ProfileEditor() {
               </div>
               <div>
                 <label style={labelStyle}>Rates <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>
-                <input style={inputStyle} value={form.rates} onChange={(e) => update("rates", e.target.value)} placeholder="e.g. From $150 per episode" />
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <select style={{ ...inputStyle, width: "120px", flexShrink: 0 }} value={form.currency} onChange={(e) => update("currency", e.target.value)}>
+                    <option value="AUD">AUD $</option>
+                    <option value="USD">USD $</option>
+                    <option value="GBP">GBP £</option>
+                    <option value="EUR">EUR €</option>
+                    <option value="NZD">NZD $</option>
+                    <option value="CAD">CAD $</option>
+                  </select>
+                  <input style={inputStyle} value={form.rates} onChange={(e) => update("rates", e.target.value)} placeholder="e.g. From 150 per episode" />
+                </div>
               </div>
               <div>
                 <label style={labelStyle}>Looking for <span style={{ fontWeight: "400", color: "#6B6B6B" }}>(optional)</span></label>

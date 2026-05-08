@@ -51,8 +51,8 @@ export default function AddShow() {
     listensRange: "", bestMonth: "", milestones: "",
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", gender: "",
-    adFormats: [] as string[], rates: "", lookingFor: "", previousSponsors: "",
-    instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "", description: "", coverArtPosition: "center",
+    adFormats: [] as string[], rates: "", currency: "AUD", lookingFor: "", previousSponsors: "",
+    instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "", description: "", coverArtPosition: "center", currency: "AUD",
   });
 
   const [rssLoading, setRssLoading] = useState(false);
@@ -236,7 +236,7 @@ export default function AddShow() {
             <a href="/profile/edit" style={{ background: "#FF7C6F", color: "#FFFFFF", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", fontFamily: "var(--font-sans)" }}>
               Manage my shows
             </a>
-            <a href="/add-show" onClick={() => { setSubmitted(false); setStep(1); setForm({ rssUrl: "", podcastName: "", category: "", podcastFormat: "", youtube: "", listensRange: "", bestMonth: "", milestones: "", audienceLocation1: "", audienceLocation2: "", audienceLocation3: "", ageRange: "", gender: "", adFormats: [], rates: "", lookingFor: "", previousSponsors: "", instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "", description: "", coverArtPosition: "center" }); }} style={{ background: "#FFFFFF", color: "#00215e", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", border: "1px solid #EFEFED", fontFamily: "var(--font-sans)" }}>
+            <a href="/add-show" onClick={() => { setSubmitted(false); setStep(1); setForm({ rssUrl: "", podcastName: "", category: "", podcastFormat: "", youtube: "", listensRange: "", bestMonth: "", milestones: "", audienceLocation1: "", audienceLocation2: "", audienceLocation3: "", ageRange: "", ageRange2: "", gender: "", adFormats: [], rates: "", currency: "AUD", lookingFor: "", previousSponsors: "", instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "", description: "", coverArtPosition: "center" }); }} style={{ background: "#FFFFFF", color: "#00215e", textDecoration: "none", fontWeight: "600", fontSize: "14px", padding: "13px 24px", borderRadius: "6px", border: "1px solid #EFEFED", fontFamily: "var(--font-sans)" }}>
               Add another show
             </a>
           </div>

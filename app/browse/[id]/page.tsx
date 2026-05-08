@@ -24,6 +24,7 @@ type Podcast = {
   gender: string;
   previous_sponsors: string;
   rates: string;
+  currency: string;
   instagram: string;
   tiktok: string;
   youtube: string;
@@ -392,7 +393,7 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
                   {podcast.rates && (
                     <div style={{ background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "10px", padding: "20px" }}>
                       <p style={{ fontSize: "11px", fontWeight: "700", color: "#6B6B6B", letterSpacing: "1.5px", textTransform: "uppercase", fontFamily: "var(--font-sans)", marginBottom: "8px" }}>Rates</p>
-                      <p style={{ fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)" }}>{podcast.rates}</p>
+                      <p style={{ fontSize: "14px", fontWeight: "600", color: "#00215e", fontFamily: "var(--font-sans)" }}>{podcast.currency && podcast.rates ? `${podcast.currency} ${podcast.rates}` : podcast.rates}</p>
                       </div>
                   )}
                 </div>

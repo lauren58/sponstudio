@@ -56,7 +56,7 @@ export default function PodcasterSignup() {
     listensRange: "", bestMonth: "", milestones: "",
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", ageRange2: "", gender: "",
-    adFormats: [] as string[], rates: "", lookingFor: "", previousSponsors: "",
+    adFormats: [] as string[], rates: "", currency: "AUD", lookingFor: "", previousSponsors: "",
     instagram: "", tiktok: "", youtubeChannel: "", linkedin: "", facebook: "", youtube: "",
   });
 
