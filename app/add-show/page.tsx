@@ -50,9 +50,9 @@ export default function AddShow() {
     rssUrl: "", podcastName: "", category: "", podcastFormat: "", youtube: "",
     listensRange: "", bestMonth: "", milestones: "",
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
-    ageRange: "", gender: "",
+    ageRange: "", ageRange2: "", gender: "",
     adFormats: [] as string[], rates: "", currency: "AUD", lookingFor: "", previousSponsors: "",
-    instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "", description: "", coverArtPosition: "center", currency: "AUD",
+    instagram: "", tiktok: "", linkedin: "", facebook: "", coverArtUrl: "", description: "", coverArtPosition: "center",
   });
 
   const [rssLoading, setRssLoading] = useState(false);
