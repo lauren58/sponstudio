@@ -8,53 +8,65 @@ const faqs = {
   podcasters: [
     {
       q: "How do I list my podcast on SponStudio?",
-      a: "Click 'Join free' in the navigation and select 'List my podcast'. Fill in your show details, audience stats and ad formats. Your listing will be reviewed by our team and you'll receive an email within 2 to 3 business days once it's approved."
+      a: "Click 'Join free' in the navigation and select 'List my podcast'. Fill in your show details, audience stats and ad formats. You will need to verify your email address before your application is submitted. Your listing will then be reviewed by our team and you will receive an email within 2 to 3 business days once it is approved. You cannot log in until your email has been verified."
     },
     {
       q: "Is it free to list my podcast?",
-      a: "Yes — listing your podcast on SponStudio is completely free, always. We never charge podcasters to be on the platform."
+      a: "Yes. Listing your podcast on SponStudio is completely free, always. We never charge podcasters to be on the platform."
+    },
+    {
+      q: "What does SponStudio actually do?",
+      a: "SponStudio is a discoverability tool, not a campaign manager. We connect you with brands who are interested in working with you. Once a brand accepts your connection request and you receive their contact details, the conversation, negotiation and campaign management happen directly between you and the brand. No money exchanges through SponStudio and we do not take a commission on any deals you make."
     },
     {
       q: "What listener stats do I need to provide?",
-      a: "We ask for a monthly listens range rather than exact numbers. Listens can include downloads, streams, Spotify plays, YouTube views and live streams — whatever makes up your total reach. All stats are self-reported and labelled as such on your profile."
+      a: "We ask for a monthly listens range rather than exact numbers. Listens can include downloads, streams, Spotify plays, YouTube views and live streams, whatever makes up your total reach. All stats are self-reported and labelled as such on your profile."
     },
     {
       q: "Can I list multiple shows?",
-      a: "Yes! Once your first show is approved you can add more shows from the 'My profile' menu. Each show gets its own listing. You can also create a bundle listing if you want to sell sponsorship across multiple shows as a package."
+      a: "Yes. Once your first show is approved you can add more shows from the 'My profile' menu. Each show gets its own listing. You can also create a bundle listing if you want to sell sponsorship across multiple shows as a package."
     },
     {
       q: "What is a bundle listing?",
-      a: "A bundle listing lets you combine multiple shows into a single listing so brands can sponsor across your entire network in one deal. Go to 'My listings' and click 'Create a bundle' to get started."
+      a: "A bundle listing lets you combine multiple shows into a single listing so brands can sponsor across your entire network in one deal. Go to 'My listings' and click 'Create a bundle' to get started. You can also hide individual show listings from the browse page so only your bundle appears, while still including those shows in the bundle stats. This is useful if you prefer to sell your network as a package rather than show by show."
+    },
+    {
+      q: "How do I hide a listing from the browse page?",
+      a: "Go to 'Edit my profile', select the show you want to hide, and scroll to the Visibility section at the bottom. Toggle the hide option to remove it from the browse page. Hidden shows can still be included in a bundle listing and their stats will still count toward the combined reach."
     },
     {
       q: "How do connection requests work?",
-      a: "When a brand is interested in your show they'll send you a connection request. You'll receive an email notification and can log in to your dashboard to accept or decline. If you accept, the brand will receive your contact email so they can reach out directly."
+      a: "When a brand is interested in your show they will send you a connection request. You will receive an email notification and can log in to your dashboard to accept or decline. If you accept, the brand will receive your contact email so they can reach out directly."
     },
     {
       q: "Do I have to respond to every connection request?",
-      a: "You're not obligated to accept every request, but we encourage you to respond promptly. Brands who don't hear back within a few days may move on to other shows."
+      a: "You are not obligated to accept every request, but we encourage you to respond promptly. Brands who do not hear back within a few days may move on to other shows."
     },
     {
-      q: "Can I edit my listing after it's approved?",
-      a: "Yes — go to 'My profile' in the navigation and select 'Edit my profile'. Changes save directly to your listing. If you have multiple shows you can switch between them using the dropdown at the top of the editor."
+      q: "Can I edit my listing after it is approved?",
+      a: "Yes. Go to 'My profile' in the navigation and select 'Edit my profile'. Changes save directly to your listing. If you have multiple shows you can switch between them using the dropdown at the top of the editor."
     },
     {
-      q: "Why aren't my listener stats visible to everyone?",
+      q: "Why are my listener stats not visible to everyone?",
       a: "Listener stats, audience demographics and rates are only visible to verified brand accounts logged in with a company email. This protects your data and ensures only serious buyers can see your numbers."
     },
     {
       q: "Can I delete my listing or account?",
-      a: "Yes. To delete an individual listing, go to 'Edit my profile' and scroll to the bottom — you'll find a delete option there. To delete your entire account, go to 'My profile' and select 'Delete account'."
+      a: "Yes. To delete an individual listing, go to 'Edit my profile' and scroll to the bottom. To delete your entire account, go to 'My profile' and select 'Delete account'."
     },
   ],
   brands: [
     {
       q: "How do I create a brand account?",
-      a: "Click 'Join free' in the navigation and select 'I'm a brand'. Fill in your company details and confirm your email. Once your account is created you can browse the full marketplace and unlock listener stats immediately."
+      a: "Click 'Join free' in the navigation and select 'I am a brand'. Fill in your company details and confirm your email. Once your account is created you can browse the full marketplace and unlock listener stats immediately."
     },
     {
       q: "Is SponStudio free for brands?",
-      a: "Browsing and connecting with podcasters is free. SponStudio does not charge a commission or take a cut of any deals made through the platform."
+      a: "Yes. SponStudio is free for brands during our early access period. We do not charge a commission or take a cut of any deals made through the platform. Pricing may be introduced in future as the platform grows, but we will always give users notice before any changes."
+    },
+    {
+      q: "What does SponStudio actually do?",
+      a: "SponStudio is a discoverability tool. We help you find and connect with indie podcasters. Once a podcaster accepts your connection request you will receive their contact details and can take the conversation directly from there. No money exchanges through SponStudio and we are not involved in campaign management or execution."
     },
     {
       q: "How do I find the right podcast for my brand?",
@@ -62,11 +74,11 @@ const faqs = {
     },
     {
       q: "What does a connection request do?",
-      a: "A connection request lets a podcaster know you're interested in working with them. If they accept, you'll receive an email with their contact details so you can reach out directly to discuss rates and campaign details."
+      a: "A connection request lets a podcaster know you are interested in working with them. If they accept, you will receive an email with their contact details so you can reach out directly to discuss rates and campaign details."
     },
     {
       q: "What is the media plan?",
-      a: "The media plan lets you save multiple shows and see a combined reach report — total listens, audience locations and ad formats across all saved shows. You can also send connection requests to all saved shows at once."
+      a: "The media plan lets you save multiple shows and see a combined reach report, including total listens, audience locations and ad formats across all saved shows. You can also send connection requests to all saved shows at once."
     },
     {
       q: "How do I send a campaign brief to a podcaster?",
@@ -82,7 +94,7 @@ const faqs = {
     },
     {
       q: "Can I work with podcasters outside Australia?",
-      a: "Yes — SponStudio features podcasts from Australia, New Zealand, the US, Canada, the UK, Europe and other regions. You can filter by audience location to find shows that reach your target market."
+      a: "Yes. SponStudio features podcasts from Australia, New Zealand, the US, Canada, the UK, Europe and other regions. You can filter by audience location to find shows that reach your target market."
     },
     {
       q: "Can I delete my brand account?",
