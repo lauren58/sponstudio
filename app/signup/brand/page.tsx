@@ -258,7 +258,7 @@ export default function BrandSignup() {
             )}
             <div style={{ background: "#FAFAF8", border: "1px solid #EFEFED", borderRadius: "8px", padding: "16px", marginTop: "24px", marginBottom: "8px" }}>
               <p style={{ fontSize: "13px", color: "#6B6B6B", fontFamily: "var(--font-sans)", lineHeight: "1.7" }}>
-                By creating an account you agree to use SponStudio respectfully and in good faith.
+                By creating an account you agree to our <a href="/terms" style={{ color: "#FF7C6F", textDecoration: "none", fontWeight: "600" }}>Terms of Service</a> and <a href="/privacy" style={{ color: "#FF7C6F", textDecoration: "none", fontWeight: "600" }}>Privacy Policy</a>.
               </p>
             </div>
             <div style={{ background: "#FFF0EE", border: "1px solid #FFD4CC", borderRadius: "8px", padding: "16px" }}>
