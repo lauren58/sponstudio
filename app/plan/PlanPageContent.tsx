@@ -102,6 +102,45 @@ export default function PlanPageContent() {
     setPodcasts((prev) => prev.filter((p) => p.plan_item_id !== planItemId));
   };
 
+  const [requestingAll, setRequestingAll] = useState(false);
+  const [allRequested, setAllRequested] = useState(false);
+
+  const handleRequestAll = async () => {
+    setRequestingAll(true);
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) { setRequestingAll(false); return; }
+    const { data: brandData } = await supabase.from("brands").select("id, company_name, email").eq("user_id", session.user.id).single();
+    if (!brandData) { setRequestingAll(false); return; }
+    const alreadyRequested = connections.map((c) => c.podcaster_id);
+    const newPodcasts = podcasts.filter((p) => !alreadyRequested.includes(p.id));
+    for (const podcast of newPodcasts) {
+      await supabase.from("connection_requests").insert({ brand_id: brandData.id, podcaster_id: podcast.id, status: "pending" });
+      const { data: podcasterData } = await supabase.from("podcasters").select("email").eq("id", podcast.id).single();
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "connection_request",
+          data: {
+            brandName: brandData.company_name,
+            brandEmail: brandData.email,
+            podcastName: podcast.podcast_name,
+            podcasterEmail: podcasterData?.email || "",
+          },
+        }),
+      });
+    }
+    const { data: updatedConnections } = await supabase
+      .from("connection_requests")
+      .select(`id, podcaster_id, status, created_at, podcasters (podcast_name, publisher_name, email, cover_art_url, cover_color)`)
+      .eq("brand_id", brandData.id)
+      .order("created_at", { ascending: false });
+    if (updatedConnections) setConnections(updatedConnections as any);
+    setRequestingAll(false);
+    setAllRequested(true);
+    setTimeout(() => setAllRequested(false), 4000);
+  };
+
   if (loading || loadingPlan) {
     return (
       <div style={{ background: "#FAFAF8", minHeight: "100vh" }}><Nav /><div style={{ maxWidth: "600px", margin: "0 auto", padding: "100px 48px", textAlign: "center" }}><p style={{ fontSize: "14px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>Loading your plan...</p></div><Footer /></div>
@@ -141,8 +180,17 @@ export default function PlanPageContent() {
     <div style={{ background: "#FAFAF8", minHeight: "100vh" }}>
       <Nav />
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "60px 48px 100px" }}>
-        <h1 style={{ fontSize: "40px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", marginBottom: "8px" }}>My media plan</h1>
-        <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "48px" }}>{podcasts.length} show{podcasts.length !== 1 ? "s" : ""} saved · {connections.length} connection request{connections.length !== 1 ? "s" : ""}</p>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "48px", flexWrap: "wrap", gap: "16px" }}>
+          <div>
+            <h1 style={{ fontSize: "40px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-1px", marginBottom: "8px" }}>My media plan</h1>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)" }}>{podcasts.length} show{podcasts.length !== 1 ? "s" : ""} saved · {connections.length} connection request{connections.length !== 1 ? "s" : ""}</p>
+          </div>
+          {podcasts.length > 0 && (
+            <button onClick={handleRequestAll} disabled={requestingAll} style={{ fontSize: "14px", fontWeight: "600", fontFamily: "var(--font-sans)", color: "#FFFFFF", background: allRequested ? "#27500A" : requestingAll ? "#FFAB9F" : "#FF7C6F", border: "none", borderRadius: "6px", padding: "13px 24px", cursor: requestingAll ? "not-allowed" : "pointer", whiteSpace: "nowrap" }}>
+              {allRequested ? "✓ Requests sent!" : requestingAll ? "Sending requests..." : "Request to connect with all →"}
+            </button>
+          )}
+        </div>
 
         {/* Combined reach */}
         {podcasts.length > 0 && (
