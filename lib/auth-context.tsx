@@ -9,12 +9,14 @@ const AuthContext = createContext<{
   isLoggedIn: boolean;
   isBrand: boolean;
   isPodcaster: boolean;
+  isDemoMode: boolean;
   loading: boolean;
 }>({
   session: null,
   isLoggedIn: false,
   isBrand: false,
   isPodcaster: false,
+  isDemoMode: false,
   loading: true,
 });
 
@@ -37,13 +39,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const role = session?.user?.user_metadata?.role;
+  const isDemo = typeof window !== "undefined" && (
+    new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026" ||
+    localStorage.getItem("sponstudio_demo") === "newsinnovation2026"
+  );
+
+  if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026") {
+    localStorage.setItem("sponstudio_demo", "newsinnovation2026");
+  }
 
   return (
     <AuthContext.Provider value={{
       session,
-      isLoggedIn: !!session,
-      isBrand: role === "brand",
-      isPodcaster: role === "podcaster",
+      isLoggedIn: !!session || isDemo,
+      isBrand: role === "brand" || isDemo,
+      isPodcaster: role === "podcaster" || isDemo,
+      isDemoMode: isDemo,
       loading,
     }}>
       {children}
