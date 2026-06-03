@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 
 export default function DeleteAccount() {
   const { isLoggedIn, isBrand, isPodcaster, loading } = useAuth();
+  const isDemo = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026";
   const [confirmed, setConfirmed] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [done, setDone] = useState(false);

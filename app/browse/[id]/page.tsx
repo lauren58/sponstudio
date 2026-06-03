@@ -53,6 +53,7 @@ function isChannelUrl(url: string): boolean {
 export default function PodcastProfile({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params);
   const { isLoggedIn, isBrand, isPodcaster, session, loading: authLoading } = useAuth();
+  const isDemo = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026";
   const [podcast, setPodcast] = useState<Podcast | null>(null);
   const [podcastLoading, setPodcastLoading] = useState(true);
   const [bundleShows, setBundleShows] = useState<{id: string, podcast_name: string, cover_art_url: string, cover_color: string, category: string, listens_range: string}[]>([]);
@@ -96,8 +97,8 @@ export default function PodcastProfile({ params }: { params: Promise<{ id: strin
   }, [id]);
 
   const isOwnProfile = isPodcaster && podcast?.user_id === session?.user?.id;
-  const showGatedContent = (isLoggedIn && isBrand) || isOwnProfile;
-  const showActions = isLoggedIn && isBrand;
+  const showGatedContent = (isLoggedIn && isBrand) || isOwnProfile || isDemo;
+  const showActions = (isLoggedIn && isBrand) || isDemo;
 
   if (authLoading || podcastLoading) {
     return (

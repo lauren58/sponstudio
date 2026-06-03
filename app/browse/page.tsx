@@ -45,6 +45,8 @@ const selectStyle: React.CSSProperties = {
 
 export default function Browse() {
   const { isLoggedIn, isBrand } = useAuth();
+  const isDemo = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026";
+  const isBrandView = isBrand || isDemo;
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [filtered, setFiltered] = useState<Podcast[]>([]);
   const [loading, setLoading] = useState(true);
@@ -120,7 +122,7 @@ export default function Browse() {
           <select style={selectStyle} value={location} onChange={(e) => setLocation(e.target.value)}>
             {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
           </select>
-          {isLoggedIn && isBrand && (
+          {(isLoggedIn && isBrand || isDemo) && (
             <>
               <select style={selectStyle} value={listens} onChange={(e) => setListens(e.target.value)}>
                 {LISTENS.map((l) => <option key={l} value={l}>{l}</option>)}
@@ -133,7 +135,7 @@ export default function Browse() {
         </div>
       </section>
 
-      {isLoggedIn && isBrand && (
+      {(isLoggedIn && isBrand || isDemo) && (
         <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 48px 32px" }}>
           <p style={{ fontSize: "12px", color: "#6B6B6B", fontFamily: "var(--font-sans)", background: "#FFFFFF", border: "1px solid #EFEFED", borderRadius: "6px", padding: "10px 16px", display: "inline-block" }}>
             ✦ Listener numbers are self-reported by podcasters and may include downloads, streams, Spotify plays and YouTube views. All listings are reviewed by the SponStudio team before going live.
