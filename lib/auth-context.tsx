@@ -39,14 +39,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const role = session?.user?.user_metadata?.role;
-  const isDemo = typeof window !== "undefined" && (
-    new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026" ||
-    localStorage.getItem("sponstudio_demo") === "newsinnovation2026"
-  );
+  const [isDemo, setIsDemo] = useState(false);
 
-  if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026") {
-    localStorage.setItem("sponstudio_demo", "newsinnovation2026");
-  }
+  useEffect(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get("demo") === "newsinnovation2026";
+    const fromStorage = localStorage.getItem("sponstudio_demo") === "newsinnovation2026";
+    if (fromUrl) localStorage.setItem("sponstudio_demo", "newsinnovation2026");
+    setIsDemo(fromUrl || fromStorage);
+  }, []);
 
   return (
     <AuthContext.Provider value={{
