@@ -129,7 +129,11 @@ export default function PodcasterSignup() {
     }
 
     if (step === 2) {
-      if (!form.rssUrl.trim()) errors.rssUrl = "RSS feed URL is required";
+      if (form.podcastFormat === "Video only") {
+        if (!form.youtube.trim()) errors.youtube = "A YouTube channel or video URL is required for video-only shows";
+      } else if (!form.rssUrl.trim()) {
+        errors.rssUrl = "RSS feed URL is required. YouTube-only show? Select 'Video only' as your format below.";
+      }
       if (!form.podcastName.trim()) errors.podcastName = "Podcast name is required";
       if (!form.category) errors.category = "Category is required";
       if (!form.podcastFormat) errors.podcastFormat = "Podcast format is required";
@@ -305,10 +309,10 @@ export default function PodcasterSignup() {
         {step === 2 && (
           <div>
             <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#00215e", fontFamily: "var(--font-display)", letterSpacing: "-0.8px", marginBottom: "8px" }}>Your show</h1>
-            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>Paste your RSS feed and we will pull your show details automatically.</p>
+            <p style={{ fontSize: "15px", color: "#6B6B6B", fontFamily: "var(--font-sans)", marginBottom: "40px", lineHeight: "1.7" }}>Paste your RSS feed and we will pull your show details automatically. YouTube-only show? Select Video only below and add your YouTube link instead.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div>
-                <label style={labelStyle}>RSS feed URL</label>
+                <label style={labelStyle}>RSS feed URL {form.podcastFormat === "Video only" && <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional for video-only shows)</span>}</label>
                 <div style={{ display: "flex", gap: "8px" }}>
                   <input style={{ ...(fieldErrors.rssUrl ? errorInputStyle : inputStyle), flex: 1 }} type="url" placeholder="https://feeds.example.com/yourshow" value={form.rssUrl} onChange={(e) => update("rssUrl", e.target.value)} />
                   <button onClick={fetchRSS} style={{ background: "#00215e", color: "#FFFFFF", border: "none", borderRadius: "6px", padding: "0 16px", fontSize: "13px", fontWeight: "600", fontFamily: "var(--font-sans)", cursor: "pointer", whiteSpace: "nowrap" }}>
@@ -403,8 +407,9 @@ export default function PodcasterSignup() {
                 <p style={hintStyle}>This determines which ad formats are available to you.</p>
               </div>
               <div>
-                <label style={labelStyle}>Featured YouTube video or channel URL <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span></label>
-                <input style={inputStyle} type="url" placeholder="https://youtube.com/watch?v=... or https://youtube.com/@yourchannel" value={form.youtube} onChange={(e) => update("youtube", e.target.value)} />
+                <label style={labelStyle}>Featured YouTube video or channel URL {form.podcastFormat !== "Video only" && <span style={{ color: "#6B6B6B", fontWeight: "400" }}>(optional)</span>}</label>
+                <input style={fieldErrors.youtube ? errorInputStyle : inputStyle} type="url" placeholder="https://youtube.com/watch?v=... or https://youtube.com/@yourchannel" value={form.youtube} onChange={(e) => update("youtube", e.target.value)} />
+                {fieldErrors.youtube && <p style={errorStyle}>{fieldErrors.youtube}</p>}
                 <p style={hintStyle}>Paste a specific episode URL to embed a video on your profile, or your channel URL to display a link to your YouTube channel. Only visible to logged-in brands.</p>
               </div>
             </div>
