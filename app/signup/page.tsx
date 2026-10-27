@@ -19,8 +19,12 @@ const AD_FORMATS = ["Pre-roll", "Mid-roll", "Sponsored segment", "Product placem
 const AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55+"];
 const HEARD_ABOUT_OPTIONS = [
   "LinkedIn", "Instagram", "TikTok", "Word of mouth / another podcaster",
-  "Event or talk", "Google search", "Newsletter or press", "Other"
+  "Event or talk", "Google/AI search results", "Press"
 ];
+const HEARD_ABOUT_DETAIL: Record<string, { label: string; placeholder: string; error: string }> = {
+  "Word of mouth / another podcaster": { label: "Who told you about us?", placeholder: "e.g. their name or their podcast", error: "Please tell us who told you about SponStudio" },
+  "Event or talk": { label: "Which event or talk?", placeholder: "e.g. SXSW Sydney 2026", error: "Please tell us which event or talk" },
+};
 const GENDER_OPTIONS = ["Predominantly identify as women", "Predominantly identify as men", "Mixed gender", "Unsure"];
 
 const inputStyle: React.CSSProperties = {
@@ -153,7 +157,7 @@ export default function PodcasterSignup() {
 
     if (step === 6) {
       if (!form.heardAbout) errors.heardAbout = "Please let us know how you heard about SponStudio";
-      else if (form.heardAbout === "Other" && !form.heardAboutOther.trim()) errors.heardAboutOther = "Please tell us where you heard about us";
+      else if (HEARD_ABOUT_DETAIL[form.heardAbout] && !form.heardAboutOther.trim()) errors.heardAboutOther = HEARD_ABOUT_DETAIL[form.heardAbout].error;
     }
 
     if (step === 4) {
@@ -210,7 +214,7 @@ export default function PodcasterSignup() {
           linkedin: form.linkedin,
           facebook: form.facebook,
           description: form.description,
-          heard_about_us: form.heardAbout === "Other" ? `Other: ${form.heardAboutOther.trim()}` : form.heardAbout,
+          heard_about_us: HEARD_ABOUT_DETAIL[form.heardAbout] ? `${form.heardAbout}: ${form.heardAboutOther.trim()}` : form.heardAbout,
           cover_art_url: form.coverArtUrl,
           cover_art_position: form.coverArtPosition,
           status: "pending",
@@ -228,7 +232,7 @@ export default function PodcasterSignup() {
               category: form.category,
               listensRange: form.listensRange,
               location: form.audienceLocation1,
-              heardAbout: form.heardAbout === "Other" ? `Other: ${form.heardAboutOther.trim()}` : form.heardAbout,
+              heardAbout: HEARD_ABOUT_DETAIL[form.heardAbout] ? `${form.heardAbout}: ${form.heardAboutOther.trim()}` : form.heardAbout,
             },
           }),
         });
@@ -579,14 +583,15 @@ export default function PodcasterSignup() {
             ))}
             <div style={{ marginTop: "28px" }}>
               <label style={labelStyle}>How did you hear about SponStudio?</label>
-              <select style={fieldErrors.heardAbout ? errorInputStyle : inputStyle} value={form.heardAbout} onChange={(e) => update("heardAbout", e.target.value)}>
+              <select style={fieldErrors.heardAbout ? errorInputStyle : inputStyle} value={form.heardAbout} onChange={(e) => { update("heardAbout", e.target.value); update("heardAboutOther", ""); }}>
                 <option value="">Select one</option>
                 {HEARD_ABOUT_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
               </select>
               {fieldErrors.heardAbout && <p style={errorStyle}>{fieldErrors.heardAbout}</p>}
-              {form.heardAbout === "Other" && (
-                <div style={{ marginTop: "8px" }}>
-                  <input style={fieldErrors.heardAboutOther ? errorInputStyle : inputStyle} type="text" placeholder="Tell us where" value={form.heardAboutOther} onChange={(e) => update("heardAboutOther", e.target.value)} />
+              {HEARD_ABOUT_DETAIL[form.heardAbout] && (
+                <div style={{ marginTop: "16px" }}>
+                  <label style={labelStyle}>{HEARD_ABOUT_DETAIL[form.heardAbout].label}</label>
+                  <input style={fieldErrors.heardAboutOther ? errorInputStyle : inputStyle} type="text" placeholder={HEARD_ABOUT_DETAIL[form.heardAbout].placeholder} value={form.heardAboutOther} onChange={(e) => update("heardAboutOther", e.target.value)} />
                   {fieldErrors.heardAboutOther && <p style={errorStyle}>{fieldErrors.heardAboutOther}</p>}
                 </div>
               )}
