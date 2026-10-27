@@ -17,6 +17,10 @@ const LISTENS_RANGES = ["Under 1K", "1K to 10K", "10K to 50K", "50K to 100K", "1
 const FORMATS = ["Audio only", "Video and audio", "Video only"];
 const AD_FORMATS = ["Pre-roll", "Mid-roll", "Sponsored segment", "Product placement", "Native episode", "Social amplification"];
 const AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55+"];
+const HEARD_ABOUT_OPTIONS = [
+  "LinkedIn", "Instagram", "TikTok", "Word of mouth / another podcaster",
+  "Event or talk", "Google search", "Newsletter or press", "Other"
+];
 const GENDER_OPTIONS = ["Predominantly identify as women", "Predominantly identify as men", "Mixed gender", "Unsure"];
 
 const inputStyle: React.CSSProperties = {
@@ -57,6 +61,7 @@ export default function PodcasterSignup() {
     audienceLocation1: "", audienceLocation2: "", audienceLocation3: "",
     ageRange: "", ageRange2: "", gender: "",
     adFormats: [] as string[], rates: "", currency: "AUD", lookingFor: "", previousSponsors: "",
+    heardAbout: "", heardAboutOther: "",
     instagram: "", tiktok: "", youtubeChannel: "", linkedin: "", facebook: "", youtube: "",
   });
 
@@ -146,6 +151,11 @@ export default function PodcasterSignup() {
       if (!form.gender) errors.gender = "Audience gender is required";
     }
 
+    if (step === 6) {
+      if (!form.heardAbout) errors.heardAbout = "Please let us know how you heard about SponStudio";
+      else if (form.heardAbout === "Other" && !form.heardAboutOther.trim()) errors.heardAboutOther = "Please tell us where you heard about us";
+    }
+
     if (step === 4) {
       if (form.adFormats.length === 0) errors.adFormats = "Please select at least one ad format";
     }
@@ -200,6 +210,7 @@ export default function PodcasterSignup() {
           linkedin: form.linkedin,
           facebook: form.facebook,
           description: form.description,
+          heard_about_us: form.heardAbout === "Other" ? `Other: ${form.heardAboutOther.trim()}` : form.heardAbout,
           cover_art_url: form.coverArtUrl,
           cover_art_position: form.coverArtPosition,
           status: "pending",
@@ -217,6 +228,7 @@ export default function PodcasterSignup() {
               category: form.category,
               listensRange: form.listensRange,
               location: form.audienceLocation1,
+              heardAbout: form.heardAbout === "Other" ? `Other: ${form.heardAboutOther.trim()}` : form.heardAbout,
             },
           }),
         });
@@ -565,6 +577,20 @@ export default function PodcasterSignup() {
                 <span style={{ fontSize: "13px", color: "#00215e", fontFamily: "var(--font-sans)", fontWeight: "600", textAlign: "right", maxWidth: "60%" }}>{item.value || "Not provided"}</span>
               </div>
             ))}
+            <div style={{ marginTop: "28px" }}>
+              <label style={labelStyle}>How did you hear about SponStudio?</label>
+              <select style={fieldErrors.heardAbout ? errorInputStyle : inputStyle} value={form.heardAbout} onChange={(e) => update("heardAbout", e.target.value)}>
+                <option value="">Select one</option>
+                {HEARD_ABOUT_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+              </select>
+              {fieldErrors.heardAbout && <p style={errorStyle}>{fieldErrors.heardAbout}</p>}
+              {form.heardAbout === "Other" && (
+                <div style={{ marginTop: "8px" }}>
+                  <input style={fieldErrors.heardAboutOther ? errorInputStyle : inputStyle} type="text" placeholder="Tell us where" value={form.heardAboutOther} onChange={(e) => update("heardAboutOther", e.target.value)} />
+                  {fieldErrors.heardAboutOther && <p style={errorStyle}>{fieldErrors.heardAboutOther}</p>}
+                </div>
+              )}
+            </div>
             {error && (
               <div style={{ background: "#FCEBEB", border: "1px solid #F09595", borderRadius: "8px", padding: "12px 16px", marginTop: "20px" }}>
                 <p style={{ fontSize: "13px", color: "#A32D2D", fontFamily: "var(--font-sans)" }}>{error}</p>
